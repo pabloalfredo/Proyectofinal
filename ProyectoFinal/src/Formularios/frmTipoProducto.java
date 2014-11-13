@@ -8,6 +8,8 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class frmTipoProducto {
 
@@ -103,6 +105,11 @@ public class frmTipoProducto {
 		frame.getContentPane().add(textField_2);
 		
 		JButton button_3 = new JButton("Generar ");
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+			}
+		});
 		button_3.setToolTipText("Generar un Codigo si el Producto no tiene Codigo");
 		button_3.setBounds(262, 54, 79, 28);
 		frame.getContentPane().add(button_3);

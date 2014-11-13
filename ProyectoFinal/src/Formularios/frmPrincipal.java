@@ -68,8 +68,9 @@ public class frmPrincipal {
 		JMenuItem mntmLogin = new JMenuItem("Login");
 		mntmLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//frmLoguin frm = new frmLoguin();
-				//frm.setVisible(true);
+				frmLoguin frm = new frmLoguin();
+				
+				
 				
 				
 				
@@ -90,6 +91,13 @@ public class frmPrincipal {
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem mntmTipoDeProductos = new JMenuItem("Tipo de Productos");
+		mntmTipoDeProductos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+	
+			}
+		});
 		mnNewMenu_1.add(mntmTipoDeProductos);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
