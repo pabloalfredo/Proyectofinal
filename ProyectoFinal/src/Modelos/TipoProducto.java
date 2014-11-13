@@ -4,12 +4,12 @@ public class TipoProducto {
 	private int idTipoProducto;
 	private String Descripcion;
 	
-	/*public TipoProducto(int idTipoProducto, String Descripcion){
+	public TipoProducto(int idTipoProducto, String Descripcion){
 	
 		this.idTipoProducto = idTipoProducto;
 		this.Descripcion = Descripcion;
 	}
-	*/
+	
 	
 	public TipoProducto(){
 		this.idTipoProducto = 0;
