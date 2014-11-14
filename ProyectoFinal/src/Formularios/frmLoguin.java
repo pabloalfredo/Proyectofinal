@@ -12,8 +12,10 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class frmLoguin {
+public class frmLoguin extends JFrame {
 
 	private JFrame frame;
 	private JTextField textField;
@@ -93,6 +95,13 @@ public class frmLoguin {
 		frame.getContentPane().add(passwordField);
 		
 		JButton button = new JButton("Aceptar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				frmPrincipal frm = new frmPrincipal();
+				
+			}
+		});
 		button.setIcon(new ImageIcon(frmLoguin.class.getResource("/Recursos/Aceptar (2).png")));
 		button.setToolTipText("Hacer clic para entrar");
 		button.setFont(new Font("SansSerif", Font.BOLD, 12));
