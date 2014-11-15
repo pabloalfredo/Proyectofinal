@@ -19,8 +19,12 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+
 import Clases.*;
 import Clases.*;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class frmTipoProducto extends JFrame {
 
@@ -65,8 +69,37 @@ public class frmTipoProducto extends JFrame {
 		txtDescripcionTipoProducto.setColumns(10);
 		
 		JButton btnBuscarTipoProducto = new JButton("Buscar");
+		btnBuscarTipoProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+					try {
+					
+					String condicion = "1";
+					
+						condicion = "Descripcion like '%" + txtDescripcionTipoProducto.getText() + "%'";
+					
+					
+					modeloTabla.establecerCondicion( condicion );
+					modeloTabla.realizarBusqueda();
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		JButton btnNuevoTipoProducto = new JButton("Nuevo");
+		btnNuevoTipoProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				frmAgregarTipoProducto frm = new frmAgregarTipoProducto();
+				frm.setVisible(true);
+				
+				
+				
+			}
+		});
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -108,6 +141,8 @@ public class frmTipoProducto extends JFrame {
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(47, Short.MAX_VALUE))
 		);
+		
+//LE PASAMOS EL QUERY POR EL CONTSTUCTOR Y EL METODO REALIZARBUSQUEDA EJECUTA EL QUERY
 		try {
 			modeloTabla = new ModeloTabla("*", "tbltipoproducto", "1");
 			modeloTabla.realizarBusqueda();
@@ -116,7 +151,7 @@ public class frmTipoProducto extends JFrame {
 			e.printStackTrace();
 		}
 		
-		
+//EL RESULTADO DEL QUERY SE LE PASA A LA TABLA
 		table = new JTable(modeloTabla);
 		
 		

@@ -9,14 +9,22 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
+import Modelos.TipoProducto;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 public class frmAgregarTipoProducto extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField txtDescripcionAgregarTipoProducto;
 
 	/**
 	 * Launch the application.
@@ -49,12 +57,33 @@ public class frmAgregarTipoProducto extends JFrame {
 		
 		JLabel label_1 = new JLabel("Descripcion");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		txtDescripcionAgregarTipoProducto = new JTextField();
+		txtDescripcionAgregarTipoProducto.setColumns(10);
 		
 		JButton button = new JButton("Cancelar");
 		
 		JButton button_1 = new JButton("Aceptar");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				try {
+					String descripcion = txtDescripcionAgregarTipoProducto.getText();
+					TipoProducto descripcionObtenida = new TipoProducto(descripcion);
+					descripcionObtenida.AgregarTipoProducto();
+					descripcionObtenida.imprimir();
+				} catch (ClassNotFoundException e) {
+					System.out.println(e);
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				
+				}
+				
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -67,7 +96,7 @@ public class frmAgregarTipoProducto extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
 							.addGap(4)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtDescripcionAgregarTipoProducto, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
 							.addGap(86)
@@ -84,7 +113,7 @@ public class frmAgregarTipoProducto extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(3)
 							.addComponent(label_1))
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtDescripcionAgregarTipoProducto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(button_1)

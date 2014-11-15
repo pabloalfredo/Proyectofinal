@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 
 public class BaseDeDatos {
-	private Connection cn;
-    private static String URL ="jdbc:mysql://localhost/dbprueba1";
+	public Connection cn;
+    private static String URL ="jdbc:mysql://localhost/dbproyecto";
     private static String USUARIO = "root";
     private static String PASSWORD ="curne00";
     

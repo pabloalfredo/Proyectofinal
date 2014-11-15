@@ -28,9 +28,9 @@ public class ModeloTabla extends AbstractTableModel{
 		this.establecerAtributos(atributos);
 		this.establecerTabla(tabla);
 		this.establecerCondicion(condicion);
-		//Class.forName("com.mysql.jdbc.Driver");
-		//conexion = DriverManager.getConnection( "jdbc:mysql://localhost/dbproyecto", "root", "curne00" );
-		
+		Class.forName("com.mysql.jdbc.Driver");
+		conexion = DriverManager.getConnection( "jdbc:mysql://localhost/dbproyecto", "root", "curne00" );
+		/*
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (InstantiationException e) {
@@ -41,14 +41,14 @@ public class ModeloTabla extends AbstractTableModel{
 			e.printStackTrace();
 		}
 		cn = DriverManager.getConnection("jdbc:mysql://localhost/dbproyecto", "root", "curne00"); 
-		
+		*/
 	}
 	
 	public void realizarBusqueda() throws SQLException
 	{
 		String sql = String.format("select %s from %s where %s", obtenerAtributos(), obtenerTabla(), obtenerCondicion()); 
 		
-		System.out.println(sql);
+		//System.out.println(sql);
 		instruccion = conexion.createStatement();
 		conjuntoResultados = instruccion.executeQuery(sql);
 		metadatos = conjuntoResultados.getMetaData();
