@@ -56,45 +56,12 @@ public void AgregarTipoProducto() throws ClassNotFoundException, SQLException {
     conn.close();
 	
 	*/
-	
-	
-	
-	//Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/dbproyecto", "root", "curne00");
-	//BaseDeDatos conn = new BaseDeDatos();
-	
 	BaseDeDatos conn = new BaseDeDatos();
 	String sql = "insert into tbltipoproducto (Descripcion) values (?)";
 	PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
 	instruccion.setString(1, getDescripcion());
 	instruccion.execute();
 	
-	/*
-	//////////////////////////////////////////////////
-	String sql = "insert into tbltipoproducto  values (?)";
-	PreparedStatement instruccion = conn.cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	instruccion.setString(1, getDescripcion());
-	
-	
-   
-    conn.open();
-    conn.execute(instruccion.toString());
-    conn.close();
-	
-    ResultSet clavesGeneradas = instruccion.getGeneratedKeys();
-    int valorRetorno = 0;
-	while(clavesGeneradas.next())
-	{
-		valorRetorno = Integer.parseInt( clavesGeneradas.getObject(1).toString() );
-	}	
-	
-	return valorRetorno;
-	
-	
-	
-	
-	
-	
-	////////////////////////////////////////////////
 	
 	
 	/*
@@ -121,27 +88,22 @@ public void AgregarTipoProducto() throws ClassNotFoundException, SQLException {
 		return valorRetorno;
 		
 		
-		////////////////////////////////////////////
-		
-		
-		if ((Descripcion != null) && (!Descripcion.equals(""))){
-			String sql ="insert into tbltipoproducto (Descripcion) value ('"+Descripcion+"')";
-			
-	        conexion conn = new conexion();
-	        conn.open();
-	        conn.execute(sql);
-	        conn.close();
-	        
-	        JOptionPane.showMessageDialog(null, "La categoria a sido agregada");
-	        
-		}
-		
-			else{
-				JOptionPane.showMessageDialog(null, "La categoria no puede estar en blanco");
-			}
-		}
-		
 		*/
+		 
+	}
+
+public void ModificarTipoProducto() throws ClassNotFoundException, SQLException {
+	
+	BaseDeDatos conn = new BaseDeDatos();
+	String sql = "update tbltipoproducto set Descripcion= ? where ID = ?";
+	PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
+	instruccion.setString(1, getDescripcion());
+	instruccion.setInt(2, getIdTipoProducto());
+	instruccion.executeUpdate();
+	
+	
+	
+	
 		 
 	}
 }

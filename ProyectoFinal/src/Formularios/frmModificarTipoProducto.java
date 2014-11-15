@@ -18,6 +18,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import Modelos.TipoProducto;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+
 
 public class frmModificarTipoProducto extends JFrame {
 
@@ -60,6 +64,25 @@ public class frmModificarTipoProducto extends JFrame {
 		JLabel label_1 = new JLabel("Descripcion");
 		
 		JButton button = new JButton("Aceptar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int ID = Integer.parseInt(txtIDModificarTipoProducto.getText());
+				String descripcion = txtDescripcionModificarTipoProducto.getText();
+				TipoProducto TipoProductoModificar = new TipoProducto(ID,descripcion);
+				try {
+					TipoProductoModificar.ModificarTipoProducto();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				dispose();
+			}
+			
+		});
 		
 		JButton button_1 = new JButton("Cancelar");
 		

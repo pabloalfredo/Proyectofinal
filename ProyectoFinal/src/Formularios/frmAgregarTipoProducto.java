@@ -71,7 +71,7 @@ public class frmAgregarTipoProducto extends JFrame {
 					String descripcion = txtDescripcionAgregarTipoProducto.getText();
 					TipoProducto descripcionObtenida = new TipoProducto(descripcion);
 					descripcionObtenida.AgregarTipoProducto();
-					descripcionObtenida.imprimir();
+					
 				} catch (ClassNotFoundException e) {
 					System.out.println(e);
 					// TODO Auto-generated catch block
