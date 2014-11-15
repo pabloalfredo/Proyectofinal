@@ -20,11 +20,19 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 
+
+
+
+//import personas.Empleado;
+//import presentacion.FormEmpleado;
 import Clases.*;
 import Clases.*;
+import Modelos.TipoProducto;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class frmTipoProducto extends JFrame {
 
@@ -32,6 +40,7 @@ public class frmTipoProducto extends JFrame {
 	private JTextField txtDescripcionTipoProducto;
 	private JTable table;
 	private ModeloTabla modeloTabla;
+	private JFrame ventanaPadre;
 
 	/**
 	 * Launch the application.
@@ -40,7 +49,7 @@ public class frmTipoProducto extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frmTipoProducto frame = new frmTipoProducto();
+					frmTipoProducto frame = new frmTipoProducto();// se le agrego new JFrame()
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,8 +62,10 @@ public class frmTipoProducto extends JFrame {
 	 * Create the frame.
 	 * @throws ClassNotFoundException 
 	 */
-	public frmTipoProducto() throws ClassNotFoundException {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//public frmTipoProducto() {
+	public frmTipoProducto() {//se le indica cual es la ventana padre
+	
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 497, 345);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -102,6 +113,12 @@ public class frmTipoProducto extends JFrame {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {// CUANDO SE PRESIONE UNA CELDA EN LA TABLA SE ABRIRA LA VENTANA MODIFICAR.
+			
+			}
+		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -149,10 +166,32 @@ public class frmTipoProducto extends JFrame {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 //EL RESULTADO DEL QUERY SE LE PASA A LA TABLA
 		table = new JTable(modeloTabla);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// CUANDO SE PRESIONE UNA CELDA EN LA TABLA SE ABRIRA LA VENTANA MODIFICAR.
+					int id = Integer.parseInt( modeloTabla.getValueAt(table.getSelectedRow(), 0).toString() );
+					String Descripcion =  modeloTabla.getValueAt(table.getSelectedRow(), 1).toString();
+					
+					
+					TipoProducto nuevoTipoProducto = new TipoProducto(id,Descripcion);
+					frmModificarTipoProducto frm = new frmModificarTipoProducto();
+					frm.cargarDatos(nuevoTipoProducto);  //ANTES DE QUE SE ABRE LA VENTANA SE ACCINA EL METODO CARGADATOS
+					frm.setVisible(true);
+					
+					
+					
+				
+				
+			}
+		});
 		
 		
 		scrollPane.setViewportView(table);

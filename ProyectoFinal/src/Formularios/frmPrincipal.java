@@ -19,6 +19,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+import java.awt.Frame;
 
 public class frmPrincipal {
 
@@ -52,12 +54,15 @@ public class frmPrincipal {
 	 */
 	private void initialize() {
 		frmFormularioPrincipal = new JFrame();
+		frmFormularioPrincipal.setExtendedState(Frame.MAXIMIZED_BOTH);
+		frmFormularioPrincipal.setIconImage(Toolkit.getDefaultToolkit().getImage(frmPrincipal.class.getResource("/Recursos/Icon GrenSoft.png")));
 		frmFormularioPrincipal.setTitle("Formulario Principal");
 		frmFormularioPrincipal.setBounds(100, 100, 644, 440);
 		frmFormularioPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JDesktopPane desktopPane = new JDesktopPane();
 		
+	
 		
 		
 		desktopPane.setBackground(Color.LIGHT_GRAY);
@@ -96,8 +101,9 @@ public class frmPrincipal {
 		
 		JMenuItem mntmTipoDeProductos = new JMenuItem("Tipo de Productos");
 		mntmTipoDeProductos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {	
-				frmProducto frm = new frmProducto();
+			public void actionPerformed(ActionEvent arg0) {
+				frmProducto o1 = new frmProducto();
+				frmTipoProducto frm = new frmTipoProducto();
 				frm.setVisible(true);
 				
 	
@@ -124,8 +130,8 @@ public class frmPrincipal {
 					.addComponent(menuBar, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 					.addGap(1)
 					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
-					.addComponent(toolBar_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 630, Short.MAX_VALUE)
+					.addComponent(toolBar_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
 		);
 		
 		JMenu mnReportes = new JMenu("Reportes");

@@ -14,7 +14,7 @@ public class BaseDeDatos {
     private static String URL ="jdbc:mysql://localhost/dbproyecto";
     private static String USUARIO = "root";
     private static String PASSWORD ="curne00";
-    
+    /*
     public void  open(){
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -40,5 +40,14 @@ public class BaseDeDatos {
     
     public void close (){
         cn=null;
+    }*/
+    
+    public static Connection getConexion() throws ClassNotFoundException, SQLException
+    {
+    	Class.forName("com.mysql.jdbc.Driver");
+    	Connection conn = (Connection) DriverManager.getConnection(URL, USUARIO, PASSWORD);
+    	return conn;
+    	
     }
+    
 }

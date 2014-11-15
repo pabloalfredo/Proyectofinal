@@ -1,16 +1,16 @@
 package Modelos;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.prefs.BackingStoreException;
-
 import Clases.BaseDeDatos;
 
-public class TipoProducto {
+public class TipoProducto  {
 	private int idTipoProducto;
 	private String Descripcion;
 	
@@ -45,7 +45,7 @@ public class TipoProducto {
 		System.out.println(getDescripcion());
 	}
 	
-public int AgregarTipoProducto() throws ClassNotFoundException, SQLException {
+public void AgregarTipoProducto() throws ClassNotFoundException, SQLException {
 	//la que funciona
 	/*
 	String sql ="insert into tbltipoproducto (Descripcion) value ('"+getDescripcion()+"')";
@@ -59,26 +59,14 @@ public int AgregarTipoProducto() throws ClassNotFoundException, SQLException {
 	
 	
 	
-	Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/dbproyecto", "root", "curne00");
-	
-	
+	//Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/dbproyecto", "root", "curne00");
 	//BaseDeDatos conn = new BaseDeDatos();
+	
+	BaseDeDatos conn = new BaseDeDatos();
 	String sql = "insert into tbltipoproducto (Descripcion) values (?)";
-	PreparedStatement instruccion = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
 	instruccion.setString(1, getDescripcion());
-	
-	
 	instruccion.execute();
-	
-	ResultSet clavesGeneradas = instruccion.getGeneratedKeys();
-	
-	int valorRetorno = 0;
-	while(clavesGeneradas.next())
-	{
-		valorRetorno = Integer.parseInt( clavesGeneradas.getObject(1).toString() );
-	}	
-	
-	return valorRetorno;
 	
 	/*
 	//////////////////////////////////////////////////
