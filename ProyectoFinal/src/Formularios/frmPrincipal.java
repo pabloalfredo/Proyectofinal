@@ -57,6 +57,9 @@ public class frmPrincipal {
 		frmFormularioPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JDesktopPane desktopPane = new JDesktopPane();
+		
+		
+		
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		frmFormularioPrincipal.getContentPane().add(desktopPane, BorderLayout.CENTER);
 		
@@ -94,7 +97,7 @@ public class frmPrincipal {
 		JMenuItem mntmTipoDeProductos = new JMenuItem("Tipo de Productos");
 		mntmTipoDeProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
-				frmTipoProducto frm = new frmTipoProducto();
+				frmProducto frm = new frmProducto();
 				frm.setVisible(true);
 				
 	

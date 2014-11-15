@@ -1,22 +1,33 @@
 package Formularios;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JButton;
-import java.awt.Font;
-import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+
+import java.awt.Font;
+import java.sql.SQLException;
+
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-public class frmTipoProducto extends JFrame{
+import Clases.*;
+import Clases.*;
 
-	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+public class frmTipoProducto extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField txtDescripcionTipoProducto;
+	private JTable table;
+	private ModeloTabla modeloTabla;
 
 	/**
 	 * Launch the application.
@@ -25,8 +36,8 @@ public class frmTipoProducto extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					frmTipoProducto window = new frmTipoProducto();
-					window.frame.setVisible(true);
+					frmTipoProducto frame = new frmTipoProducto();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -35,97 +46,83 @@ public class frmTipoProducto extends JFrame{
 	}
 
 	/**
-	 * Create the application.
+	 * Create the frame.
+	 * @throws ClassNotFoundException 
 	 */
-	public frmTipoProducto() {
-		initialize();
+	public frmTipoProducto() throws ClassNotFoundException {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 497, 345);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel lblAgregarTipoDe = new JLabel(" Tipo de Producto");
+		lblAgregarTipoDe.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JLabel lblDescripcion = new JLabel("Nombre");
+		
+		txtDescripcionTipoProducto = new JTextField();
+		txtDescripcionTipoProducto.setColumns(10);
+		
+		JButton btnBuscarTipoProducto = new JButton("Buscar");
+		
+		JButton btnNuevoTipoProducto = new JButton("Nuevo");
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(38)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(106)
+									.addComponent(lblAgregarTipoDe))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblDescripcion, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtDescripcionTipoProducto, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
+									.addGap(28)
+									.addComponent(btnBuscarTipoProducto)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnNuevoTipoProducto))))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(51)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(30, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblAgregarTipoDe)
+					.addGap(23)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblDescripcion)
+						.addComponent(txtDescripcionTipoProducto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnBuscarTipoProducto)
+						.addComponent(btnNuevoTipoProducto))
+					.addGap(6)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(47, Short.MAX_VALUE))
+		);
+		try {
+			modeloTabla = new ModeloTabla("*", "tbltipoproducto", "1");
+			modeloTabla.realizarBusqueda();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		table = new JTable(modeloTabla);
+		
+		
+		scrollPane.setViewportView(table);
+		contentPane.setLayout(gl_contentPane);
+		
+		
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 445, 290);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		JButton button = new JButton("Guardar");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//////
-				frmLoguin frm = new frmLoguin();
-				frm.setVisible(true);
-				
-			}
-		});
-		button.setFont(new Font("SansSerif", Font.BOLD, 12));
-		button.setBounds(46, 200, 116, 38);
-		frame.getContentPane().add(button);
-		
-		JButton button_1 = new JButton("Modificar");
-		button_1.setFont(new Font("SansSerif", Font.BOLD, 12));
-		button_1.setBounds(174, 200, 107, 38);
-		frame.getContentPane().add(button_1);
-		
-		JButton button_2 = new JButton("Cancelar");
-		button_2.setFont(new Font("SansSerif", Font.BOLD, 12));
-		button_2.setBounds(293, 200, 114, 38);
-		frame.getContentPane().add(button_2);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(117, 158, 122, 26);
-		frame.getContentPane().add(comboBox);
-		
-		JLabel label = new JLabel("Tipo");
-		label.setFont(new Font("SansSerif", Font.BOLD, 12));
-		label.setBounds(36, 163, 55, 16);
-		frame.getContentPane().add(label);
-		
-		JLabel label_1 = new JLabel("Precio");
-		label_1.setFont(new Font("SansSerif", Font.BOLD, 12));
-		label_1.setBounds(36, 135, 55, 16);
-		frame.getContentPane().add(label_1);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(117, 129, 122, 28);
-		frame.getContentPane().add(textField);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(117, 91, 223, 28);
-		frame.getContentPane().add(textField_1);
-		
-		JLabel label_2 = new JLabel("Descripcion");
-		label_2.setFont(new Font("SansSerif", Font.BOLD, 12));
-		label_2.setBounds(36, 96, 79, 16);
-		frame.getContentPane().add(label_2);
-		
-		JLabel label_3 = new JLabel("Codigo");
-		label_3.setFont(new Font("SansSerif", Font.BOLD, 12));
-		label_3.setBounds(36, 60, 55, 16);
-		frame.getContentPane().add(label_3);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(117, 54, 122, 28);
-		frame.getContentPane().add(textField_2);
-		
-		JButton button_3 = new JButton("Generar ");
-		button_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			
-			}
-		});
-		button_3.setToolTipText("Generar un Codigo si el Producto no tiene Codigo");
-		button_3.setBounds(262, 54, 79, 28);
-		frame.getContentPane().add(button_3);
-		
-		JLabel label_4 = new JLabel("Agregar Productos");
-		label_4.setFont(new Font("SansSerif", Font.BOLD, 16));
-		label_4.setBounds(148, 11, 184, 31);
-		frame.getContentPane().add(label_4);
-	}
-
 }
