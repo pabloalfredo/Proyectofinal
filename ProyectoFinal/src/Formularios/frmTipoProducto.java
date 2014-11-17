@@ -40,7 +40,7 @@ public class frmTipoProducto extends JFrame {
 	private JTextField txtDescripcionTipoProducto;
 	private JTable table;
 	private ModeloTabla modeloTabla;
-	private JFrame ventanaPadre;
+	//private JFrame ventanaPadre;
 
 	/**
 	 * Launch the application.
@@ -81,12 +81,12 @@ public class frmTipoProducto extends JFrame {
 		
 		JButton btnBuscarTipoProducto = new JButton("Buscar");
 		btnBuscarTipoProducto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {//EN LA TABLA HAY UN METODO PARA REALIZAR LA BUSQUEDAD
 				
 					try {
 					
 					String condicion = "1";
-					
+						//AQUI SE LE PASA EL QUERY Y EL TEXTO DEL TEXTFIELD
 						condicion = "Descripcion like '%" + txtDescripcionTipoProducto.getText() + "%'";
 					
 					

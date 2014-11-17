@@ -65,7 +65,7 @@ public class frmModificarTipoProducto extends JFrame {
 		
 		JButton button = new JButton("Aceptar");
 		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {//AQUI LE PASAMOS EL TEXTO QUE ESTA EN MODIFICAR TIPO PRODUCTO Y SE LO ENVIAMOS AL METODO MODIFICAR EN LA CLASE TIPO PRODUCTO
 				
 				int ID = Integer.parseInt(txtIDModificarTipoProducto.getText());
 				String descripcion = txtDescripcionModificarTipoProducto.getText();
@@ -143,7 +143,7 @@ public class frmModificarTipoProducto extends JFrame {
 		//String ID = TipoProductoActual.getIdTipoProducto();
 	
 		String ID = Integer.toString(TipoProductoActual.getIdTipoProducto());
-	
+		
 		
 		txtIDModificarTipoProducto.setText(ID);
 		txtDescripcionModificarTipoProducto.setText(TipoProductoActual.getDescripcion());
