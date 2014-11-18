@@ -35,6 +35,7 @@ public class frmAgregarProducto extends JFrame {
 	private JTextField txtCodigoAgregarProducto;
 	private JTextField txtDescripcionAgregarProducto;
 	private JTextField txtPrecioAgregarProducto;
+	private JComboBox cmbTipoAgregarProducto;
 
 	/**
 	 * Launch the application.
@@ -92,9 +93,9 @@ public class frmAgregarProducto extends JFrame {
 		JLabel label_4 = new JLabel("Tipo");
 		label_4.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-		@SuppressWarnings("rawtypes")
-		JComboBox cmbTipoAgregarProducto = new JComboBox();
-		cargarComboBox();
+	
+		 cmbTipoAgregarProducto = new JComboBox();
+		 cargarComboBox();
 		
 		
 		JButton button_1 = new JButton("Guardar");
@@ -208,27 +209,24 @@ public class frmAgregarProducto extends JFrame {
 	public void cargarComboBox() {
 		
 		BaseDeDatos conn = new BaseDeDatos();
-		String sql = "select Descripcion from tbltipoproducto";
-		
-		//instruccion.setString(1, getDescripcion());
-		try {
-			PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
-			java.sql.ResultSet rs = instruccion.executeQuery();
+			//String sql = "select Descripcion from tbltipoproducto";
 			
-            while (rs.next()) {
-            	JComboBox cmbTipoAgregarProducto = null;
-				cmbTipoAgregarProducto.addItem(rs.getObject("Descripcion"));
-               
-            }
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+			ResultSet rs;
+			try {
+				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select ID, Descripcion from tbltipoproducto");
+					while (rs.next()){
+						
+					cmbTipoAgregarProducto.addItem(rs.getString(1)+ " " + rs.getString(2));
+					
+					}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
 	}
 	
 }
