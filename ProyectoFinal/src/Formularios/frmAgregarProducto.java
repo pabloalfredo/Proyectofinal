@@ -98,31 +98,33 @@ public class frmAgregarProducto extends JFrame {
 		 cmbTipoAgregarProducto = new JComboBox();
 		 cargarComboBox();
 		
+	
 		
 		JButton button_1 = new JButton("Guardar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {//BOTON AGREGAR PRODUCTOS
 				
-				
-				int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
-				String descripcion = txtDescripcionAgregarProducto.getText();
-				float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
-				String DescripcionCmb=null;
-				int IdCmb= Integer.parseInt((String)cmbTipoAgregarProducto.getSelectedItem());
-				
-				TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
-				Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
-				try {
-					productoObtenido.AgregarProducto();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				//if (validarFormulario()==true)
+				//{
+					int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
+					String descripcion = txtDescripcionAgregarProducto.getText();
+					float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
+					String DescripcionCmb=null;
+					int IdCmb= Integer.parseInt((String)cmbTipoAgregarProducto.getSelectedItem());
+					
+					TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
+					Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
+					try {
+						productoObtenido.AgregarProducto();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				//	}
+					dispose();
 				}
-				dispose();
-				
 				
 				
 			}
@@ -218,7 +220,7 @@ public class frmAgregarProducto extends JFrame {
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
-	public void cargarComboBox() {
+	public void cargarComboBox() {//para llenar el comboBox
 		
 		BaseDeDatos conn = new BaseDeDatos();
 			//String sql = "select Descripcion from tbltipoproducto";
@@ -239,6 +241,20 @@ public class frmAgregarProducto extends JFrame {
 				e.printStackTrace();
 			}
 	
+	}
+	
+	
+	
+	 Boolean validarFormulario() {
+		
+		if ((txtCodigoAgregarProducto.getText()==null) || (txtCodigoAgregarProducto.getText()=="")){
+			JOptionPane.showMessageDialog(null, "El Codigo no puede estar en blanco");
+			return false;
+		}
+			
+		else {
+		return true;
+		}
 	}
 	
 }
