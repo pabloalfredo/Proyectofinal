@@ -9,17 +9,32 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
+import com.mysql.jdbc.ResultSet;
+
+import java.sql.*;
+
+import Clases.BaseDeDatos;
+import Modelos.Producto;
+import Modelos.TipoProducto;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class frmAgregarProducto extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txtCodigoAgregarProducto;
+	private JTextField txtDescripcionAgregarProducto;
+	private JTextField txtPrecioAgregarProducto;
 
 	/**
 	 * Launch the application.
@@ -56,8 +71,8 @@ public class frmAgregarProducto extends JFrame {
 		JLabel label_1 = new JLabel("Codigo");
 		label_1.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		txtCodigoAgregarProducto = new JTextField();
+		txtCodigoAgregarProducto.setColumns(10);
 		
 		JButton button = new JButton("Generar ");
 		button.setToolTipText("Generar un Codigo si el Producto no tiene Codigo");
@@ -65,32 +80,47 @@ public class frmAgregarProducto extends JFrame {
 		JLabel label_2 = new JLabel("Descripcion");
 		label_2.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		txtDescripcionAgregarProducto = new JTextField();
+		txtDescripcionAgregarProducto.setColumns(10);
 		
 		JLabel label_3 = new JLabel("Precio");
 		label_3.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+		txtPrecioAgregarProducto = new JTextField();
+		txtPrecioAgregarProducto.setColumns(10);
 		
 		JLabel label_4 = new JLabel("Tipo");
 		label_4.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-		JComboBox comboBox = new JComboBox();
+		@SuppressWarnings("rawtypes")
+		JComboBox cmbTipoAgregarProducto = new JComboBox();
+		cargarComboBox();
+		
 		
 		JButton button_1 = new JButton("Guardar");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {//BOTON AGREGAR PRODUCTOS
+				int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
+				String descripcion = txtDescripcionAgregarProducto.getText();
+				float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
+				String DescripcionCmb=null;
+				int IdCmb=0;
+				
+				TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
+				Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
+				productoObtenido.AgregarProducto();
+				
+				
+				
+			}
+		});
 		button_1.setFont(new Font("SansSerif", Font.BOLD, 12));
-		
-		JButton button_2 = new JButton("Modificar");
-		button_2.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
 		JButton button_3 = new JButton("Cancelar");
 		button_3.setFont(new Font("SansSerif", Font.BOLD, 12));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 470, Short.MAX_VALUE)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(25)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
@@ -100,33 +130,30 @@ public class frmAgregarProducto extends JFrame {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 							.addGap(26)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtCodigoAgregarProducto, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
 							.addGap(23)
 							.addComponent(button, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 							.addGap(2)
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtDescripcionAgregarProducto, GroupLayout.PREFERRED_SIZE, 223, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 							.addGap(26)
-							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtPrecioAgregarProducto, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 							.addGap(26)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+							.addComponent(cmbTipoAgregarProducto, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(10)
 							.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
-							.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
+							.addGap(131)
 							.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(28, Short.MAX_VALUE))
+					.addContainerGap(64, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 309, Short.MAX_VALUE)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(label, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
@@ -135,32 +162,31 @@ public class frmAgregarProducto extends JFrame {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(6)
 							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtCodigoAgregarProducto, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
 						.addComponent(button, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 					.addGap(9)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(5)
 							.addComponent(label_2, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtDescripcionAgregarProducto, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 					.addGap(10)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(6)
 							.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtPrecioAgregarProducto, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 					.addGap(1)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(5)
 							.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cmbTipoAgregarProducto, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
 					.addGap(16)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-						.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 						.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(14, Short.MAX_VALUE))
+					.addContainerGap(61, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -179,4 +205,30 @@ public class frmAgregarProducto extends JFrame {
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
+	public void cargarComboBox() {
+		
+		BaseDeDatos conn = new BaseDeDatos();
+		String sql = "select Descripcion from tbltipoproducto";
+		
+		//instruccion.setString(1, getDescripcion());
+		try {
+			PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
+			java.sql.ResultSet rs = instruccion.executeQuery();
+			
+            while (rs.next()) {
+            	JComboBox cmbTipoAgregarProducto = null;
+				cmbTipoAgregarProducto.addItem(rs.getObject("Descripcion"));
+               
+            }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 }
