@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -57,7 +58,7 @@ public class frmAgregarProducto extends JFrame {
 	 * Create the frame.
 	 */
 	public frmAgregarProducto() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 484, 321);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,15 +102,26 @@ public class frmAgregarProducto extends JFrame {
 		JButton button_1 = new JButton("Guardar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {//BOTON AGREGAR PRODUCTOS
+				
+				
 				int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
 				String descripcion = txtDescripcionAgregarProducto.getText();
 				float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
 				String DescripcionCmb=null;
-				int IdCmb=0;
+				int IdCmb= Integer.parseInt((String)cmbTipoAgregarProducto.getSelectedItem());
 				
 				TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
 				Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
-				productoObtenido.AgregarProducto();
+				try {
+					productoObtenido.AgregarProducto();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				dispose();
 				
 				
 				
@@ -216,7 +228,7 @@ public class frmAgregarProducto extends JFrame {
 				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select ID, Descripcion from tbltipoproducto");
 					while (rs.next()){
 						
-					cmbTipoAgregarProducto.addItem(rs.getString(1)+ " " + rs.getString(2));
+					cmbTipoAgregarProducto.addItem(rs.getString(1));
 					
 					}
 			} catch (ClassNotFoundException e) {

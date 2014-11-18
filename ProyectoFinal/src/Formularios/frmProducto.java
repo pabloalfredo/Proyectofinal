@@ -176,8 +176,7 @@ public class frmProducto extends JFrame {
 				frmModificarProducto frm = new frmModificarProducto();
 				//frm.cargarDatos(nuevoTipoProducto);  //ANTES DE QUE SE ABRE LA VENTANA SE ACCINA EL METODO CARGADATOS
 				frm.setVisible(true);
-				
-				
+
 			}
 		});
 		scrollPane.setViewportView(table);

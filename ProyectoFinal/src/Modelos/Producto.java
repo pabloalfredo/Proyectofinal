@@ -1,5 +1,10 @@
 package Modelos;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import Clases.BaseDeDatos;
+
 public class Producto {
 	private int idProducto;
 	private int CodigoProducto;
@@ -56,9 +61,20 @@ public class Producto {
 		TipoProducto = tipoProducto;
 	}
 	
-	public void AgregarProducto() {
+	public void AgregarProducto() throws ClassNotFoundException, SQLException {
+		
+		BaseDeDatos conn = new BaseDeDatos();
+		String sql = "insert into tblproducto (idproducto, Codigo, Descripcion, Precio, Idtipoproducto) "
+				+ "values (?,?,?,?,?)";
+		PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
+		instruccion.setInt(1, getIdProducto());
+		instruccion.setInt(2, getCodigoProducto());
+		instruccion.setString(3, getDescripcionProducto());
+		instruccion.setFloat(4, getPrecioProducto());
+		instruccion.setInt(5, getTipoProducto().getIdTipoProducto());
 		
 		
+		instruccion.execute();
 	}
 	
 	public void ModificarProducto (){
