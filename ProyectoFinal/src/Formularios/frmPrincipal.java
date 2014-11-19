@@ -26,6 +26,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import java.awt.Frame;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 public class frmPrincipal {
 
@@ -65,6 +67,7 @@ public class frmPrincipal {
 		frmFormularioPrincipal.setBounds(100, 100, 644, 440);
 		frmFormularioPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//PARA ASIGNAR LA IMAGEN EN JDESKTOPPANE EN EL FORMULARIO PRINCIPAL.
 		JDesktopPane desktopPane = new JDesktopPane();
 		desktopPane.setBorder(new ImagenJDesktopPane());
 		
@@ -129,6 +132,8 @@ public class frmPrincipal {
 		JToolBar toolBar = new JToolBar();
 		
 		JToolBar toolBar_1 = new JToolBar();
+		toolBar_1.setBackground(UIManager.getColor("Button.background"));
+		toolBar_1.setForeground(SystemColor.inactiveCaptionText);
 		GroupLayout gl_desktopPane = new GroupLayout(desktopPane);
 		gl_desktopPane.setHorizontalGroup(
 			gl_desktopPane.createParallelGroup(Alignment.LEADING)
@@ -168,12 +173,14 @@ public class frmPrincipal {
 		toolBar.add(btnNewButton);
 		
 		JButton btnReportes = new JButton("Reportes");
+		btnReportes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmprueba frm = new frmprueba();
+				frm.setVisible(true);
+			}
+		});
 		btnReportes.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Recursos/1415499313_Computer_Analysis-48.png")));
 		toolBar.add(btnReportes);
-		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setSelectedIcon(new ImageIcon(frmPrincipal.class.getResource("/Recursos/BackGrenSoft.jpg")));
-		toolBar.add(btnNewButton_1);
 		desktopPane.setLayout(gl_desktopPane);
 		
 	}
