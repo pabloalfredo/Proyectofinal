@@ -4,8 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JDesktopPane;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -17,6 +19,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.JInternalFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import Clases.ImagenJDesktopPane;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
@@ -61,6 +66,7 @@ public class frmPrincipal {
 		frmFormularioPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JDesktopPane desktopPane = new JDesktopPane();
+		desktopPane.setBorder(new ImagenJDesktopPane());
 		
 	
 		
@@ -111,7 +117,13 @@ public class frmPrincipal {
 		});
 		mnNewMenu_1.add(mntmTipoDeProductos);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
+		JMenuItem mntmNewMenuItem = new JMenuItem("Inventario de Productos");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmProducto frm = new frmProducto();
+				frm.setVisible(true);
+			}
+		});
 		mnNewMenu_1.add(mntmNewMenuItem);
 		
 		JToolBar toolBar = new JToolBar();
@@ -142,6 +154,12 @@ public class frmPrincipal {
 		toolBar.add(btnFactura);
 		
 		JButton btnInventarios = new JButton("Inventarios");
+		btnInventarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmProducto frm = new frmProducto();
+				frm.setVisible(true);
+			}
+		});
 		btnInventarios.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Recursos/inventario.png")));
 		toolBar.add(btnInventarios);
 		
@@ -152,6 +170,10 @@ public class frmPrincipal {
 		JButton btnReportes = new JButton("Reportes");
 		btnReportes.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Recursos/1415499313_Computer_Analysis-48.png")));
 		toolBar.add(btnReportes);
+		
+		JButton btnNewButton_1 = new JButton("New button");
+		btnNewButton_1.setSelectedIcon(new ImageIcon(frmPrincipal.class.getResource("/Recursos/BackGrenSoft.jpg")));
+		toolBar.add(btnNewButton_1);
 		desktopPane.setLayout(gl_desktopPane);
 		
 	}

@@ -11,6 +11,8 @@ public class Producto {
 	private String DescripcionProducto;
 	private float PrecioProducto;
 	private TipoProducto TipoProducto;
+	private int existencia;
+	
 	
 	public Producto (int idProducto, int CodigoProducto, String DescripcionProducto, float PrecioProducto, TipoProducto TipoProducto)
 	{
@@ -59,6 +61,12 @@ public class Producto {
 	}
 	public void setTipoProducto(TipoProducto tipoProducto) {
 		TipoProducto = tipoProducto;
+	}
+	public int getExistencia() {
+		return existencia;
+	}
+	public void setExistencia(int existencia) {
+		this.existencia = existencia;
 	}
 	
 	public void AgregarProducto() throws ClassNotFoundException, SQLException {
