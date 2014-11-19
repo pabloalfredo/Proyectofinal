@@ -14,7 +14,7 @@ public class ImagenJDesktopPane implements Border{
  
     public ImagenJDesktopPane(){
         try {
-            URL imagePath = new URL(getClass().getResource("/Recursos/BackGrenSoft.jpg").toString());
+            URL imagePath = new URL(getClass().getResource("/Recursos/BackGrenSoft2.jpg").toString());
             back = ImageIO.read(imagePath);
         } catch (Exception ex) {            
         }
