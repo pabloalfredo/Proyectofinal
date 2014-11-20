@@ -66,7 +66,7 @@ public class frmFactura extends JFrame {
 	 */
 	public frmFactura() {
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft3.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 690, 492);
 		contentPane = new JPanel();
