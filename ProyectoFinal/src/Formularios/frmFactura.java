@@ -27,12 +27,22 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+
 import javax.swing.ImageIcon;
+
+import Clases.BaseDeDatos;
+
+import com.mysql.jdbc.ResultSet;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
 
 public class frmFactura extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField txtTotal;
 	private JTable table;
 
 	/**
@@ -64,9 +74,9 @@ public class frmFactura extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel lblFactura = new JLabel("Factura");
-		lblFactura.setBounds(259, 29, 93, 30);
+		lblFactura.setBounds(259, 29, 112, 30);
 		lblFactura.setForeground(new Color(204, 0, 0));
-		lblFactura.setFont(new Font("Arial", Font.BOLD, 26));
+		lblFactura.setFont(new Font("Arial", Font.BOLD, 30));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 135, 518, 151);
@@ -97,7 +107,7 @@ public class frmFactura extends JFrame {
 				            if(JOptionPane.OK_OPTION==confirmar) {
 				                     
 				                    model.removeRow(a);
-
+				                    ActualizarTotal();	
 				                    JOptionPane.showMessageDialog(null, 
 				                    "Registro Eliminado" );
 				             
@@ -113,13 +123,13 @@ public class frmFactura extends JFrame {
 		label.setFont(new Font("Tahoma", Font.BOLD, 16));
 		label.setBounds(368, 317, 61, 23);
 		
-		textField = new JTextField();
-		textField.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField.setText("0.00");
-		textField.setForeground(Color.GREEN);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField.setBounds(427, 318, 86, 20);
-		textField.setColumns(10);
+		txtTotal = new JTextField();
+		txtTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtTotal.setText("0.00");
+		txtTotal.setForeground(Color.GREEN);
+		txtTotal.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtTotal.setBounds(427, 318, 86, 20);
+		txtTotal.setColumns(10);
 		
 		JButton button_2 = new JButton("Agregar Fila");
 		button_2.addActionListener(new ActionListener() {
@@ -132,26 +142,72 @@ public class frmFactura extends JFrame {
 		button_2.setBounds(534, 138, 139, 23);
 		
 		table = new JTable();
+		table.addVetoableChangeListener(new VetoableChangeListener() {
+			public void vetoableChange(PropertyChangeEvent arg0) {
+			}
+		});
+		table.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				
+				
+				
+			}
+		});
+		
+		
 		table.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent evt) {
 				
 				int key = evt.getKeyCode();
-			    if (key == KeyEvent.VK_TAB) {
-						DefaultTableModel tabla = (DefaultTableModel) table.getModel();
-						String Descripcion = "Pablo";
-						float precio = 250;
+				DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+		    	String Descripcion = null;
+				double precio = 0;
+				
+				
+				if (key == KeyEvent.VK_TAB) {
+			    	
+					
+			    	/////////////////////////////////////////////////////////////////BUSQUEDA BASE DE DATOS
+					
+					 int ID= Integer.parseInt( tabla.getValueAt(table.getSelectedRow(), 0).toString());
+					 
+					if (ID >0){
+				    	BaseDeDatos conn = new BaseDeDatos();
+						ResultSet rs;
+						try {
+							rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select Descripcion, Precio from tblproducto where Codigo = '"+ID +"'");
+								while (rs.next()){
+									
+								Descripcion=rs.getString(1);
+								precio=rs.getDouble(2);
+								
+								}
+						} catch (ClassNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+			    	
+			    	////////////////////////////////////////////////////////////////////////////////////////////////////
+						
 				        tabla.setValueAt(Descripcion, table.getSelectedRow(), 1);
 				        tabla.setValueAt(precio, table.getSelectedRow(), 2);
-				        ActualizarTabla();
-				       
+				      ActualizarTabla();
+				      ActualizarTotal();
+				      
 			    }
 			    if (key == KeyEvent.VK_ENTER) {
 			        ActualizarTabla();
-			     DefaultTableModel tabla= (DefaultTableModel) table.getModel();
+			    	ActualizarTotal();
+			    // DefaultTableModel tabla= (DefaultTableModel) table.getModel();
 				tabla.addRow(new Object[]{null, null, null, 1, null});
-			       
+			 
 		    }
+			    
 			}
 		});
 		table.setModel(new DefaultTableModel(
@@ -168,6 +224,12 @@ public class frmFactura extends JFrame {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+				true, false, false, true, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
 		});
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(null);
@@ -176,7 +238,7 @@ public class frmFactura extends JFrame {
 		contentPane.add(button_1);
 		contentPane.add(button_2);
 		contentPane.add(label);
-		contentPane.add(textField);
+		contentPane.add(txtTotal);
 		contentPane.add(btnBuscarProductos);
 		
 		JButton btnFacturar = new JButton("Facturar");
@@ -206,6 +268,11 @@ public class frmFactura extends JFrame {
 		lblDdmmyy.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDdmmyy.setBounds(508, 60, 76, 14);
 		contentPane.add(lblDdmmyy);
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1.setIcon(new ImageIcon(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
+		lblNewLabel_1.setBounds(10, 2, 158, 105);
+		contentPane.add(lblNewLabel_1);
 	}
 	
 	public void ActualizarTabla(){
@@ -230,30 +297,31 @@ public class frmFactura extends JFrame {
 		
 	}
 	
-	public void ActualizarTotal(){
-	/*	
-		
+
+	
+	private void ActualizarTotal()
+    {
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
-		
-         table.getColumnModel().getColumn(0).setCellRenderer(null);
-         getContentPane().add(new JScrollPane(table));
-         
-        double subTally = 0;
-        double tally = runningTally;
-
-        int rows = (int) (Math.round(Math.random() * 9) + 1);
-        for (int row = 0; row < rows; row++) {
-
-            double amount = (Math.random() * 99999) + 1;
-          tabla.addRow(new Object[]{amount});
-            tally += amount;
-            subTally += amount;
-
+        double total = 0;
+        double numero =0;
+        //recorrer todas las filas de la segunda columna y va sumando las cantidades
+      
+        for( int i=0 ; i<tabla.getRowCount(); i++)
+        {
+            
+                //capturamos valor de celda
+             try {
+            	 //numero = Integer.valueOf( tabla.getValueAt(i, 4).toString() );
+            	 numero = Double.parseDouble( tabla.getValueAt(i, 4).toString() );
+				total += numero;
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
         }
-          txtTotal.setText(Double.toString(subTally));
-
-        //System.out.println("subTally = " + subTally);
-        //System.out.println("tally = " + tally);
-*/
-	}
+     
+        //muestra en el componente
+        this.txtTotal.setText( String.valueOf(total) );
+    }
 }
