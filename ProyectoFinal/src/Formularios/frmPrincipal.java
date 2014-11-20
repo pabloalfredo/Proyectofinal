@@ -129,9 +129,17 @@ public class frmPrincipal {
 		});
 		mnNewMenu_1.add(mntmNewMenuItem);
 		
-		JToolBar toolBar = new JToolBar();
+		JSeparator separator = new JSeparator();
+		mnNewMenu_1.add(separator);
 		
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("New menu item");
+		mnNewMenu_1.add(mntmNewMenuItem_1);
+		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setFloatable(false);
+		toolBar.setOpaque(true);
 		JToolBar toolBar_1 = new JToolBar();
+		toolBar_1.setFloatable(false);
 		toolBar_1.setBackground(UIManager.getColor("Button.background"));
 		toolBar_1.setForeground(SystemColor.inactiveCaptionText);
 		GroupLayout gl_desktopPane = new GroupLayout(desktopPane);
@@ -155,6 +163,14 @@ public class frmPrincipal {
 		menuBar.add(mnReportes);
 		
 		JButton btnFactura = new JButton("Factura");
+		btnFactura.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frmFactura frm = new frmFactura();
+				frm.setVisible(true);
+				
+				
+			}
+		});
 		btnFactura.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Recursos/1415496836_698568-icon-56-document-text-48.png")));
 		toolBar.add(btnFactura);
 		

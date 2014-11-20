@@ -3,6 +3,7 @@ package Formularios;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -28,16 +29,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 
 import Clases.BaseDeDatos;
+import Modelos.Producto;
+import Modelos.TipoProducto;
 
 import com.mysql.jdbc.ResultSet;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
+import java.awt.SystemColor;
 
 public class frmFactura extends JFrame {
 
@@ -70,6 +76,7 @@ public class frmFactura extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 690, 492);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(51, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
@@ -124,6 +131,7 @@ public class frmFactura extends JFrame {
 		label.setBounds(368, 317, 61, 23);
 		
 		txtTotal = new JTextField();
+		txtTotal.setEditable(false);
 		txtTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtTotal.setText("0.00");
 		txtTotal.setForeground(Color.GREEN);
@@ -170,10 +178,8 @@ public class frmFactura extends JFrame {
 					
 			    	/////////////////////////////////////////////////////////////////BUSQUEDA BASE DE DATOS
 					//////////////// ESTO IRA EN LA CLASE FACTURA
-					//tabla.fireTableStructureChanged();
-					tabla.fireTableCellUpdated(table.getSelectedRow(), 0);
-					System.out.println(table.getSelectedRow());
-					// int ID= Integer.parseInt( tabla.getValueAt(table.getSelectedRow(), 0).toString());
+					
+					table.editCellAt(table.getSelectedRow(), 0);//LE INDICA A LA TABLA QUE LA CELDA A SIDO EDITADA.
 					 int ID= Integer.parseInt( table.getValueAt(table.getSelectedRow(), 0).toString());
 					 
 					if (ID >0){
@@ -232,8 +238,14 @@ public class frmFactura extends JFrame {
 				true, false, false, true, false
 			};
 			public boolean isCellEditable(int row, int column) {
+				
 				return columnEditables[column];
 			}
+		//	public void desenfocarColumnas(String columna){
+			//	if (!columnEditables[columna]){
+				//	table.getColumn(columna);
+			//	}	
+			//}
 		});
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(null);
@@ -246,6 +258,44 @@ public class frmFactura extends JFrame {
 		contentPane.add(btnBuscarProductos);
 		
 		JButton btnFacturar = new JButton("Facturar");
+		btnFacturar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {//REALIZAR LA FACTURA.
+
+				/*
+				
+					int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
+					String descripcion = txtDescripcionAgregarProducto.getText();
+					float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
+					//String DescripcionCmb=categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getDescripcion();
+					
+					//int IdCmb= categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getIdTipoProducto();
+					
+					//TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
+					TipoProducto ObjetoTipoProducto = categorias.get(cmbTipoAgregarProducto.getSelectedIndex());
+					Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
+					try {
+						productoObtenido.AgregarProducto();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+			
+					dispose();
+				}
+				*/
+				
+				TipoProducto tp = new TipoProducto(null);
+				int numero = tp.metodoPrueba();
+				System.out.println(numero);
+				
+			
+				
+				
+				
+			}
+		});
 		btnFacturar.setForeground(new Color(0, 0, 204));
 		btnFacturar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnFacturar.setBounds(55, 359, 112, 60);
@@ -268,17 +318,38 @@ public class frmFactura extends JFrame {
 		lblNewLabel.setBounds(452, 60, 46, 14);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblDdmmyy = new JLabel("dd/mm/yy");
-		lblDdmmyy.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblDdmmyy.setBounds(508, 60, 76, 14);
-		contentPane.add(lblDdmmyy);
+		////////////////////
+		Date fechaActual = new Date( );
+		Date horaActual = new Date( );
+		SimpleDateFormat fecha = new SimpleDateFormat ("dd.MM.yyyy");
+      SimpleDateFormat hora = new SimpleDateFormat ("hh:mm:ss");
+		
+		
+		///////////////////////
+		JLabel lblFecha = new JLabel(fecha.format(fechaActual));
+		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblFecha.setBounds(508, 60, 76, 14);
+		contentPane.add(lblFecha);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		lblNewLabel_1.setIcon(new ImageIcon(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
 		lblNewLabel_1.setBounds(10, 2, 158, 105);
 		contentPane.add(lblNewLabel_1);
+		
+		JLabel label1 = new JLabel("Hora:");
+		label1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		label1.setBounds(452, 86, 46, 14);
+		contentPane.add(label1);
+		
+		JLabel lblHora = new JLabel(hora.format(horaActual));
+		lblHora.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblHora.setBounds(508, 86, 76, 14);
+		contentPane.add(lblHora);
 		//table.getValueAt(table.getSelectedRow(), 0).toString()
 		//table.getcell(table.getModel().)
+		table.editCellAt(table.getSelectedRow(), 0);
+		
+		
 		
 	}
 	
@@ -319,7 +390,7 @@ public class frmFactura extends JFrame {
             
                 //capturamos valor de celda
              try {
-            	 //numero = Integer.valueOf( tabla.getValueAt(i, 4).toString() );
+            	
             	 numero = Double.parseDouble( tabla.getValueAt(i, 4).toString() );
 				total += numero;
 			} catch (NumberFormatException e) {
@@ -332,4 +403,6 @@ public class frmFactura extends JFrame {
         //muestra en el componente
         this.txtTotal.setText( String.valueOf(total) );
     }
+	
+	
 }

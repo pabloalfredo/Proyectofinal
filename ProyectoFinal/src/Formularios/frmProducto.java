@@ -27,6 +27,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Toolkit;
 
 public class frmProducto extends JFrame {
 
@@ -55,15 +57,18 @@ public class frmProducto extends JFrame {
 	 * Create the frame.
 	 */
 	public frmProducto() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(frmProducto.class.getResource("/Recursos/Icon GrenSoft3.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 697, 357);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(51, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
 		JLabel lblProductos = new JLabel("Inventario de Productos");
+		lblProductos.setForeground(new Color(153, 0, 0));
 		lblProductos.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		JLabel lblNombre = new JLabel("Nombre");
@@ -72,6 +77,7 @@ public class frmProducto extends JFrame {
 		txtBuscarProductos.setColumns(10);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setForeground(new Color(0, 102, 0));
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {//BOTON BUSCAR
 				
@@ -94,6 +100,7 @@ public class frmProducto extends JFrame {
 		});
 		
 		JButton btnNuevo = new JButton("Nuevo");
+		btnNuevo.setForeground(new Color(153, 0, 0));
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmAgregarProducto frm = new frmAgregarProducto();
@@ -103,6 +110,7 @@ public class frmProducto extends JFrame {
 		});
 		
 		JButton btnTipoProducto = new JButton("Crear Tipo Producto");
+		btnTipoProducto.setForeground(new Color(153, 0, 0));
 		btnTipoProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmTipoProducto frm = new frmTipoProducto();

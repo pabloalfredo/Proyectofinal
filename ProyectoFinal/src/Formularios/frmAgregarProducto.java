@@ -22,6 +22,7 @@ import com.mysql.jdbc.ResultSet;
 import java.sql.*;
 
 import Clases.BaseDeDatos;
+import Clases.Categoria;
 import Modelos.Producto;
 import Modelos.TipoProducto;
 
@@ -29,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Vector;
 
 public class frmAgregarProducto extends JFrame {
 
@@ -37,6 +39,7 @@ public class frmAgregarProducto extends JFrame {
 	private JTextField txtDescripcionAgregarProducto;
 	private JTextField txtPrecioAgregarProducto;
 	private JComboBox cmbTipoAgregarProducto;
+	private Vector <TipoProducto> categorias;
 
 	/**
 	 * Launch the application.
@@ -109,10 +112,12 @@ public class frmAgregarProducto extends JFrame {
 					int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
 					String descripcion = txtDescripcionAgregarProducto.getText();
 					float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
-					String DescripcionCmb=null;
-					int IdCmb= Integer.parseInt((String)cmbTipoAgregarProducto.getSelectedItem());
+					//String DescripcionCmb=categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getDescripcion();
 					
-					TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
+					//int IdCmb= categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getIdTipoProducto();
+					
+					//TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
+					TipoProducto ObjetoTipoProducto = categorias.get(cmbTipoAgregarProducto.getSelectedIndex());
 					Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
 					try {
 						productoObtenido.AgregarProducto();
@@ -223,14 +228,15 @@ public class frmAgregarProducto extends JFrame {
 	public void cargarComboBox() {//para llenar el comboBox
 		
 		BaseDeDatos conn = new BaseDeDatos();
-			//String sql = "select Descripcion from tbltipoproducto";
-			
+			categorias = new Vector<>();
 			ResultSet rs;
 			try {
 				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select ID, Descripcion from tbltipoproducto");
 					while (rs.next()){
-						
-					cmbTipoAgregarProducto.addItem(rs.getString(1));
+					TipoProducto categoria = new TipoProducto(rs.getInt(1), rs.getString(2));	
+					
+					categorias.add(categoria);
+					cmbTipoAgregarProducto.addItem(categoria.getDescripcion());
 					
 					}
 			} catch (ClassNotFoundException e) {

@@ -1,13 +1,15 @@
 package Modelos;
 
 import java.sql.Connection;
-
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.prefs.BackingStoreException;
+
+import javax.swing.JOptionPane;
+
 import Clases.BaseDeDatos;
 
 public class TipoProducto  {
@@ -46,16 +48,7 @@ public class TipoProducto  {
 	}
 	
 public void AgregarTipoProducto() throws ClassNotFoundException, SQLException {
-	//la que funciona
-	/*
-	String sql ="insert into tbltipoproducto (Descripcion) value ('"+getDescripcion()+"')";
 	
-	BaseDeDatos conn = new BaseDeDatos();
-    conn.open();
-    conn.execute(sql);
-    conn.close();
-	
-	*/
 	BaseDeDatos conn = new BaseDeDatos();
 	String sql = "insert into tbltipoproducto (Descripcion) values (?)";
 	PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
@@ -63,32 +56,24 @@ public void AgregarTipoProducto() throws ClassNotFoundException, SQLException {
 	instruccion.execute();
 	
 	
-	
 	/*
+	BaseDeDatos conn = new BaseDeDatos();
+	String sql = "insert into tbltipoproducto (Descripcion) values (?)";
+	PreparedStatement instruccion = conn.getConexion().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	instruccion.setString(1, getDescripcion());
+	instruccion.execute();
 	
-		Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/hibernate", "root", "1234");
-		
-		String sql = "insert into empleados (nombre, direccion, telefono, sueldo) values (?,?,?,?)";
-		PreparedStatement instruccion = conexion.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		instruccion.setString(1, obtenerNombre());
-		instruccion.setString(2, obtenerDireccion());
-		instruccion.setString(3, obtenerTelefono());
-		instruccion.setDouble(4, obtenerSueldo());
-		
-		instruccion.execute();
-		
-		ResultSet clavesGeneradas = instruccion.getGeneratedKeys();
-		
-		int valorRetorno = 0;
-		while(clavesGeneradas.next())
-		{
-			valorRetorno = Integer.parseInt( clavesGeneradas.getObject(1).toString() );
-		}	
-		
-		return valorRetorno;
-		
-		
-		*/
+	ResultSet clavesGeneradas = instruccion.getGeneratedKeys();
+	
+	int valorRetorno = 0;
+	while(clavesGeneradas.next())
+	{
+		valorRetorno = Integer.parseInt( clavesGeneradas.getObject(1).toString() );
+	}	
+	JOptionPane.showMessageDialog(null, "El Codigo nuevo es"+ valorRetorno);
+	return valorRetorno;
+	*/
+	
 		 
 	}
 
@@ -101,9 +86,10 @@ public void ModificarTipoProducto() throws ClassNotFoundException, SQLException 
 	instruccion.setInt(2, getIdTipoProducto());
 	instruccion.executeUpdate();
 	
-	
-	
-	
-		 
+	}
+
+	public int metodoPrueba(){
+		
+		return 1;
 	}
 }
