@@ -66,7 +66,7 @@ public class frmFactura extends JFrame {
 	 */
 	public frmFactura() {
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 690, 492);
 		contentPane = new JPanel();
@@ -128,7 +128,7 @@ public class frmFactura extends JFrame {
 		txtTotal.setText("0.00");
 		txtTotal.setForeground(Color.GREEN);
 		txtTotal.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtTotal.setBounds(427, 318, 86, 20);
+		txtTotal.setBounds(427, 318, 89, 22);
 		txtTotal.setColumns(10);
 		
 		JButton button_2 = new JButton("Agregar Fila");
@@ -170,8 +170,11 @@ public class frmFactura extends JFrame {
 					
 			    	/////////////////////////////////////////////////////////////////BUSQUEDA BASE DE DATOS
 					//////////////// ESTO IRA EN LA CLASE FACTURA
-					
-					 int ID= Integer.parseInt( tabla.getValueAt(table.getSelectedRow(), 0).toString());
+					//tabla.fireTableStructureChanged();
+					tabla.fireTableCellUpdated(table.getSelectedRow(), 0);
+					System.out.println(table.getSelectedRow());
+					// int ID= Integer.parseInt( tabla.getValueAt(table.getSelectedRow(), 0).toString());
+					 int ID= Integer.parseInt( table.getValueAt(table.getSelectedRow(), 0).toString());
 					 
 					if (ID >0){
 				    	BaseDeDatos conn = new BaseDeDatos();
@@ -274,6 +277,9 @@ public class frmFactura extends JFrame {
 		lblNewLabel_1.setIcon(new ImageIcon(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
 		lblNewLabel_1.setBounds(10, 2, 158, 105);
 		contentPane.add(lblNewLabel_1);
+		//table.getValueAt(table.getSelectedRow(), 0).toString()
+		//table.getcell(table.getModel().)
+		
 	}
 	
 	public void ActualizarTabla(){
