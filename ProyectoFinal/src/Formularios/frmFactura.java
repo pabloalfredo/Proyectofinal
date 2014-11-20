@@ -89,7 +89,7 @@ public class frmFactura extends JFrame {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel(); 
-
+					//METODO PARA ELIMINAR LA FILA
 				int a = table.getSelectedRow(); 
 
 				if (a<0){
@@ -165,10 +165,11 @@ public class frmFactura extends JFrame {
 				double precio = 0;
 				
 				
-				if (key == KeyEvent.VK_TAB) {
+				if (key == KeyEvent.VK_TAB) {// CUANDO SE PRESIONE TAB SE IMPLEMENTARA ESTA CONDICION.
 			    	
 					
 			    	/////////////////////////////////////////////////////////////////BUSQUEDA BASE DE DATOS
+					//////////////// ESTO IRA EN LA CLASE FACTURA
 					
 					 int ID= Integer.parseInt( tabla.getValueAt(table.getSelectedRow(), 0).toString());
 					 
@@ -200,7 +201,7 @@ public class frmFactura extends JFrame {
 				      ActualizarTotal();
 				      
 			    }
-			    if (key == KeyEvent.VK_ENTER) {
+			    if (key == KeyEvent.VK_ENTER) {// CUANDO SE PRESIONE ENTER SE IMPLEMENTARA ESTA CONDICION.
 			        ActualizarTabla();
 			    	ActualizarTotal();
 			    // DefaultTableModel tabla= (DefaultTableModel) table.getModel();
@@ -276,6 +277,7 @@ public class frmFactura extends JFrame {
 	}
 	
 	public void ActualizarTabla(){
+		//ESTE METODO SE UTILIZA PARA REALIZAR EL CALCULO DE LAS CANTIDADES Y EL PRECIO Y OBTENER EL SUBTOTAL EN UNA FILA.
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 		
 		String validarFila = null;
@@ -300,7 +302,7 @@ public class frmFactura extends JFrame {
 
 	
 	private void ActualizarTotal()
-    {
+    {//	METODO PARA ACTUALIZAR LA SUMA DE LOS SUBTOTALES, ESTE METODO RECORRE LA TABLA Y ASIGNA AL TXTTOTAL, SE ASIGNARA DONDE QUIERA QUE SE HAGAN CAMBIOS A LA TABLA.
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
         double total = 0;
         double numero =0;
