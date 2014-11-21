@@ -29,12 +29,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
 
 import Clases.BaseDeDatos;
+import Modelos.DetalleFactura;
+import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
 
@@ -125,11 +129,6 @@ public class frmFactura extends JFrame {
 		button_1.setForeground(new Color(153, 0, 0));
 		button_1.setBounds(534, 172, 139, 23);
 		
-		JLabel label = new JLabel("Total:");
-		label.setForeground(new Color(153, 0, 0));
-		label.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label.setBounds(368, 317, 61, 23);
-		
 		txtTotal = new JTextField();
 		txtTotal.setEditable(false);
 		txtTotal.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -142,8 +141,7 @@ public class frmFactura extends JFrame {
 		JButton button_2 = new JButton("Agregar Fila");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DefaultTableModel tabla= (DefaultTableModel) table.getModel();
-				tabla.addRow(new Object[]{null, null, null, 1, null});
+				agregarFila();
 			}
 		});
 		button_2.setForeground(new Color(153, 0, 0));
@@ -250,50 +248,95 @@ public class frmFactura extends JFrame {
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(null);
 		contentPane.add(lblFactura);
+////////////////////OBTENER LA FECHA ACTUAL Y ASIGNARLA AL FORMULARIO FACTURA //////////////////
+			Date fechaActual = new Date( );
+			Date horaActual = new Date( );
+			SimpleDateFormat fecha = new SimpleDateFormat ("dd.MM.yyyy");
+			SimpleDateFormat hora = new SimpleDateFormat ("hh:mm:ss");
+///////////////////////////////////////////////////////////////////////////////////////////////	
+		final JLabel lblHora = new JLabel(hora.format(horaActual));
+		lblHora.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblHora.setBounds(508, 86, 76, 14);
+		contentPane.add(lblHora);
+		
+		final JLabel lblFecha = new JLabel(fecha.format(fechaActual));
+		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblFecha.setBounds(508, 60, 76, 14);
+		
+		contentPane.add(lblFecha);
+		
+		JLabel label = new JLabel("Total:");
+		label.setForeground(new Color(153, 0, 0));
+		label.setFont(new Font("Tahoma", Font.BOLD, 16));
+		label.setBounds(368, 317, 61, 23);
+		
+		contentPane.add(label);
 		contentPane.add(scrollPane);
 		contentPane.add(button_1);
 		contentPane.add(button_2);
-		contentPane.add(label);
 		contentPane.add(txtTotal);
 		contentPane.add(btnBuscarProductos);
 		
 		JButton btnFacturar = new JButton("Facturar");
 		btnFacturar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {//REALIZAR LA FACTURA.
+			public void actionPerformed(ActionEvent arg0) {
+			/////////////////////////////////////REALIZAR LA FACTURA.
 
-				/*
+					String fechaEnviada = lblFecha + " " + lblHora;
+					double totalFacturaEnviada = Double.parseDouble(txtTotal.getText());
 				
-					int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
-					String descripcion = txtDescripcionAgregarProducto.getText();
-					float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
-					//String DescripcionCmb=categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getDescripcion();
+					Factura nuevaFactura = new Factura(fechaEnviada,0,0,totalFacturaEnviada);
+			/////////////////////////////////////////////////////////////////DETALLE FACTURA
 					
-					//int IdCmb= categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getIdTipoProducto();
 					
-					//TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
-					TipoProducto ObjetoTipoProducto = categorias.get(cmbTipoAgregarProducto.getSelectedIndex());
-					Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
+					DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+			        int idfactura=0;// PARA ASIGNARLE EL NUMERO DE LA FACTURA A DETALLE FACTURA
 					try {
-						productoObtenido.AgregarProducto();
-					} catch (ClassNotFoundException e) {
+						idfactura = nuevaFactura.agregarFactura();//AQUI LE ASIGNA EL ID DE LA FACTURA QUE VAN A UTILIZAR CADA PRODUCTO
+					} catch (ClassNotFoundException e1) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (SQLException e) {
+						e1.printStackTrace();
+					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
-			
-					dispose();
-				}
-				*/
-				
-				TipoProducto tp = new TipoProducto(null);
-				int numero = tp.metodoPrueba();
-				System.out.println(numero);
-				
-			
-				
-				
-				
+						e1.printStackTrace();
+					}
+			        int codigoProducto = 0;
+			        int cantidadProducto =1;
+			        double precio =0;
+			        double subTotal=0;
+			        double descuento=0.00;
+			        //recorrer todas las filas de la segunda columna y va sumando las cantidades
+			      
+			        for( int i=0 ; i<tabla.getRowCount(); i++)
+			        {
+			            
+			                //capturamos valor de celda
+			             try {
+			            	 
+			            	 codigoProducto = Integer.parseInt( tabla.getValueAt(i, 0).toString() );
+			            	 precio = Double.parseDouble(tabla.getValueAt(i, 2).toString() );
+			            	 cantidadProducto = Integer.parseInt(tabla.getValueAt(i, 3).toString());
+			            	 subTotal = Double.parseDouble(tabla.getValueAt(i, 4).toString() );
+			            	 
+			            	 Factura factura = new Factura(idfactura);
+			            	 DetalleFactura detalle = new DetalleFactura(factura,codigoProducto,cantidadProducto,precio,subTotal,descuento);
+			            	 try {
+								detalle.agregarDetalleFactura();
+							} catch (ClassNotFoundException | SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			            	 
+							
+						} catch (NumberFormatException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			            
+			        }
+			 txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
+			 limpiarTabla();
+			 agregarFila();
 			}
 		});
 		btnFacturar.setForeground(new Color(0, 0, 204));
@@ -318,18 +361,7 @@ public class frmFactura extends JFrame {
 		lblNewLabel.setBounds(452, 60, 46, 14);
 		contentPane.add(lblNewLabel);
 		
-		////////////////////
-		Date fechaActual = new Date( );
-		Date horaActual = new Date( );
-		SimpleDateFormat fecha = new SimpleDateFormat ("dd.MM.yyyy");
-      SimpleDateFormat hora = new SimpleDateFormat ("hh:mm:ss");
 		
-		
-		///////////////////////
-		JLabel lblFecha = new JLabel(fecha.format(fechaActual));
-		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFecha.setBounds(508, 60, 76, 14);
-		contentPane.add(lblFecha);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		lblNewLabel_1.setIcon(new ImageIcon(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
@@ -341,12 +373,6 @@ public class frmFactura extends JFrame {
 		label1.setBounds(452, 86, 46, 14);
 		contentPane.add(label1);
 		
-		JLabel lblHora = new JLabel(hora.format(horaActual));
-		lblHora.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblHora.setBounds(508, 86, 76, 14);
-		contentPane.add(lblHora);
-		//table.getValueAt(table.getSelectedRow(), 0).toString()
-		//table.getcell(table.getModel().)
 		table.editCellAt(table.getSelectedRow(), 0);
 		
 		
@@ -360,8 +386,6 @@ public class frmFactura extends JFrame {
 		String validarFila = null;
 		validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 1);
 		
-		//JOptionPane.showMessageDialog(null,
-		  //      validarFila ); 
 		
 		if (validarFila==null){
 			JOptionPane.showMessageDialog(null, "Debe obtener los datos del producto primero, presione Tab");
@@ -403,6 +427,17 @@ public class frmFactura extends JFrame {
         //muestra en el componente
         this.txtTotal.setText( String.valueOf(total) );
     }
+	private void limpiarTabla(){
+		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+	       for (int i = 0; i < table.getRowCount(); i++) {
+	           tabla.removeRow(i);
+	           i-=1;
+	       }
+	   }
+	private void agregarFila(){
+		DefaultTableModel tabla= (DefaultTableModel) table.getModel();
+		tabla.addRow(new Object[]{null, null, null, 1, null});
+	}
 	
 	
 }

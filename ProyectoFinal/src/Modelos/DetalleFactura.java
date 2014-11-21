@@ -15,8 +15,17 @@ public class DetalleFactura {
 	private double descuento;
 	
 	public DetalleFactura(int idDetalle, Modelos.Factura factura,int codigoProducto, int cantidadProducto, double precio,double subTotal, double descuento) {
-		super();
+		
 		this.idDetalle = idDetalle;
+		Factura = factura;
+		this.codigoProducto = codigoProducto;
+		this.cantidadProducto = cantidadProducto;
+		this.precio = precio;
+		this.subTotal = subTotal;
+		this.descuento = descuento;
+	}
+	public DetalleFactura( Modelos.Factura factura,int codigoProducto, int cantidadProducto, double precio,double subTotal, double descuento) {
+		
 		Factura = factura;
 		this.codigoProducto = codigoProducto;
 		this.cantidadProducto = cantidadProducto;
@@ -82,7 +91,7 @@ public class DetalleFactura {
 	}
 	public void agregarDetalleFactura() throws ClassNotFoundException, SQLException{
 		BaseDeDatos conn = new BaseDeDatos();
-		String sql = "insert into tbldetallefactura  "
+		String sql = "insert into tbldetallefactura2  "
 				+ "values (?,?,?,?,?,?,?)";
 		PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
 		instruccion.setInt(1, getIdDetalle());
