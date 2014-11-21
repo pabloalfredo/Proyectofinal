@@ -200,4 +200,10 @@ public class frmPrincipal {
 		desktopPane.setLayout(gl_desktopPane);
 		
 	}
+
+	public void mostrar() {
+		frmFormularioPrincipal.setVisible(true);
+		// TODO Auto-generated method stub
+		
+	}
 }
