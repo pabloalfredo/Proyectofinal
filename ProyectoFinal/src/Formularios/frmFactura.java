@@ -180,6 +180,8 @@ public class frmFactura extends JFrame {
 					table.editCellAt(table.getSelectedRow(), 0);//LE INDICA A LA TABLA QUE LA CELDA A SIDO EDITADA.
 					 int ID= Integer.parseInt( table.getValueAt(table.getSelectedRow(), 0).toString());
 					 
+					
+					 
 					if (ID >0){
 				    	BaseDeDatos conn = new BaseDeDatos();
 						ResultSet rs;
@@ -192,7 +194,7 @@ public class frmFactura extends JFrame {
 								
 								}
 						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null, "El Codigo no existe en el registro");
 							e.printStackTrace();
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
@@ -215,7 +217,7 @@ public class frmFactura extends JFrame {
 			        ActualizarTabla();
 			    	ActualizarTotal();
 			   
-				tabla.addRow(new Object[]{null, null, null, 1, null});
+				tabla.addRow(new Object[]{null, null, null, 1, null});	//AGREGA UNA NUEVA FILA CON EL FOCUS EN LA PRIMERA CELDA
 				table.changeSelection(table.getSelectedRow(), 0, false, false);
 				table.requestFocus();
 			 
@@ -346,12 +348,25 @@ public class frmFactura extends JFrame {
 		contentPane.add(btnFacturar);
 		
 		JButton btnLimpiar = new JButton("Limpiar");
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
+				 limpiarTabla();		// LIMPIA LA TABLA
+				 agregarFila();			//AGREGA UNA FILA
+				
+			}
+		});
 		btnLimpiar.setForeground(new Color(0, 153, 0));
 		btnLimpiar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnLimpiar.setBounds(236, 359, 112, 60);
 		contentPane.add(btnLimpiar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
 		btnCancelar.setForeground(new Color(204, 0, 0));
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCancelar.setBounds(416, 359, 112, 60);
@@ -413,20 +428,26 @@ public class frmFactura extends JFrame {
         double numero =0;
         //recorrer todas las filas de la segunda columna y va sumando las cantidades
       
-        for( int i=0 ; i<tabla.getRowCount(); i++)
-        {
-            
-                //capturamos valor de celda
-             try {
-            	
-            	 numero = Double.parseDouble( tabla.getValueAt(i, 4).toString() );
-				total += numero;
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
-        }
+       // String validarFila = null;
+		//validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 4);
+		
+		//if(validarFila!=null)
+		//{
+	        for( int i=0 ; i<tabla.getRowCount(); i++)
+	        {
+	            
+	                //capturamos valor de celda
+	             try {
+	            	
+	            	 numero = Double.parseDouble( tabla.getValueAt(i, 4).toString() );
+					total += numero;
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            
+	        }
+		//}
      
         //muestra en el componente
         this.txtTotal.setText( String.valueOf(total) );
