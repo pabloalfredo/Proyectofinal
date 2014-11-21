@@ -206,13 +206,18 @@ public class frmFactura extends JFrame {
 				        tabla.setValueAt(precio, table.getSelectedRow(), 2);
 				      ActualizarTabla();
 				      ActualizarTotal();
+
+				   //   table.changeSelection(table.getSelectedRow(), 2, false, false);
+					//	table.requestFocus();
 				      
 			    }
 			    if (key == KeyEvent.VK_ENTER) {// CUANDO SE PRESIONE ENTER SE IMPLEMENTARA ESTA CONDICION.
 			        ActualizarTabla();
 			    	ActualizarTotal();
-			    // DefaultTableModel tabla= (DefaultTableModel) table.getModel();
+			   
 				tabla.addRow(new Object[]{null, null, null, 1, null});
+				table.changeSelection(table.getSelectedRow(), 0, false, false);
+				table.requestFocus();
 			 
 		    }
 			    
@@ -239,11 +244,7 @@ public class frmFactura extends JFrame {
 				
 				return columnEditables[column];
 			}
-		//	public void desenfocarColumnas(String columna){
-			//	if (!columnEditables[columna]){
-				//	table.getColumn(columna);
-			//	}	
-			//}
+		
 		});
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(null);
@@ -305,7 +306,7 @@ public class frmFactura extends JFrame {
 			        double precio =0;
 			        double subTotal=0;
 			        double descuento=0.00;
-			        //recorrer todas las filas de la segunda columna y va sumando las cantidades
+			        //recorrer todas las filas de la segunda columna y va INSERTANDO A LA CLASE DETALLEFACTURA Y LUEGO LLAMA EL METODO AGREGARDETALLE FACTURA
 			      
 			        for( int i=0 ; i<tabla.getRowCount(); i++)
 			        {
@@ -335,8 +336,8 @@ public class frmFactura extends JFrame {
 			            
 			        }
 			 txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
-			 limpiarTabla();
-			 agregarFila();
+			 limpiarTabla();		// LIMPIA LA TABLA
+			 agregarFila();			//AGREGA UNA FILA
 			}
 		});
 		btnFacturar.setForeground(new Color(0, 0, 204));
@@ -373,8 +374,11 @@ public class frmFactura extends JFrame {
 		label1.setBounds(452, 86, 46, 14);
 		contentPane.add(label1);
 		
-		table.editCellAt(table.getSelectedRow(), 0);
+		//table.editCellAt(table.getSelectedRow(), 0);
+		//table.setCellSelectionEnabled(true);
 		
+		table.changeSelection(0, 0, false, false);
+		table.requestFocus();
 		
 		
 	}
