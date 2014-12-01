@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
@@ -20,7 +21,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import Modelos.Producto;
 import Modelos.TipoProducto;
 
-public class frmModificarProducto extends JFrame {
+public class frmModificarProducto extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTextField txtCodigoModificarProducto;

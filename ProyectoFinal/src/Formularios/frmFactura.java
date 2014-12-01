@@ -16,6 +16,7 @@ import java.awt.Color;
 
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -49,7 +50,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 import java.awt.SystemColor;
 
-public class frmFactura extends JFrame {
+public class frmFactura extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTextField txtTotal;
@@ -75,8 +76,12 @@ public class frmFactura extends JFrame {
 	 * Create the frame.
 	 */
 	public frmFactura() {
+		setMaximizable(true);
+	
+		setClosable(true);
+		
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft3.png")));
+		//setDesktopIcon(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft3.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 690, 492);
 		contentPane = new JPanel();

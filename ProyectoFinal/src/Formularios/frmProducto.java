@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
@@ -30,7 +31,7 @@ import java.awt.event.MouseEvent;
 import java.awt.Color;
 import java.awt.Toolkit;
 
-public class frmProducto extends JFrame {
+public class frmProducto extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -57,7 +58,8 @@ public class frmProducto extends JFrame {
 	 * Create the frame.
 	 */
 	public frmProducto() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(frmProducto.class.getResource("/Recursos/Icon GrenSoft3.png")));
+		setClosable(true);
+		//setIconImage(Toolkit.getDefaultToolkit().getImage(frmProducto.class.getResource("/Recursos/Icon GrenSoft3.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 697, 357);
 		contentPane = new JPanel();

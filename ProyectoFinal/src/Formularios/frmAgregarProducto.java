@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -32,7 +33,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class frmAgregarProducto extends JFrame {
+public class frmAgregarProducto extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTextField txtCodigoAgregarProducto;

@@ -14,10 +14,12 @@ import java.awt.Font;
 import java.sql.SQLException;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
 
 
 
@@ -34,7 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class frmTipoProducto extends JFrame {
+public class frmTipoProducto extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTextField txtDescripcionTipoProducto;

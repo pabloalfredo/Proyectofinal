@@ -85,6 +85,7 @@ public class frmPrincipal {
 		JMenuItem mntmLogin = new JMenuItem("Login");
 		mntmLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+		
 				frmLoguin frm = new frmLoguin();
 				
 				
@@ -191,8 +192,7 @@ public class frmPrincipal {
 		JButton btnReportes = new JButton("Reportes");
 		btnReportes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frmprueba frm = new frmprueba();
-				frm.setVisible(true);
+				
 			}
 		});
 		btnReportes.setIcon(new ImageIcon(frmPrincipal.class.getResource("/Recursos/1415499313_Computer_Analysis-48.png")));

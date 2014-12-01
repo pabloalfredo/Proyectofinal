@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
@@ -21,7 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
-public class frmAgregarTipoProducto extends JFrame {
+public class frmAgregarTipoProducto extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTextField txtDescripcionAgregarTipoProducto;
