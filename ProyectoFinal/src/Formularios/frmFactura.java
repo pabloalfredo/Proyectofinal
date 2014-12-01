@@ -55,6 +55,7 @@ public class frmFactura extends JInternalFrame {
 	private JPanel contentPane;
 	private JTextField txtTotal;
 	private JTable table;
+	private int ID = 0;
 
 	/**
 	 * Launch the application.
@@ -176,56 +177,75 @@ public class frmFactura extends JInternalFrame {
 				double precio = 0;
 				
 				
-				if (key == KeyEvent.VK_TAB) {// CUANDO SE PRESIONE TAB SE IMPLEMENTARA ESTA CONDICION.
-			    	
-					
-			    	/////////////////////////////////////////////////////////////////BUSQUEDA BASE DE DATOS
-					//////////////// ESTO IRA EN LA CLASE FACTURA
-					
-					table.editCellAt(table.getSelectedRow(), 0);//LE INDICA A LA TABLA QUE LA CELDA A SIDO EDITADA.
-					 int ID= Integer.parseInt( table.getValueAt(table.getSelectedRow(), 0).toString());
-					 
-					
-					 
-					if (ID >0){
-				    	BaseDeDatos conn = new BaseDeDatos();
-						ResultSet rs;
-						try {
-							rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select Descripcion, Precio from tblproducto where Codigo = '"+ID +"'");
-								while (rs.next()){
-									
-								Descripcion=rs.getString(1);
-								precio=rs.getDouble(2);
-								
-								}
-						} catch (ClassNotFoundException e) {
-							JOptionPane.showMessageDialog(null, "El Codigo no existe en el registro");
-							e.printStackTrace();
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-			    	
-			    	////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (key == KeyEvent.VK_TAB) {// CUANDO SE PRESIONE TAB SE IMPLEMENTARA ESTA CONDICION.
+				    	
 						
-				        tabla.setValueAt(Descripcion, table.getSelectedRow(), 1);
-				        tabla.setValueAt(precio, table.getSelectedRow(), 2);
-				      ActualizarTabla();
-				      ActualizarTotal();
-
-				   //   table.changeSelection(table.getSelectedRow(), 2, false, false);
-					//	table.requestFocus();
-				      
-			    }
+				    	/////////////////////////////////////////////////////////////////BUSQUEDA BASE DE DATOS
+						//////////////// ESTO IRA EN LA CLASE FACTURA
+						
+						 /*String validarFila = null;
+							validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 0);
+							
+							if(validarFila!=null)
+							{*/
+						table.editCellAt(table.getSelectedRow(), 0);//LE INDICA A LA TABLA QUE LA CELDA A SIDO EDITADA.
+						  ID= Integer.parseInt( table.getValueAt(table.getSelectedRow(), 0).toString());
+							//}	 
+						
+						 
+						if (ID >0){
+					    	BaseDeDatos conn = new BaseDeDatos();
+							ResultSet rs;
+							try {
+								rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select Descripcion, Precio from tblproducto where Codigo = '"+ID +"'");
+									while (rs.next()){
+										
+									Descripcion=rs.getString(1);
+									precio=rs.getDouble(2);
+									
+									}
+							} catch (ClassNotFoundException e) {
+								JOptionPane.showMessageDialog(null, "El Codigo no existe en el registro");
+								e.printStackTrace();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+				    	
+				    	////////////////////////////////////////////////////////////////////////////////////////////////////
+							
+					        tabla.setValueAt(Descripcion, table.getSelectedRow(), 1);
+					        tabla.setValueAt(precio, table.getSelectedRow(), 2);
+					       
+					      if (ID !=0){
+					      ActualizarTabla();
+					      ActualizarTotal();
+					      }
+	
+					   //   table.changeSelection(table.getSelectedRow(), 2, false, false);
+						//	table.requestFocus();
+					      
+				}
 			    if (key == KeyEvent.VK_ENTER) {// CUANDO SE PRESIONE ENTER SE IMPLEMENTARA ESTA CONDICION.
-			        ActualizarTabla();
-			    	ActualizarTotal();
-			   
-				tabla.addRow(new Object[]{null, null, null, 1, null});	//AGREGA UNA NUEVA FILA CON EL FOCUS EN LA PRIMERA CELDA
-				table.changeSelection(table.getSelectedRow(), 0, false, false);
-				table.requestFocus();
-			 
+			        
+			    	
+			    	 if (ID !=0){
+					      ActualizarTabla();
+					      ActualizarTotal();
+					      
+					      tabla.addRow(new Object[]{null, null, null, 1, null});	//AGREGA UNA NUEVA FILA CON EL FOCUS EN LA PRIMERA CELDA
+							table.changeSelection(table.getSelectedRow(), 0, false, false);
+							table.requestFocus();
+					      }
+			    	
+			    	//String validarFila = null;
+				//	validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 0);
+					
+				//	if(validarFila!=null)
+					//		{
+						
+				//	}
 		    }
 			    
 			}
@@ -397,7 +417,7 @@ public class frmFactura extends JInternalFrame {
 		//table.editCellAt(table.getSelectedRow(), 0);
 		//table.setCellSelectionEnabled(true);
 		
-		table.changeSelection(0, 0, false, false);
+		table.changeSelection(0, 0, false, false);   //ESTO ES PARA CUANDO INICIE EL FORMULARIO EL TAB SE FOCALICE EN LA PRIMERA CELDA.
 		table.requestFocus();
 		
 		
@@ -432,12 +452,7 @@ public class frmFactura extends JInternalFrame {
         double total = 0;
         double numero =0;
         //recorrer todas las filas de la segunda columna y va sumando las cantidades
-      
-       // String validarFila = null;
-		//validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 4);
-		
-		//if(validarFila!=null)
-		//{
+   
 	        for( int i=0 ; i<tabla.getRowCount(); i++)
 	        {
 	            
@@ -450,9 +465,8 @@ public class frmFactura extends JInternalFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	            
-	        }
-		//}
+	   
+		}
      
         //muestra en el componente
         this.txtTotal.setText( String.valueOf(total) );
