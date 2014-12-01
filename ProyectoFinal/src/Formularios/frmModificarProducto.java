@@ -48,6 +48,7 @@ public class frmModificarProducto extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public frmModificarProducto() {
+		setClosable(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 443, 325);
 		contentPane = new JPanel();

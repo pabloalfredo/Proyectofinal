@@ -65,7 +65,8 @@ public class frmTipoProducto extends JInternalFrame {
 	 * @throws ClassNotFoundException 
 	 */
 	//public frmTipoProducto() {
-	public frmTipoProducto() {//se le indica cual es la ventana padre
+	public frmTipoProducto() {
+		setClosable(true);//se le indica cual es la ventana padre
 	
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 497, 345);
@@ -186,6 +187,7 @@ public class frmTipoProducto extends JInternalFrame {
 					TipoProducto nuevoTipoProducto = new TipoProducto(id,Descripcion);
 					frmModificarTipoProducto frm = new frmModificarTipoProducto();
 					frm.cargarDatos(nuevoTipoProducto);  //ANTES DE QUE SE ABRE LA VENTANA SE ACCINA EL METODO CARGADATOS
+					getDesktopPane().add(frm);
 					frm.setVisible(true);
 					
 					

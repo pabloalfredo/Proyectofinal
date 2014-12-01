@@ -116,6 +116,7 @@ public class frmProducto extends JInternalFrame {
 		btnTipoProducto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmTipoProducto frm = new frmTipoProducto();
+				getDesktopPane().add(frm);
 				frm.setVisible(true);
 				
 			}
@@ -194,6 +195,7 @@ public class frmProducto extends JInternalFrame {
 				
 				frmModificarProducto frm = new frmModificarProducto();
 				//frm.cargarDatos(nuevoTipoProducto);  //ANTES DE QUE SE ABRE LA VENTANA SE ACCINA EL METODO CARGADATOS
+				getDesktopPane().add(frm);
 				frm.setVisible(true);
 
 			}
