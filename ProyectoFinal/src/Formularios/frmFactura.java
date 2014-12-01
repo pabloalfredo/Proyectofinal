@@ -43,7 +43,8 @@ import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
 
-import com.mysql.jdbc.ResultSet;
+//import com.mysql.jdbc.ResultSet;
+import java.sql.ResultSet;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
