@@ -149,6 +149,7 @@ public class Login extends JFrame{
 	             //                             id      integer auto_increment not null     <--llave primaria
 	             //                   campos:    usuario    char(25)
 	             //                              password char(50)
+	        	
 	        	Class.forName("com.mysql.jdbc.Driver");
 	            Connection unaConexion  = DriverManager.getConnection ("jdbc:mysql://localhost/dbproyecto","root", "curne00");
 	            // Preparamos la consulta
