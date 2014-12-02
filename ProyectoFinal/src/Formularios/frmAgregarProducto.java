@@ -18,9 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
-import com.mysql.jdbc.ResultSet;
-
 import java.sql.*;
+
 
 import Clases.BaseDeDatos;
 import Clases.Categoria;
