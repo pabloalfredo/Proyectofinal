@@ -31,6 +31,13 @@ public class Producto {
 		this.TipoProducto = TipoProducto;
 		
 	}
+	public Producto ( int CodigoProducto, String DescripcionProducto, float PrecioProducto)
+	{
+		setCodigoProducto(CodigoProducto);
+		setDescripcionProducto(DescripcionProducto);
+		setPrecioProducto(PrecioProducto);
+	
+	}
 	
 	public int getIdProducto() {
 		return idProducto;

@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JInternalFrame;
@@ -37,15 +38,21 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 
+
+
+
+
 import Clases.BaseDeDatos;
 import Modelos.DetalleFactura;
 import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
 
+
+
+
 //import com.mysql.jdbc.ResultSet;
 import java.sql.ResultSet;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
@@ -100,6 +107,26 @@ public class frmFactura extends JInternalFrame {
 		scrollPane.setBounds(10, 135, 518, 151);
 		
 		JButton btnBuscarProductos = new JButton("Buscar Productos");
+		btnBuscarProductos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {//BUSQUEDA DE PRODUCTOS PARA INGRESARLO EN LA TABLA DETALLE DE FACTURA
+				try {
+					FormBuscar busqueda = new FormBuscar(frmFactura.this);
+					busqueda.getModeloTabla().establecerAtributos("*");
+					busqueda.getModeloTabla().establecerTabla("tblproducto");
+					busqueda.getModeloTabla().establecerCondicion("1");
+					
+					busqueda.getModeloTabla().realizarBusqueda();
+					busqueda.getModeloTabla().fireTableStructureChanged();
+					getDesktopPane().add(busqueda);
+					busqueda.setVisible(true);
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnBuscarProductos.setForeground(new Color(153, 0, 0));
 		btnBuscarProductos.setBounds(534, 206, 139, 23);
 		
@@ -472,6 +499,15 @@ public class frmFactura extends JInternalFrame {
         //muestra en el componente
         this.txtTotal.setText( String.valueOf(total) );
     }
+	
+	public void cargarDatos(Producto NuevaFila)
+	{		
+		/*
+		txtNombre.setText(empleadoActual.obtenerNombre());
+		txtDireccion.setText(empleadoActual.obtenerDireccion());
+		txtTelefono.setText(empleadoActual.obtenerTelefono());
+		txtSueldo.setText(empleadoActual.obtenerSueldo() + "");*/
+	}
 	private void limpiarTabla(){
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 	       for (int i = 0; i < table.getRowCount(); i++) {
