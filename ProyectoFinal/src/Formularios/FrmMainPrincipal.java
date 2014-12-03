@@ -58,6 +58,7 @@ public class FrmMainPrincipal {
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setBounds(100, 100, 539, 392);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final JDesktopPane desktopPane = new JDesktopPane();
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -85,10 +86,30 @@ public class FrmMainPrincipal {
 		JMenu mnReportes = new JMenu("Reportes");
 		menuBar.add(mnReportes);
 		
+		JMenu mnBusqueda = new JMenu("Busqueda");
+		menuBar.add(mnBusqueda);
+		
+		JMenuItem mntmDetalleDeFacturas = new JMenuItem("Detalle de Facturas");
+		mntmDetalleDeFacturas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmFactura frm = new frmFactura();
+				desktopPane.add(frm);
+				frm.getBtnAgregarFila().setEnabled(false);
+				frm.getBtnEliminarFila().setEnabled(false);
+				frm.getBtnFacturar().setEnabled(false);
+				frm.getTable().setEnabled(false);
+				frm.getBtnBuscarProductos().setEnabled(false);
+				frm.setVisible(true);
+				
+				
+			}
+		});
+		mnBusqueda.add(mntmDetalleDeFacturas);
+		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		frame.getContentPane().add(toolBar, BorderLayout.NORTH);
-		final JDesktopPane desktopPane = new JDesktopPane();
+		
 		//PARA ASIGNAR LA IMAGEN EN JDESKTOPPANE EN EL FORMULARIO PRINCIPAL.
 		desktopPane.setBorder(new ImagenJDesktopPane());
 		
@@ -104,6 +125,7 @@ public class FrmMainPrincipal {
 			public void actionPerformed(ActionEvent e) {
 				frmFactura frm = new frmFactura();
 				desktopPane.add(frm);
+				frm.getTxtNumFactura().setEnabled(false);
 				frm.setVisible(true);
 			}
 		});
@@ -135,5 +157,4 @@ public class FrmMainPrincipal {
 		
 		
 	}
-
 }

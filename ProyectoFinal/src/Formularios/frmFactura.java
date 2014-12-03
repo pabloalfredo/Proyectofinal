@@ -66,6 +66,11 @@ public class frmFactura extends JInternalFrame {
 	private int ID = 0;
 	private JLabel lblTotalFilas = new JLabel("0");
 	private JTextField txtNumFactura;
+	private JButton btnAgregarFila;
+	private JButton btnEliminarFila;
+	private JButton btnBuscarProductos;
+	private JButton btnFacturar;
+	private JButton btnLimpiar;
 	
 
 	/**
@@ -109,7 +114,7 @@ public class frmFactura extends JInternalFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 135, 518, 151);
 		
-		JButton btnBuscarProductos = new JButton("Buscar Productos");
+		btnBuscarProductos = new JButton("Buscar Productos");
 		btnBuscarProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {//BUSQUEDA DE PRODUCTOS PARA INGRESARLO EN LA TABLA DETALLE DE FACTURA
 				try {
@@ -133,8 +138,8 @@ public class frmFactura extends JInternalFrame {
 		btnBuscarProductos.setForeground(new Color(153, 0, 0));
 		btnBuscarProductos.setBounds(534, 206, 139, 23);
 		
-		JButton button_1 = new JButton("Eliminar Fila");
-		button_1.addActionListener(new ActionListener() {
+		btnEliminarFila = new JButton("Eliminar Fila");
+		btnEliminarFila.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel(); 
 					//METODO PARA ELIMINAR LA FILA
@@ -162,8 +167,8 @@ public class frmFactura extends JInternalFrame {
 				}
 			}
 		});
-		button_1.setForeground(new Color(153, 0, 0));
-		button_1.setBounds(534, 172, 139, 23);
+		btnEliminarFila.setForeground(new Color(153, 0, 0));
+		btnEliminarFila.setBounds(534, 172, 139, 23);
 		
 		txtTotal = new JTextField();
 		txtTotal.setEditable(false);
@@ -174,14 +179,14 @@ public class frmFactura extends JInternalFrame {
 		txtTotal.setBounds(427, 318, 89, 22);
 		txtTotal.setColumns(10);
 		
-		JButton button_2 = new JButton("Agregar Fila");
-		button_2.addActionListener(new ActionListener() {
+		btnAgregarFila = new JButton("Agregar Fila");
+		btnAgregarFila.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				agregarFila();
 			}
 		});
-		button_2.setForeground(new Color(153, 0, 0));
-		button_2.setBounds(534, 138, 139, 23);
+		btnAgregarFila.setForeground(new Color(153, 0, 0));
+		btnAgregarFila.setBounds(534, 138, 139, 23);
 		
 		table = new JTable();
 		table.addVetoableChangeListener(new VetoableChangeListener() {
@@ -331,12 +336,12 @@ public class frmFactura extends JInternalFrame {
 		
 		contentPane.add(label);
 		contentPane.add(scrollPane);
-		contentPane.add(button_1);
-		contentPane.add(button_2);
+		contentPane.add(btnEliminarFila);
+		contentPane.add(btnAgregarFila);
 		contentPane.add(txtTotal);
 		contentPane.add(btnBuscarProductos);
 		
-		JButton btnFacturar = new JButton("Facturar");
+		btnFacturar = new JButton("Facturar");
 		btnFacturar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			/////////////////////////////////////REALIZAR LA FACTURA.
@@ -403,7 +408,7 @@ public class frmFactura extends JInternalFrame {
 		btnFacturar.setBounds(55, 359, 112, 60);
 		contentPane.add(btnFacturar);
 		
-		JButton btnLimpiar = new JButton("Limpiar");
+		btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
@@ -477,6 +482,62 @@ public class frmFactura extends JInternalFrame {
 		
 	}
 	
+	public JTextField getTxtNumFactura() {
+		return txtNumFactura;
+	}
+
+	public void setTxtNumFactura(JTextField txtNumFactura) {
+		this.txtNumFactura = txtNumFactura;
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+
+	public JButton getBtnLimpiar() {
+		return btnLimpiar;
+	}
+
+	public void setBtnLimpiar(JButton btnLimpiar) {
+		this.btnLimpiar = btnLimpiar;
+	}
+
+	public JButton getBtnFacturar() {
+		return btnFacturar;
+	}
+
+	public void setBtnFacturar(JButton btnFacturar) {
+		this.btnFacturar = btnFacturar;
+	}
+
+	public JButton getBtnBuscarProductos() {
+		return btnBuscarProductos;
+	}
+
+	public void setBtnBuscarProductos(JButton btnBuscarProductos) {
+		this.btnBuscarProductos = btnBuscarProductos;
+	}
+
+	public JButton getBtnEliminarFila() {
+		return btnEliminarFila;
+	}
+
+	public void setBtnEliminarFila(JButton btnEliminarFila) {
+		this.btnEliminarFila = btnEliminarFila;
+	}
+
+	public JButton getBtnAgregarFila() {
+		return btnAgregarFila;
+	}
+
+	public void setBtnAgregarFila(JButton btnAgregarFila) {
+		this.btnAgregarFila = btnAgregarFila;
+	}
+
 	public void ActualizarTabla(){
 		//ESTE METODO SE UTILIZA PARA REALIZAR EL CALCULO DE LAS CANTIDADES Y EL PRECIO Y OBTENER EL SUBTOTAL EN UNA FILA.
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
