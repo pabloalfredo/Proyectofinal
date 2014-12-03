@@ -64,6 +64,9 @@ public class frmFactura extends JInternalFrame {
 	private JTextField txtTotal;
 	private JTable table;
 	private int ID = 0;
+	private JLabel lblTotalFilas = new JLabel("0");
+	private JTextField txtNumFactura;
+	
 
 	/**
 	 * Launch the application.
@@ -111,7 +114,7 @@ public class frmFactura extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {//BUSQUEDA DE PRODUCTOS PARA INGRESARLO EN LA TABLA DETALLE DE FACTURA
 				try {
 					FormBuscar busqueda = new FormBuscar(frmFactura.this);
-					busqueda.getModeloTabla().establecerAtributos("*");
+					busqueda.getModeloTabla().establecerAtributos("Codigo, Descripcion, Precio, Existencia");
 					busqueda.getModeloTabla().establecerTabla("tblproducto");
 					busqueda.getModeloTabla().establecerCondicion("1");
 					
@@ -153,8 +156,7 @@ public class frmFactura extends JInternalFrame {
 				                     
 				                    model.removeRow(a);
 				                    ActualizarTotal();	
-				                    JOptionPane.showMessageDialog(null, 
-				                    "Registro Eliminado" );
+				                    sumarFilas();
 				             
 				             }
 				}
@@ -200,7 +202,7 @@ public class frmFactura extends JInternalFrame {
 			public void keyPressed(KeyEvent evt) {
 				
 					int key = evt.getKeyCode();
-					DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+				DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 			    	String Descripcion = null;
 					double precio = 0;
 					
@@ -249,6 +251,7 @@ public class frmFactura extends JInternalFrame {
 						      if (ID !=0){
 						      ActualizarTabla();
 						      ActualizarTotal();
+						      sumarFilas();
 						      }
 		
 						   //   table.changeSelection(table.getSelectedRow(), 2, false, false);
@@ -312,12 +315,12 @@ public class frmFactura extends JInternalFrame {
 ///////////////////////////////////////////////////////////////////////////////////////////////	
 		final JLabel lblHora = new JLabel(hora.format(horaActual));
 		lblHora.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblHora.setBounds(508, 86, 76, 14);
+		lblHora.setBounds(588, 86, 76, 14);
 		contentPane.add(lblHora);
 		
 		final JLabel lblFecha = new JLabel(fecha.format(fechaActual));
 		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFecha.setBounds(508, 60, 76, 14);
+		lblFecha.setBounds(446, 86, 76, 14);
 		
 		contentPane.add(lblFecha);
 		
@@ -427,7 +430,7 @@ public class frmFactura extends JInternalFrame {
 		
 		JLabel lblNewLabel = new JLabel("Fecha:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel.setBounds(452, 60, 46, 14);
+		lblNewLabel.setBounds(390, 86, 46, 14);
 		contentPane.add(lblNewLabel);
 		
 		
@@ -439,8 +442,31 @@ public class frmFactura extends JInternalFrame {
 		
 		JLabel label1 = new JLabel("Hora:");
 		label1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		label1.setBounds(452, 86, 46, 14);
+		label1.setBounds(532, 86, 46, 14);
 		contentPane.add(label1);
+		
+		JLabel lblTotalProductos = new JLabel("Total Productos:");
+		lblTotalProductos.setForeground(new Color(204, 0, 0));
+		lblTotalProductos.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblTotalProductos.setBounds(20, 297, 94, 14);
+		contentPane.add(lblTotalProductos);
+		
+		//JLabel lblTotalFilas = new JLabel("0");
+		lblTotalFilas.setForeground(new Color(0, 102, 0));
+		lblTotalFilas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblTotalFilas.setBounds(121, 297, 46, 14);
+		contentPane.add(lblTotalFilas);
+		
+		JLabel lblNumeroFactura = new JLabel("Numero Factura");
+		lblNumeroFactura.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNumeroFactura.setBounds(390, 61, 112, 14);
+		contentPane.add(lblNumeroFactura);
+		
+		txtNumFactura = new JTextField();
+		txtNumFactura.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtNumFactura.setBounds(510, 55, 139, 20);
+		contentPane.add(txtNumFactura);
+		txtNumFactura.setColumns(10);
 		
 		//table.editCellAt(table.getSelectedRow(), 0);
 		//table.setCellSelectionEnabled(true);
@@ -501,7 +527,23 @@ public class frmFactura extends JInternalFrame {
     }
 	
 	public void cargarDatos(Producto NuevaFila)
-	{		
+	{	DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+		int codigoRecibido = NuevaFila.getCodigoProducto();
+		String descripcionRecibida = NuevaFila.getDescripcionProducto();
+		float precioRecibido = NuevaFila.getPrecioProducto();
+		
+		//DefaultTableModel tabla= (DefaultTableModel) table.getModel();
+		//tabla.addRow(new Object[]{codigoRecibido, descripcionRecibida, precioRecibido, 1, null});
+		
+		tabla.setValueAt(codigoRecibido, table.getSelectedRow(), 0);
+        tabla.setValueAt(descripcionRecibida, table.getSelectedRow(), 1);
+        tabla.setValueAt(precioRecibido, table.getSelectedRow(), 2);
+		
+		table.changeSelection(table.getSelectedRow(), 3, false, false);
+		table.requestFocus();
+		//ActualizarTabla();
+		//ActualizarTotal();
+		
 		/*
 		txtNombre.setText(empleadoActual.obtenerNombre());
 		txtDireccion.setText(empleadoActual.obtenerDireccion());
@@ -518,7 +560,30 @@ public class frmFactura extends JInternalFrame {
 	private void agregarFila(){
 		DefaultTableModel tabla= (DefaultTableModel) table.getModel();
 		tabla.addRow(new Object[]{null, null, null, 1, null});
+		table.changeSelection(table.getSelectedRow(), 0, false, false);
+		table.requestFocus();
 	}
-	
-	
+	private void sumarFilas(){
+		
+//		METODO PARA SUMAR TODOS LOS PRODUCTOS.
+			DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+	        int total = 0;
+	        
+	        //recorrer todas las filas de la segunda columna y va sumando las cantidades
+	   
+		        for( int i=0 ; i<tabla.getRowCount(); i++)
+		        {
+		            
+		           total++;  
+		   
+			}
+		    if (total == 0)
+		    {
+		    	
+				tabla.addRow(new Object[]{null, null, null, 1, null});
+		    }
+	     
+	        //muestra en el componente
+	        this.lblTotalFilas.setText( String.valueOf(total) );
+	}
 }

@@ -88,8 +88,8 @@ public class Login extends JFrame{
 	                        {
 	                            // Codigo para mostrar la ventana principal
 	                            setVisible(false);
-	                            frmPrincipal ventana1 = new frmPrincipal();
-	                            ventana1.mostrar();
+	                           // frmPrincipal ventana1 = new frmPrincipal();
+	                          //  ventana1.mostrar();
 	 
 	 
 	                        }

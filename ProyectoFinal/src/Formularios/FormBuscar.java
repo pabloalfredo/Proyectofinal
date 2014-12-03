@@ -58,10 +58,11 @@ public class FormBuscar extends JInternalFrame {
 	 * @throws SQLException 
 	 */
 	public FormBuscar(final JInternalFrame jInternalFrame) throws SQLException {
+		setClosable(true);
 		this.ventanaPadre = jInternalFrame;
 		setTitle("Buscar");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 614, 243);
+		setBounds(100, 100, 542, 285);
 		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,11 +70,11 @@ public class FormBuscar extends JInternalFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblNombre = new JLabel("Descripcion:");
-		lblNombre.setBounds(10, 11, 59, 14);
+		lblNombre.setBounds(16, 45, 59, 14);
 		contentPane.add(lblNombre);
 		
 		textField = new JTextField();
-		textField.setBounds(66, 8, 321, 20);
+		textField.setBounds(85, 42, 321, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
@@ -102,8 +103,8 @@ public class FormBuscar extends JInternalFrame {
 				}
 			}
 		});
-		button.setIcon(new ImageIcon("lupa.png"));
-		button.setBounds(391, 5, 33, 23);
+		button.setIcon(new ImageIcon(FormBuscar.class.getResource("/Recursos/search_icon.png")));
+		button.setBounds(416, 11, 59, 51);
 		contentPane.add(button);
 				
 		try {
@@ -144,7 +145,7 @@ public class FormBuscar extends JInternalFrame {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(20, 36, 568, 154);
+		scrollPane.setBounds(16, 81, 497, 154);
 		contentPane.add(scrollPane);		
 	}
 
