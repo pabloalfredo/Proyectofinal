@@ -20,7 +20,6 @@ import javax.swing.JComboBox;
 
 import java.sql.*;
 
-
 import Clases.BaseDeDatos;
 import Clases.Categoria;
 import Modelos.Producto;
@@ -38,6 +37,7 @@ public class frmAgregarProducto extends JInternalFrame {
 	private JTextField txtCodigoAgregarProducto;
 	private JTextField txtDescripcionAgregarProducto;
 	private JTextField txtPrecioAgregarProducto;
+	@SuppressWarnings("rawtypes")
 	private JComboBox cmbTipoAgregarProducto;
 	private Vector <TipoProducto> categorias;
 
@@ -122,7 +122,7 @@ public class frmAgregarProducto extends JInternalFrame {
 					try {
 						productoObtenido.AgregarProducto();
 					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
+						// TODO manejar la exception 
 						e.printStackTrace();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
@@ -137,6 +137,14 @@ public class frmAgregarProducto extends JInternalFrame {
 		button_1.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
 		JButton button_3 = new JButton("Cancelar");
+		GroupLayout gl_contentPane = agruparComponentes(panel, label, label_1,
+				button, label_2, label_3, label_4, button_1, button_3);
+		contentPane.setLayout(gl_contentPane);
+	}
+
+	private GroupLayout agruparComponentes(JPanel panel, JLabel label,
+			JLabel label_1, JButton button, JLabel label_2, JLabel label_3,
+			JLabel label_4, JButton button_1, JButton button_3) {
 		button_3.setFont(new Font("SansSerif", Font.BOLD, 12));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -223,7 +231,7 @@ public class frmAgregarProducto extends JInternalFrame {
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 309, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(68, Short.MAX_VALUE))
 		);
-		contentPane.setLayout(gl_contentPane);
+		return gl_contentPane;
 	}
 	public void cargarComboBox() {//para llenar el comboBox
 		

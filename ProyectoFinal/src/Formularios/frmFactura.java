@@ -224,7 +224,8 @@ public class frmFactura extends JInternalFrame {
 								if(validarFila!=null)
 								{*/
 							table.editCellAt(table.getSelectedRow(), 0);//LE INDICA A LA TABLA QUE LA CELDA A SIDO EDITADA.
-							  ID= Integer.parseInt( table.getValueAt(table.getSelectedRow(), 0).toString());
+							Object valor=table.getValueAt(table.getSelectedRow(), 0);
+							  ID= (valor==null)?0:Integer.parseInt(valor.toString());//OPERADOR TERNARIO 
 								//}	 
 							
 							 
@@ -646,5 +647,14 @@ public class frmFactura extends JInternalFrame {
 	     
 	        //muestra en el componente
 	        this.lblTotalFilas.setText( String.valueOf(total) );
+	}
+
+	public void deshabilitarBotones() {
+		getBtnAgregarFila().setEnabled(false);
+		getBtnEliminarFila().setEnabled(false);
+		getBtnFacturar().setEnabled(false);
+		getTable().setEnabled(false);
+		getBtnBuscarProductos().setEnabled(false);
+		
 	}
 }
