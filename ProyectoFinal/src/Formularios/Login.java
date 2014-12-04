@@ -1,6 +1,9 @@
 package Formularios;
 import javax.swing.*;
 
+import Clases.AplicarTemaVentana;
+import Clases.ValidarUsuarios;
+
 import java.io.*;
 import java.sql.*;
 import java.awt.Panel.*;
@@ -16,10 +19,13 @@ public class Login extends JFrame{
 	 
 	    Login()
 	    {
+	    	setUndecorated(true);
+	    	AplicarTemaVentana aplicar = new AplicarTemaVentana();
+			aplicar.temaliquid();
 	    	setFont(new Font("Dialog", Font.BOLD, 12));
 	    	setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/Recursos/Icon GrenSoft3.png")));
 	    	getContentPane().setBackground(new Color(51, 153, 204));
-	    	setBackground(new Color(51, 153, 204));
+	    	setBackground(Color.LIGHT_GRAY);
 	 
 	        Container contenedor = getContentPane();
 	        getContentPane().setLayout(null);
@@ -28,31 +34,33 @@ public class Login extends JFrame{
 	        btnAceptar = new JButton("Aceptar");
 	        btnAceptar.setFont(new Font("SansSerif", Font.BOLD, 12));
 	        btnAceptar.setIcon(new ImageIcon(Login.class.getResource("/Recursos/Aceptar (2).png")));
-	        btnAceptar.setBounds(100, 171, 117, 45);
+	        btnAceptar.setBounds(85, 175, 129, 45);
 	        //establecer Boton aceptar por defecto
 	        getRootPane().setDefaultButton(btnAceptar);
 	 
 	        btnCancelar = new JButton("Cancelar");
 	        btnCancelar.setFont(new Font("SansSerif", Font.BOLD, 12));
 	        btnCancelar.setIcon(new ImageIcon(Login.class.getResource("/com/sun/java/swing/plaf/windows/icons/Error.gif")));
-	        btnCancelar.setBounds(238, 171, 117, 45);
+	        btnCancelar.setBounds(226, 175, 129, 45);
 	        contenedor.add(btnAceptar);
 	        contenedor.add(btnCancelar);
 	        
 	        JLabel lblLogin = new JLabel("Login");
-	        lblLogin.setForeground(new Color(0, 0, 128));
-	        lblLogin.setFont(new Font("SansSerif", Font.BOLD, 16));
-	        lblLogin.setBounds(154, 11, 75, 25);
+	        lblLogin.setForeground(SystemColor.menu);
+	        lblLogin.setFont(new Font("Arial Black", Font.BOLD, 20));
+	        lblLogin.setBounds(6, 6, 75, 25);
 	        getContentPane().add(lblLogin);
 	        
-	        JLabel lblUsuario = new JLabel("Usuario");
+	        JLabel lblUsuario = new JLabel("Usuario:");
+	        lblUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 	        lblUsuario.setFont(new Font("SansSerif", Font.BOLD, 12));
 	        lblUsuario.setBounds(133, 53, 55, 16);
 	        getContentPane().add(lblUsuario);
 	        
-	        JLabel lblContrasena = new JLabel("Contrasena");
+	        JLabel lblContrasena = new JLabel("Contrasena:");
+	        lblContrasena.setHorizontalAlignment(SwingConstants.RIGHT);
 	        lblContrasena.setFont(new Font("SansSerif", Font.BOLD, 12));
-	        lblContrasena.setBounds(113, 95, 75, 16);
+	        lblContrasena.setBounds(113, 105, 75, 16);
 	        getContentPane().add(lblContrasena);
 	        
 	        txtUser = new JTextField();
@@ -63,13 +71,13 @@ public class Login extends JFrame{
 	        
 	        txtPass = new JPasswordField();
 	        txtPass.setFont(new Font("SansSerif", Font.BOLD, 12));
-	        txtPass.setBounds(188, 89, 167, 28);
+	        txtPass.setBounds(188, 99, 167, 28);
 	        getContentPane().add(txtPass);
 	        
-	        JPanel panel = new JPanel();
-	        panel.setBackground(new Color(192, 192, 192));
-	        panel.setBounds(10, 53, 99, 94);
-	        getContentPane().add(panel);
+	        JLabel lblNewLabel = new JLabel("New label");
+	        lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/Recursos/loguin.png")));
+	        lblNewLabel.setBounds(-5, 43, 126, 120);
+	        getContentPane().add(lblNewLabel);
 	 
 	 
 	 
@@ -79,17 +87,19 @@ public class Login extends JFrame{
 	            public void actionPerformed(ActionEvent evt)
 	            {
 	                try
-	                {                    
+	                {     
+	                    ValidarUsuarios validar = new ValidarUsuarios();
+	                    validar.validarUsuario(txtUser.getText(), txtPass.getText());
 	                    //chekar si el usuario escrbio el nombre de usuario y pw
 	                    if (txtUser.getText().length() > 0 && txtPass.getText().length() > 0 )
 	                    {
 	                        // Si el usuario si fue validado correctamente
-	                        if( validarUsuario( txtUser.getText(), txtPass.getText() ) )    //enviar datos a validar
+	                        if( validar.validarUsuario( txtUser.getText(), txtPass.getText() ) )    //enviar datos a validar
 	                        {
 	                            // Codigo para mostrar la ventana principal
 	                            setVisible(false);
-	                           // frmPrincipal ventana1 = new frmPrincipal();
-	                          //  ventana1.mostrar();
+	                            FrmMainPrincipal ventana1 = new FrmMainPrincipal();
+	                            ventana1.mostrar();
 	 
 	 
 	                        }
@@ -129,7 +139,7 @@ public class Login extends JFrame{
 	        };
 	        btnCancelar.addActionListener(escuchadorbtnCancelar);      // Asociar escuchador para el boton Cancelar
 	        setTitle("Autentificacion de Usuarios");
-	        setSize(371,255);           // Tamanio del Frame 
+	        setSize(371,238);           // Tamanio del Frame 
 	        setResizable(false);       // que no se le pueda cambiar el tamanio 
 	        //Centrar la ventana de autentificacion en la pantalla
 	        Dimension tamFrame=this.getSize();//para obtener las dimensiones del frame
@@ -139,36 +149,7 @@ public class Login extends JFrame{
 	 
 	    }   // fin de constructor
 	 
-	    // Metodo que conecta con el servidor MYSQL y valida los usuarios
-	    boolean validarUsuario(String elUsr, String elPw)  throws IOException
-	    {
-	        try
-	        {
-	            //nombre de la BD: bdlogin
-	             //nombre de la tabla: usuarios
-	             //                             id      integer auto_increment not null     <--llave primaria
-	             //                   campos:    usuario    char(25)
-	             //                              password char(50)
-	        	
-	        	Class.forName("com.mysql.jdbc.Driver");
-	            Connection unaConexion  = DriverManager.getConnection ("jdbc:mysql://localhost/dbproyecto","root", "curne00");
-	            // Preparamos la consulta
-	            Statement instruccionSQL = unaConexion.createStatement();
-	            ResultSet resultadosConsulta = instruccionSQL.executeQuery ("SELECT * FROM tblusuario WHERE usuario='"+elUsr+"' AND clave='"+ elPw+"'");
-	 
-	            if( resultadosConsulta.first() )        // si es valido el primer reg. hay una fila, tons el usuario y su pw existen
-	                return true;        //usuario validado correctamente
-	            else
-	                return false;        //usuario validado incorrectamente
-	                 
-	        } catch (Exception e)
-	        {
-	            e.printStackTrace();
-	            return false;
-	        }
-	 
-	    }
-	     
+	  
 	    public static void main(String[] args)
 	    {
 	        Login prueba = new Login();
