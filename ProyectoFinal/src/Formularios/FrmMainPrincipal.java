@@ -177,7 +177,7 @@ public class FrmMainPrincipal {
 
 	public void mostrar() {
 		// TODO Auto-generated method stub
-		frame.setVisible(true); // llamada al menu
+		frame.setVisible(true); // llamada al menu et
 		
 	}
 }
