@@ -12,9 +12,7 @@ public class ValidarUsuarios {
     {
         try
         {
-            
-   
-        	
+
         	BaseDeDatos conectar = new BaseDeDatos();
         	String sql ="SELECT * FROM tblusuario WHERE usuario='"+usuario+"' AND clave='"+ contrasena+"'";
         	Statement instruccionSQL = conectar.getConexion().createStatement();

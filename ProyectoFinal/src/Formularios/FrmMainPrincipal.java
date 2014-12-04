@@ -7,6 +7,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.BorderLayout;
 
@@ -17,6 +19,7 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 
+import Clases.AplicarTemaVentana;
 import Clases.ImagenJDesktopPane;
 
 import java.awt.event.ActionListener;
@@ -54,6 +57,9 @@ public class FrmMainPrincipal {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+	
+		
 		frame = new JFrame();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setBounds(100, 100, 539, 392);
@@ -68,6 +74,17 @@ public class FrmMainPrincipal {
 		
 		JMenuItem mntmLogin = new JMenuItem("Login");
 		mnSistema.add(mntmLogin);
+		
+		JMenuItem mntmAgregarUsuario = new JMenuItem("Agregar Usuario");
+		mntmAgregarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FrmAgregarNuevoUsuario agregar = new FrmAgregarNuevoUsuario();
+				desktopPane.add(agregar);
+				agregar.setVisible(true);
+			}
+		});
+		mntmAgregarUsuario.setIcon(new ImageIcon(FrmMainPrincipal.class.getResource("/com/birosoft/liquid/icons/panther-maximize.png")));
+		mnSistema.add(mntmAgregarUsuario);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mnSistema.add(mntmSalir);
@@ -156,5 +173,10 @@ public class FrmMainPrincipal {
 		toolBar.add(btnReportes);
 		
 		
+	}
+
+	public void mostrar() {
+		// TODO Auto-generated method stub
+		frame.setVisible(true);
 	}
 }
