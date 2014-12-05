@@ -118,6 +118,9 @@ public class FrmMainPrincipal {
 		});
 		mnBusqueda.add(mntmDetalleDeFacturas);
 		
+		JMenuItem mntmFacturasEmitidas = new JMenuItem("Facturas Emitidas");
+		mnBusqueda.add(mntmFacturasEmitidas);
+		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		frame.getContentPane().add(toolBar, BorderLayout.NORTH);

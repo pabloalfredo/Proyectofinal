@@ -42,11 +42,18 @@ import javax.swing.ImageIcon;
 
 
 
+
+
+
 import Clases.BaseDeDatos;
+import Clases.ModeloTabla;
 import Modelos.DetalleFactura;
 import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
+
+
+
 
 
 
@@ -71,7 +78,8 @@ public class frmFactura extends JInternalFrame {
 	private JButton btnBuscarProductos;
 	private JButton btnFacturar;
 	private JButton btnLimpiar;
-	
+	private ModeloTabla modeloTabla;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -100,7 +108,7 @@ public class frmFactura extends JInternalFrame {
 		setResizable(false);
 		//setDesktopIcon(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft3.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 690, 492);
+		setBounds(100, 100, 866, 492);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(51, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -188,6 +196,19 @@ public class frmFactura extends JInternalFrame {
 		btnAgregarFila.setForeground(new Color(153, 0, 0));
 		btnAgregarFila.setBounds(534, 138, 139, 23);
 		
+		/*try {
+			modeloTabla = new ModeloTabla("tbldetallefactura2.codigoProducto, tblproducto.Descripcion, tbldetallefactura2.precio, tbldetallefactura2.precio, tbldetallefactura2.subTotal", 
+					"tbldetallefactura2, tblproducto", 
+					"tbldetallefactura2.idFactura ='"+7 +"' and tbldetallefactura2.codigoProducto = tblproducto.Codigo;");
+			modeloTabla.realizarBusqueda();
+		} catch (ClassNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}*/
+		
 		table = new JTable();
 		table.addVetoableChangeListener(new VetoableChangeListener() {
 			public void vetoableChange(PropertyChangeEvent arg0) {
@@ -213,40 +234,30 @@ public class frmFactura extends JInternalFrame {
 					
 					
 				if (key == KeyEvent.VK_TAB) {// CUANDO SE PRESIONE TAB SE IMPLEMENTARA ESTA CONDICION.
-					    	
-							
 					    	/////////////////////////////////////////////////////////////////BUSQUEDA BASE DE DATOS
 							//////////////// ESTO IRA EN LA CLASE FACTURA
 							
-							 /*String validarFila = null;
-								validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 0);
-								
-								if(validarFila!=null)
-								{*/
 							table.editCellAt(table.getSelectedRow(), 0);//LE INDICA A LA TABLA QUE LA CELDA A SIDO EDITADA.
 							Object valor=table.getValueAt(table.getSelectedRow(), 0);
 							  ID= (valor==null)?0:Integer.parseInt(valor.toString());//OPERADOR TERNARIO 
-								//}	 
-							
 							 
 							if (ID >0){
-						    	BaseDeDatos conn = new BaseDeDatos();
-								ResultSet rs;
-								try {
-									rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select Descripcion, Precio from tblproducto where Codigo = '"+ID +"'");
-										while (rs.next()){
+							    	BaseDeDatos conn = new BaseDeDatos();
+									ResultSet rs;
+									try {
+										rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select Descripcion, Precio from tblproducto where Codigo = '"+ID +"'");
+											while (rs.next()){
+											Descripcion=rs.getString(1);
+											precio=rs.getDouble(2);
 											
-										Descripcion=rs.getString(1);
-										precio=rs.getDouble(2);
-										
-										}
-								} catch (ClassNotFoundException e) {
-									JOptionPane.showMessageDialog(null, "El Codigo no existe en el registro");
-									e.printStackTrace();
-								} catch (SQLException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+											}
+									} catch (ClassNotFoundException e) {
+										JOptionPane.showMessageDialog(null, "El Codigo no existe en el registro");
+										e.printStackTrace();
+									} catch (SQLException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 							}
 					    	
 					    	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,36 +266,24 @@ public class frmFactura extends JInternalFrame {
 						        tabla.setValueAt(precio, table.getSelectedRow(), 2);
 						       
 						      if (ID !=0){
-						      ActualizarTabla();
-						      ActualizarTotal();
-						      sumarFilas();
-						      }
-		
-						   //   table.changeSelection(table.getSelectedRow(), 2, false, false);
-							//	table.requestFocus();
-						      
+							      ActualizarTabla();
+							      ActualizarTotal();
+							      sumarFilas();
+						      }   
 					}
 				    if (key == KeyEvent.VK_ENTER) {// CUANDO SE PRESIONE ENTER SE IMPLEMENTARA ESTA CONDICION.
 				        
 				    	
 				    	 if (ID !=0){
-						      ActualizarTabla();
-						      ActualizarTotal();
-						      
-						      tabla.addRow(new Object[]{null, null, null, 1, null});	//AGREGA UNA NUEVA FILA CON EL FOCUS EN LA PRIMERA CELDA
-								table.changeSelection(table.getSelectedRow(), 0, false, false);
-								table.requestFocus();
+							      ActualizarTabla();
+							      ActualizarTotal();
+							      
+							      tabla.addRow(new Object[]{null, null, null, 1, null});	//AGREGA UNA NUEVA FILA CON EL FOCUS EN LA PRIMERA CELDA
+									table.changeSelection(table.getSelectedRow(), 0, false, false);
+									table.requestFocus();
 						      }
-				    	
-				    	//String validarFila = null;
-					//	validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 0);
-						
-					//	if(validarFila!=null)
-						//		{
-							
-					//	}
-			    }
-			    
+				  
+			       }
 			}
 		});
 		table.setModel(new DefaultTableModel(
@@ -469,13 +468,46 @@ public class frmFactura extends JInternalFrame {
 		contentPane.add(lblNumeroFactura);
 		
 		txtNumFactura = new JTextField();
+		txtNumFactura.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				int key = arg0.getKeyCode();
+				DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+				if(key == KeyEvent.VK_ENTER){
+				
+					String numFactura = txtNumFactura.getText();
+							try {
+								modeloTabla = new ModeloTabla("tbldetallefactura2.codigoProducto, tblproducto.Descripcion, tbldetallefactura2.precio, tbldetallefactura2.precio, tbldetallefactura2.subTotal", 
+										"tbldetallefactura2, tblproducto", 
+										"tbldetallefactura2.idFactura ='"+numFactura +"' and tbldetallefactura2.codigoProducto = tblproducto.Codigo;");
+								modeloTabla.realizarBusqueda();
+							} catch (ClassNotFoundException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						
+						//table = new JTable(modeloTabla);
+							//table = new JTable(modeloTabla);
+							table.setModel(tabla);
+				}
+				
+			}
+		});
 		txtNumFactura.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		txtNumFactura.setBounds(510, 55, 139, 20);
 		contentPane.add(txtNumFactura);
 		txtNumFactura.setColumns(10);
 		
-		//table.editCellAt(table.getSelectedRow(), 0);
-		//table.setCellSelectionEnabled(true);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(879, 417, -302, -136);
+		contentPane.add(scrollPane_1);
+		
+		table_1 = new JTable(modeloTabla);
+		table_1.setBounds(598, 275, 242, 129);
+		contentPane.add(table_1);
 		
 		table.changeSelection(0, 0, false, false);   //ESTO ES PARA CUANDO INICIE EL FORMULARIO EL TAB SE FOCALICE EN LA PRIMERA CELDA.
 		table.requestFocus();
