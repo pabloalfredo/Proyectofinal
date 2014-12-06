@@ -79,7 +79,6 @@ public class frmFactura extends JInternalFrame {
 	private JButton btnFacturar;
 	private JButton btnLimpiar;
 	private ModeloTabla modeloTabla;
-	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -108,7 +107,7 @@ public class frmFactura extends JInternalFrame {
 		setResizable(false);
 		//setDesktopIcon(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft3.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 866, 492);
+		setBounds(100, 100, 690, 492);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(51, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -481,6 +480,7 @@ public class frmFactura extends JInternalFrame {
 										"tbldetallefactura2, tblproducto", 
 										"tbldetallefactura2.idFactura ='"+numFactura +"' and tbldetallefactura2.codigoProducto = tblproducto.Codigo;");
 								modeloTabla.realizarBusqueda();
+								table.setModel(modeloTabla);
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -489,9 +489,6 @@ public class frmFactura extends JInternalFrame {
 								e.printStackTrace();
 							}
 						
-						//table = new JTable(modeloTabla);
-							//table = new JTable(modeloTabla);
-							table.setModel(tabla);
 				}
 				
 			}
@@ -504,10 +501,6 @@ public class frmFactura extends JInternalFrame {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(879, 417, -302, -136);
 		contentPane.add(scrollPane_1);
-		
-		table_1 = new JTable(modeloTabla);
-		table_1.setBounds(598, 275, 242, 129);
-		contentPane.add(table_1);
 		
 		table.changeSelection(0, 0, false, false);   //ESTO ES PARA CUANDO INICIE EL FORMULARIO EL TAB SE FOCALICE EN LA PRIMERA CELDA.
 		table.requestFocus();

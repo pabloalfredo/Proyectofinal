@@ -57,7 +57,8 @@ public class FrmMainPrincipal {
 	 */
 	private void initialize() {
 		
-	
+		AplicarTemaVentana aplicar = new AplicarTemaVentana();
+		aplicar.temaliquid();
 		
 		frame = new JFrame();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);

@@ -106,7 +106,7 @@ public class frmProducto extends JInternalFrame {
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmAgregarProducto frm = new frmAgregarProducto();
-				
+				getDesktopPane().add(frm);
 				frm.setVisible(true);
 			}
 		});
