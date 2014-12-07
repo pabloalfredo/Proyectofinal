@@ -581,26 +581,16 @@ public class frmFactura extends JInternalFrame {
 		
 		String validarCodigoExistente = null;
 		validarCodigoExistente = (String) tabla.getValueAt(table.getSelectedRow(), 1);
-		/*if (validarCodigoExistente==null){
-			table.changeSelection(table.getSelectedRow(), 0, false, false);//VALIDA SI EL CODIGO EXISTE EN EL REGISTRO
-			table.requestFocus();
-			JOptionPane.showMessageDialog(null, "Este codigo no existe en el registro");
-			
-		}*/
-		//else{
+		
 			Object cantidadObject=tabla.getValueAt(table.getSelectedRow(), 2);
 			Object precioObject=tabla.getValueAt(table.getSelectedRow(), 3);
 			
         	float cantidad= (cantidadObject==null)?0:Float.parseFloat(cantidadObject.toString());
-        	float precio= (precioObject==null)?0:Float.parseFloat(precioObject.toString());
-			
-		//float cantidad	 =  Float.parseFloat(tabla.getValueAt(table.getSelectedRow(), 2).toString());
-		//float precio	 =  Float.parseFloat(tabla.getValueAt(table.getSelectedRow(), 3).toString());
+        	float precio= (precioObject==null)?0:Float.parseFloat(precioObject.toString());	
+		
 		float total = cantidad * precio;
 		
-		tabla.setValueAt(total, table.getSelectedRow(), 4);
-	//	}
-		
+		tabla.setValueAt(total, table.getSelectedRow(), 4);		
 	}
 	
 
