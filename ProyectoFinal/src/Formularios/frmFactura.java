@@ -79,6 +79,8 @@ public class frmFactura extends JInternalFrame {
 	private JButton btnFacturar;
 	private JButton btnLimpiar;
 	private ModeloTabla modeloTabla;
+	private String validarFilaBlanco;
+	private int total = 0;
 
 	/**
 	 * Launch the application.
@@ -107,19 +109,19 @@ public class frmFactura extends JInternalFrame {
 		setResizable(false);
 		//setDesktopIcon(Toolkit.getDefaultToolkit().getImage(frmFactura.class.getResource("/Recursos/Icon GrenSoft3.png")));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 690, 492);
+		setBounds(0, 0, 690, 492);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(51, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
 		JLabel lblFactura = new JLabel("Factura");
-		lblFactura.setBounds(259, 29, 112, 30);
+		lblFactura.setBounds(249, 22, 139, 30);
 		lblFactura.setForeground(new Color(204, 0, 0));
-		lblFactura.setFont(new Font("Arial", Font.BOLD, 30));
+		lblFactura.setFont(new Font("Arial", Font.BOLD, 35));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 135, 518, 151);
+		scrollPane.setBounds(10, 155, 518, 151);
 		
 		btnBuscarProductos = new JButton("Buscar Productos");
 		btnBuscarProductos.addActionListener(new ActionListener() {
@@ -143,7 +145,7 @@ public class frmFactura extends JInternalFrame {
 			}
 		});
 		btnBuscarProductos.setForeground(new Color(153, 0, 0));
-		btnBuscarProductos.setBounds(534, 206, 139, 23);
+		btnBuscarProductos.setBounds(534, 226, 139, 23);
 		
 		btnEliminarFila = new JButton("Eliminar Fila");
 		btnEliminarFila.addActionListener(new ActionListener() {
@@ -175,7 +177,7 @@ public class frmFactura extends JInternalFrame {
 			}
 		});
 		btnEliminarFila.setForeground(new Color(153, 0, 0));
-		btnEliminarFila.setBounds(534, 172, 139, 23);
+		btnEliminarFila.setBounds(534, 192, 139, 23);
 		
 		txtTotal = new JTextField();
 		txtTotal.setEditable(false);
@@ -183,7 +185,7 @@ public class frmFactura extends JInternalFrame {
 		txtTotal.setText("0.00");
 		txtTotal.setForeground(Color.GREEN);
 		txtTotal.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtTotal.setBounds(427, 318, 89, 22);
+		txtTotal.setBounds(427, 330, 89, 30);
 		txtTotal.setColumns(10);
 		
 		btnAgregarFila = new JButton("Agregar Fila");
@@ -193,7 +195,7 @@ public class frmFactura extends JInternalFrame {
 			}
 		});
 		btnAgregarFila.setForeground(new Color(153, 0, 0));
-		btnAgregarFila.setBounds(534, 138, 139, 23);
+		btnAgregarFila.setBounds(534, 158, 139, 23);
 		
 		/*try {
 			modeloTabla = new ModeloTabla("tbldetallefactura2.codigoProducto, tblproducto.Descripcion, tbldetallefactura2.precio, tbldetallefactura2.precio, tbldetallefactura2.subTotal", 
@@ -239,7 +241,7 @@ public class frmFactura extends JInternalFrame {
 							table.editCellAt(table.getSelectedRow(), 0);//LE INDICA A LA TABLA QUE LA CELDA A SIDO EDITADA.
 							Object valor=table.getValueAt(table.getSelectedRow(), 0);
 							  ID= (valor==null)?0:Integer.parseInt(valor.toString());//OPERADOR TERNARIO 
-							 
+							  
 							if (ID >0){
 							    	BaseDeDatos conn = new BaseDeDatos();
 									ResultSet rs;
@@ -264,23 +266,30 @@ public class frmFactura extends JInternalFrame {
 						        tabla.setValueAt(Descripcion, table.getSelectedRow(), 1);
 						        tabla.setValueAt(precio, table.getSelectedRow(), 2);
 						       
-						      if (ID !=0){
+						          ValidarSiCodigoExiste();
 							      ActualizarTabla();
 							      ActualizarTotal();
 							      sumarFilas();
-						      }   
+						         
 					}
 				    if (key == KeyEvent.VK_ENTER) {// CUANDO SE PRESIONE ENTER SE IMPLEMENTARA ESTA CONDICION.
-				        
+				    	ActualizarTabla();
+					      ActualizarTotal();
 				    	
-				    	 if (ID !=0){
-							      ActualizarTabla();
-							      ActualizarTotal();
+					      ValidarNoAgregarMasFilas ();
+							if (validarFilaBlanco!=null){
+						
+							tabla.addRow(new Object[]{null, null, null, 1, null});
+							table.changeSelection(table.getSelectedRow(), 0, false, false);
+							table.requestFocus();
+						}
+				    	 /*if (ID !=0){
+							      
 							      
 							      tabla.addRow(new Object[]{null, null, null, 1, null});	//AGREGA UNA NUEVA FILA CON EL FOCUS EN LA PRIMERA CELDA
 									table.changeSelection(table.getSelectedRow(), 0, false, false);
 									table.requestFocus();
-						      }
+						      }*/
 				  
 			       }
 			}
@@ -319,19 +328,19 @@ public class frmFactura extends JInternalFrame {
 ///////////////////////////////////////////////////////////////////////////////////////////////	
 		final JLabel lblHora = new JLabel(hora.format(horaActual));
 		lblHora.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblHora.setBounds(588, 86, 76, 14);
+		lblHora.setBounds(588, 106, 76, 14);
 		contentPane.add(lblHora);
 		
 		final JLabel lblFecha = new JLabel(fecha.format(fechaActual));
 		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblFecha.setBounds(446, 86, 76, 14);
+		lblFecha.setBounds(446, 106, 76, 14);
 		
 		contentPane.add(lblFecha);
 		
 		JLabel label = new JLabel("Total:");
 		label.setForeground(new Color(153, 0, 0));
 		label.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label.setBounds(368, 317, 61, 23);
+		label.setBounds(368, 337, 61, 23);
 		
 		contentPane.add(label);
 		contentPane.add(scrollPane);
@@ -399,26 +408,25 @@ public class frmFactura extends JInternalFrame {
 			        }
 			 txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
 			 limpiarTabla();		// LIMPIA LA TABLA
-			 agregarFila();			//AGREGA UNA FILA
+			 agregarFila2();			//AGREGA UNA FILA
 			}
 		});
 		btnFacturar.setForeground(new Color(0, 0, 204));
 		btnFacturar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnFacturar.setBounds(55, 359, 112, 60);
+		btnFacturar.setBounds(55, 379, 112, 60);
 		contentPane.add(btnFacturar);
 		
 		btnLimpiar = new JButton("Limpiar");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
 				 limpiarTabla();		// LIMPIA LA TABLA
-				 agregarFila();			//AGREGA UNA FILA
-				
+				 agregarFila2();			//AGREGA UNA FILA
+				 
 			}
 		});
 		btnLimpiar.setForeground(new Color(0, 153, 0));
 		btnLimpiar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnLimpiar.setBounds(236, 359, 112, 60);
+		btnLimpiar.setBounds(236, 379, 112, 60);
 		contentPane.add(btnLimpiar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -429,41 +437,41 @@ public class frmFactura extends JInternalFrame {
 		});
 		btnCancelar.setForeground(new Color(204, 0, 0));
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnCancelar.setBounds(416, 359, 112, 60);
+		btnCancelar.setBounds(416, 379, 112, 60);
 		contentPane.add(btnCancelar);
 		
 		JLabel lblNewLabel = new JLabel("Fecha:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel.setBounds(390, 86, 46, 14);
+		lblNewLabel.setBounds(390, 106, 46, 14);
 		contentPane.add(lblNewLabel);
 		
 		
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		lblNewLabel_1.setIcon(new ImageIcon(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
-		lblNewLabel_1.setBounds(10, 2, 158, 105);
+		lblNewLabel_1.setBounds(10, 22, 158, 105);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel label1 = new JLabel("Hora:");
 		label1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		label1.setBounds(532, 86, 46, 14);
+		label1.setBounds(532, 106, 46, 14);
 		contentPane.add(label1);
 		
 		JLabel lblTotalProductos = new JLabel("Total Productos:");
 		lblTotalProductos.setForeground(new Color(204, 0, 0));
 		lblTotalProductos.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		lblTotalProductos.setBounds(20, 297, 94, 14);
+		lblTotalProductos.setBounds(20, 317, 94, 14);
 		contentPane.add(lblTotalProductos);
 		
 		//JLabel lblTotalFilas = new JLabel("0");
 		lblTotalFilas.setForeground(new Color(0, 102, 0));
 		lblTotalFilas.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblTotalFilas.setBounds(121, 297, 46, 14);
+		lblTotalFilas.setBounds(121, 317, 46, 14);
 		contentPane.add(lblTotalFilas);
 		
 		JLabel lblNumeroFactura = new JLabel("Numero Factura");
 		lblNumeroFactura.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNumeroFactura.setBounds(390, 61, 112, 14);
+		lblNumeroFactura.setBounds(390, 81, 112, 14);
 		contentPane.add(lblNumeroFactura);
 		
 		txtNumFactura = new JTextField();
@@ -471,7 +479,7 @@ public class frmFactura extends JInternalFrame {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				int key = arg0.getKeyCode();
-				DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+				//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 				if(key == KeyEvent.VK_ENTER){
 				
 					String numFactura = txtNumFactura.getText();
@@ -481,6 +489,9 @@ public class frmFactura extends JInternalFrame {
 										"tbldetallefactura2.idFactura ='"+numFactura +"' and tbldetallefactura2.codigoProducto = tblproducto.Codigo;");
 								modeloTabla.realizarBusqueda();
 								table.setModel(modeloTabla);
+								ActualizarTotal();
+								sumarFilasEnBusquedaFactura();
+								ValidarSiFacturaExiste();
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -494,12 +505,12 @@ public class frmFactura extends JInternalFrame {
 			}
 		});
 		txtNumFactura.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		txtNumFactura.setBounds(510, 55, 139, 20);
+		txtNumFactura.setBounds(510, 75, 139, 20);
 		contentPane.add(txtNumFactura);
 		txtNumFactura.setColumns(10);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(879, 417, -302, -136);
+		scrollPane_1.setBounds(879, 437, -302, -136);
 		contentPane.add(scrollPane_1);
 		
 		table.changeSelection(0, 0, false, false);   //ESTO ES PARA CUANDO INICIE EL FORMULARIO EL TAB SE FOCALICE EN LA PRIMERA CELDA.
@@ -568,20 +579,27 @@ public class frmFactura extends JInternalFrame {
 		//ESTE METODO SE UTILIZA PARA REALIZAR EL CALCULO DE LAS CANTIDADES Y EL PRECIO Y OBTENER EL SUBTOTAL EN UNA FILA.
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 		
-		String validarFila = null;
-		validarFila = (String) tabla.getValueAt(table.getSelectedRow(), 1);
-		
-		
-		if (validarFila==null){
-			JOptionPane.showMessageDialog(null, "Debe obtener los datos del producto primero, presione Tab");
-		}
-		else{
-		float cantidad	 =  Float.parseFloat(tabla.getValueAt(table.getSelectedRow(), 2).toString());
-		float precio	 =  Float.parseFloat(tabla.getValueAt(table.getSelectedRow(), 3).toString());
+		String validarCodigoExistente = null;
+		validarCodigoExistente = (String) tabla.getValueAt(table.getSelectedRow(), 1);
+		/*if (validarCodigoExistente==null){
+			table.changeSelection(table.getSelectedRow(), 0, false, false);//VALIDA SI EL CODIGO EXISTE EN EL REGISTRO
+			table.requestFocus();
+			JOptionPane.showMessageDialog(null, "Este codigo no existe en el registro");
+			
+		}*/
+		//else{
+			Object cantidadObject=tabla.getValueAt(table.getSelectedRow(), 2);
+			Object precioObject=tabla.getValueAt(table.getSelectedRow(), 3);
+			
+        	float cantidad= (cantidadObject==null)?0:Float.parseFloat(cantidadObject.toString());
+        	float precio= (precioObject==null)?0:Float.parseFloat(precioObject.toString());
+			
+		//float cantidad	 =  Float.parseFloat(tabla.getValueAt(table.getSelectedRow(), 2).toString());
+		//float precio	 =  Float.parseFloat(tabla.getValueAt(table.getSelectedRow(), 3).toString());
 		float total = cantidad * precio;
 		
 		tabla.setValueAt(total, table.getSelectedRow(), 4);
-		}
+	//	}
 		
 	}
 	
@@ -589,18 +607,21 @@ public class frmFactura extends JInternalFrame {
 	
 	private void ActualizarTotal()
     {//	METODO PARA ACTUALIZAR LA SUMA DE LOS SUBTOTALES, ESTE METODO RECORRE LA TABLA Y ASIGNA AL TXTTOTAL, SE ASIGNARA DONDE QUIERA QUE SE HAGAN CAMBIOS A LA TABLA.
-		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+		//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
         double total = 0;
         double numero =0;
         //recorrer todas las filas de la segunda columna y va sumando las cantidades
    
-	        for( int i=0 ; i<tabla.getRowCount(); i++)
+	        for( int i=0 ; i<table.getRowCount(); i++)
 	        {
 	            
 	                //capturamos valor de celda
 	             try {
 	            	
-	            	 numero = Double.parseDouble( tabla.getValueAt(i, 4).toString() );
+	            	Object numeroObject=table.getValueAt(i, 4);
+	            	numero= (numeroObject==null)?0:Double.parseDouble(numeroObject.toString());
+	            	 
+	            	
 					total += numero;
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
@@ -643,22 +664,34 @@ public class frmFactura extends JInternalFrame {
 	           tabla.removeRow(i);
 	           i-=1;
 	       }
+	       txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
 	   }
 	private void agregarFila(){
-		DefaultTableModel tabla= (DefaultTableModel) table.getModel();
-		tabla.addRow(new Object[]{null, null, null, 1, null});
-		table.changeSelection(table.getSelectedRow(), 0, false, false);
-		table.requestFocus();
+		ValidarNoAgregarMasFilas ();
+			if (validarFilaBlanco!=null){
+			DefaultTableModel tabla= (DefaultTableModel) table.getModel();
+			tabla.addRow(new Object[]{null, null, null, 1, null});
+			table.changeSelection(table.getSelectedRow(), 0, false, false);
+			table.requestFocus();
+		}
+	}
+	private void agregarFila2(){//ESTE AGREGAR FILA SE UTILIZA AL MOMENTO DE ACCIONAR EL BOTON LIMPIAR Y PARA FACTURAR.
+		
+			DefaultTableModel tabla= (DefaultTableModel) table.getModel();
+			tabla.addRow(new Object[]{null, null, null, 1, null});
+			table.changeSelection(table.getSelectedRow(), 0, false, false);
+			table.requestFocus();
+		
 	}
 	private void sumarFilas(){
 		
 //		METODO PARA SUMAR TODOS LOS PRODUCTOS.
-			DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+			//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 	        int total = 0;
 	        
 	        //recorrer todas las filas de la segunda columna y va sumando las cantidades
 	   
-		        for( int i=0 ; i<tabla.getRowCount(); i++)
+		        for( int i=0 ; i<table.getRowCount(); i++)
 		        {
 		            
 		           total++;  
@@ -666,12 +699,32 @@ public class frmFactura extends JInternalFrame {
 			}
 		    if (total == 0)
 		    {
-		    	
+		    	DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 				tabla.addRow(new Object[]{null, null, null, 1, null});
 		    }
 	     
 	        //muestra en el componente
 	        this.lblTotalFilas.setText( String.valueOf(total) );
+	}
+		private void sumarFilasEnBusquedaFactura(){
+		
+//		METODO PARA SUMAR TODOS LOS PRODUCTOS.
+			//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+	        
+	        
+	        //recorrer todas las filas de la segunda columna y va sumando las cantidades
+	   
+		        for( int i=0 ; i<table.getRowCount(); i++)
+		        {
+		            
+		           total++;  
+		   
+			}
+		    
+	        //muestra en el componente
+	        this.lblTotalFilas.setText( String.valueOf(total) );
+	        
+	        
 	}
 
 	public void deshabilitarBotones() {
@@ -681,5 +734,34 @@ public class frmFactura extends JInternalFrame {
 		getTable().setEnabled(false);
 		getBtnBuscarProductos().setEnabled(false);
 		
+	}
+	public void ValidarNoAgregarMasFilas (){
+		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+		
+		validarFilaBlanco = (String) tabla.getValueAt(table.getSelectedRow(), 1);
+		
+		if (validarFilaBlanco==null){
+			table.changeSelection(table.getSelectedRow(), 0, false, false);//VALIDA SI EL CODIGO EXISTE EN EL REGISTRO
+			table.requestFocus();
+			JOptionPane.showMessageDialog(null, "No puede tener mas de una fila en blanco");
+			
+		}
+	}
+	public void ValidarSiCodigoExiste(){
+		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
+		
+		String validarCodigoExistente = null;
+		validarCodigoExistente = (String) tabla.getValueAt(table.getSelectedRow(), 1);
+		if (validarCodigoExistente==null){
+			table.changeSelection(table.getSelectedRow(), 0, false, false);//VALIDA SI EL CODIGO EXISTE EN EL REGISTRO
+			table.requestFocus();
+			JOptionPane.showMessageDialog(null, "Este codigo no existe en el registro");
+			
+		}
+	}
+	public void ValidarSiFacturaExiste(){
+		if (total==0){
+        	JOptionPane.showMessageDialog(null, "Esta Factura no existe en el Registro");
+        }
 	}
 }

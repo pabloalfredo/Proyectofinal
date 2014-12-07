@@ -62,6 +62,11 @@ public class frmAgregarTipoProducto extends JInternalFrame {
 		txtDescripcionAgregarTipoProducto.setColumns(10);
 		
 		JButton button = new JButton("Cancelar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		
 		JButton button_1 = new JButton("Aceptar");
 		button_1.addActionListener(new ActionListener() {

@@ -21,6 +21,7 @@ import javax.swing.JComboBox;
 import java.sql.*;
 
 import Clases.BaseDeDatos;
+import Clases.CargarComboBox;
 import Clases.Categoria;
 import Modelos.Producto;
 import Modelos.TipoProducto;
@@ -39,7 +40,7 @@ public class frmAgregarProducto extends JInternalFrame {
 	private JTextField txtPrecioAgregarProducto;
 	@SuppressWarnings("rawtypes")
 	private JComboBox cmbTipoAgregarProducto;
-	private Vector <TipoProducto> categorias;
+	CargarComboBox comboBox = new CargarComboBox();
 
 	/**
 	 * Launch the application.
@@ -61,6 +62,7 @@ public class frmAgregarProducto extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public frmAgregarProducto() {
+		setClosable(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 484, 321);
 		contentPane = new JPanel();
@@ -97,12 +99,9 @@ public class frmAgregarProducto extends JInternalFrame {
 		JLabel label_4 = new JLabel("Tipo");
 		label_4.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-	
 		 cmbTipoAgregarProducto = new JComboBox();
-		 cargarComboBox();
-		
-	
-		
+		 comboBox.cargarComboBox(cmbTipoAgregarProducto);//CARGA EL COMBOBOX DESDE LA CLASE CARGAR COMBOBOX
+		 
 		JButton button_1 = new JButton("Guardar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {//BOTON AGREGAR PRODUCTOS
@@ -112,12 +111,7 @@ public class frmAgregarProducto extends JInternalFrame {
 					int Codigo = Integer.parseInt(txtCodigoAgregarProducto.getText());
 					String descripcion = txtDescripcionAgregarProducto.getText();
 					float precio = Float.parseFloat(txtPrecioAgregarProducto.getText());
-					//String DescripcionCmb=categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getDescripcion();
-					
-					//int IdCmb= categorias.get(cmbTipoAgregarProducto.getSelectedIndex()).getIdTipoProducto();
-					
-					//TipoProducto ObjetoTipoProducto = new TipoProducto(IdCmb, DescripcionCmb);
-					TipoProducto ObjetoTipoProducto = categorias.get(cmbTipoAgregarProducto.getSelectedIndex());
+					TipoProducto ObjetoTipoProducto = comboBox.categorias.get(cmbTipoAgregarProducto.getSelectedIndex());
 					Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
 					try {
 						productoObtenido.AgregarProducto();
@@ -128,15 +122,20 @@ public class frmAgregarProducto extends JInternalFrame {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 				//	}
-					dispose();
+					
 				}
-				
+					dispose();
 				
 			}
 		});
 		button_1.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
 		JButton button_3 = new JButton("Cancelar");
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
 		GroupLayout gl_contentPane = agruparComponentes(panel, label, label_1,
 				button, label_2, label_3, label_4, button_1, button_3);
 		contentPane.setLayout(gl_contentPane);
@@ -235,25 +234,8 @@ public class frmAgregarProducto extends JInternalFrame {
 	}
 	public void cargarComboBox() {//para llenar el comboBox
 		
-		BaseDeDatos conn = new BaseDeDatos();
-			categorias = new Vector<>();
-			ResultSet rs;
-			try {
-				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select ID, Descripcion from tbltipoproducto");
-					while (rs.next()){
-					TipoProducto categoria = new TipoProducto(rs.getInt(1), rs.getString(2));	
-					
-					categorias.add(categoria);
-					cmbTipoAgregarProducto.addItem(categoria.getDescripcion());
-					
-					}
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		
+		
 	
 	}
 	

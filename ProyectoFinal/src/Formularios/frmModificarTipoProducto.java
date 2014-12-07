@@ -87,6 +87,11 @@ public class frmModificarTipoProducto extends JInternalFrame {
 		});
 		
 		JButton button_1 = new JButton("Cancelar");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		
 		JLabel lblId = new JLabel("ID");
 		

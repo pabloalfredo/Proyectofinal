@@ -18,8 +18,15 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import Clases.CargarComboBox;
 import Modelos.Producto;
 import Modelos.TipoProducto;
+
+import java.awt.color.CMMException;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.Vector;
 
 public class frmModificarProducto extends JInternalFrame {
 
@@ -27,7 +34,8 @@ public class frmModificarProducto extends JInternalFrame {
 	private JTextField txtCodigoModificarProducto;
 	private JTextField txtDescripcionModificarProducto;
 	private JTextField txtPrecioModificarProducto;
-
+	private JComboBox cmbModificarProducto;
+	CargarComboBox llenarComboBox = new CargarComboBox();
 	/**
 	 * Launch the application.
 	 */
@@ -57,6 +65,7 @@ public class frmModificarProducto extends JInternalFrame {
 		
 		txtCodigoModificarProducto = new JTextField();
 		txtCodigoModificarProducto.setColumns(10);
+		txtCodigoModificarProducto.setEnabled(false);
 		
 		JLabel label = new JLabel("Codigo");
 		label.setFont(new Font("SansSerif", Font.BOLD, 12));
@@ -73,14 +82,41 @@ public class frmModificarProducto extends JInternalFrame {
 		JLabel label_2 = new JLabel("Precio");
 		label_2.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-		JComboBox cmbModificarProducto = new JComboBox();
+		cmbModificarProducto = new JComboBox();
 		cmbModificarProducto.setToolTipText("");
 		
+		
+		llenarComboBox.cargarComboBox(cmbModificarProducto);// SE UTILIZA PARA LLENAR EL COMBOBOX DESDE LA CLASE CARGAR COMBOBOX
 		
 		JLabel label_3 = new JLabel("Tipo");
 		label_3.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
 		JButton button = new JButton("Guardar");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//if (validarFormulario()==true)
+				//{
+					int Codigo = Integer.parseInt(txtCodigoModificarProducto.getText());
+					String descripcion = txtDescripcionModificarProducto.getText();
+					float precio = Float.parseFloat(txtPrecioModificarProducto.getText());
+					
+					TipoProducto ObjetoTipoProducto = llenarComboBox.categorias.get(cmbModificarProducto.getSelectedIndex());
+					Producto productoObtenido = new Producto(Codigo, descripcion, precio,ObjetoTipoProducto);
+					try {
+						productoObtenido.ModificarProducto();
+					} catch (ClassNotFoundException e) {
+						// TODO manejar la exception 
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+				//	}
+					
+				}
+					dispose();
+				
+			}
+		});
 		button.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
 		JButton button_1 = new JButton("Cancelar");
@@ -160,8 +196,6 @@ public class frmModificarProducto extends JInternalFrame {
 	}
 	public void cargarDatos(Producto ProductoModificar)// CARGA LOS DATOS AL FORMULARIO MODIFICAR TIPO PRODUCTO DESDE EL FORMULARIO TIPO PRODUCTO
 	{		
-		//String ID = TipoProductoActual.getIdTipoProducto();
-	
 		String IDObtenido = Integer.toString(ProductoModificar.getCodigoProducto());
 		String DescripcionObtenido = ProductoModificar.getDescripcionProducto();
 		String PrecioObtenido = Float.toString(ProductoModificar.getPrecioProducto());
@@ -170,12 +204,7 @@ public class frmModificarProducto extends JInternalFrame {
 		txtCodigoModificarProducto.setText(IDObtenido);
 		txtDescripcionModificarProducto.setText(DescripcionObtenido);
 		txtPrecioModificarProducto.setText(PrecioObtenido);
-		
-		
-		
-		
-		
-		
-		
+		cmbModificarProducto.setSelectedItem(cmbObtenido);// OBTIENE EL VALOR DE TIPO DE PRODUCTO Y SE LO ASIGNA AL COMBOBOX PARA QUE CUANDO INICIE EL FRAME MODIFICAR
+														  // EL VALOR QUE ESTA EN LA TABLA APAREZCA POR DEFAULT		
 	}
 }

@@ -87,13 +87,19 @@ public class Producto {
 		instruccion.setString(3, getDescripcionProducto());
 		instruccion.setFloat(4, getPrecioProducto());
 		instruccion.setInt(5, getTipoProducto().getIdTipoProducto());
-		
-		
 		instruccion.execute();
 	}
 	
-	public void ModificarProducto (){
-		
+	public void ModificarProducto () throws ClassNotFoundException, SQLException{
+		BaseDeDatos conn = new BaseDeDatos();
+		String sql = "update tblproducto set Descripcion =?, Precio=?,Idtipoproducto=? where Codigo=? ";
+		PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
+		instruccion.setString(1, getDescripcionProducto());
+		instruccion.setFloat(2, getPrecioProducto());
+		instruccion.setInt(3, getTipoProducto().getIdTipoProducto());
+		instruccion.setInt(4, getCodigoProducto());
+		instruccion.execute();
+		//TODO:ARREGLAR MODIFICAR PRODUCTO YA QUE Codigo no es la llave principal
 	}
 	
 }
