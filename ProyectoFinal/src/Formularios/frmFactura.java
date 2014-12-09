@@ -85,6 +85,7 @@ public class frmFactura extends JInternalFrame {
 	private int total = 0;
 	private JLabel lblFecha;
 	private JLabel lblHora;
+	private JLabel lblFactura;
 
 	/**
 	 * Launch the application.
@@ -119,8 +120,8 @@ public class frmFactura extends JInternalFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblFactura = new JLabel("Factura");
-		lblFactura.setBounds(249, 22, 139, 30);
+		lblFactura = new JLabel("Factura");
+		lblFactura.setBounds(236, 22, 374, 30);
 		lblFactura.setForeground(new Color(204, 0, 0));
 		lblFactura.setFont(new Font("Arial", Font.BOLD, 35));
 		
@@ -495,13 +496,13 @@ public class frmFactura extends JInternalFrame {
 								ActualizarTotal();
 								sumarFilasEnBusquedaFactura();
 								ValidarSiFacturaExiste();
-								/*
+								
 								Factura fechaObtenida = new Factura(Integer.parseInt(numFactura));
 								String fechaHoraFormulario =fechaObtenida.fechaFacturaBuscada();
 								
 								 String[] fechaDividida = fechaHoraFormulario.split(" ");
 							    lblFecha.setText(fechaDividida[0]);
-								 lblHora.setText(fechaDividida[1]);*/
+								 lblHora.setText(fechaDividida[1]);
 							   
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
@@ -736,6 +737,8 @@ public class frmFactura extends JInternalFrame {
 		getBtnBuscarProductos().setEnabled(false);
 		lblFecha.setText("");
 		lblHora.setText("");
+		lblFactura.setText("Detalle de Factura");
+		
 	}
 	public void ValidarNoAgregarMasFilas (){
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();

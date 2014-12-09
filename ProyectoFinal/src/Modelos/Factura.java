@@ -117,7 +117,7 @@ public class Factura {
 		BaseDeDatos conn = new BaseDeDatos();
 		ResultSet rs;
 		try {
-			rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select fecha from tblfactura2 where Codigo = '"+getIdFactura() +"'");
+			rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select fecha from tblfactura2 where idFactura = '"+getIdFactura() +"'");
 				while (rs.next()){
 				fechaMysql=rs.getString(1);
 
@@ -129,6 +129,7 @@ public class Factura {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//System.out.println(fechaMysql);
 		
 		return fechaMysql;
 		

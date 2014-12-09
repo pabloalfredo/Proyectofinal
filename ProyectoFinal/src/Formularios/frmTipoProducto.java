@@ -108,6 +108,7 @@ public class frmTipoProducto extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				frmAgregarTipoProducto frm = new frmAgregarTipoProducto();
+				getDesktopPane().add(frm);
 				frm.setVisible(true);
 				
 				
