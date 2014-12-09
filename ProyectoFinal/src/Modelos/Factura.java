@@ -19,6 +19,9 @@ import javax.swing.JOptionPane;
 
 
 
+
+import javax.swing.JTextField;
+
 import Clases.BaseDeDatos;
 
 public class Factura {
@@ -83,11 +86,15 @@ public class Factura {
 		String sql = "insert into tblfactura2  "
 				+ "values (?,?,?,?,?)";
 		
-		Calendar cal = Calendar.getInstance();
+		
+			Calendar fecha = Calendar.getInstance();
+	      String fechaMysql = String.format("%d-%d-%d %d:%d:%d", fecha.get(Calendar.YEAR), fecha.get(Calendar.MONTH)+1, fecha.get(Calendar.DAY_OF_MONTH),
+	    		  fecha.get(Calendar.HOUR), fecha.get(Calendar.MINUTE), fecha.get(Calendar.SECOND));
 		
 		PreparedStatement instruccion = conn.getConexion().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		instruccion.setInt(1, getIdFactura());
-		instruccion.setDate(2, new java.sql.Date(cal.getTimeInMillis()));
+		//instruccion.setDate(2, new java.sql.Date(cal.getTimeInMillis()));
+		instruccion.setString(2, fechaMysql);
 		instruccion.setInt(3, getIdUsuario());
 		instruccion.setInt(4, getIdCliente());
 		instruccion.setDouble(5, getTotalFactura());
@@ -104,4 +111,28 @@ public class Factura {
 		JOptionPane.showMessageDialog(null, "La Factura ha sido guardada con el Numero "+ valorRetorno);
 		return valorRetorno;
 	}
+	
+	public String fechaFacturaBuscada (){
+		String fechaMysql = null;
+		BaseDeDatos conn = new BaseDeDatos();
+		ResultSet rs;
+		try {
+			rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select fecha from tblfactura2 where Codigo = '"+getIdFactura() +"'");
+				while (rs.next()){
+				fechaMysql=rs.getString(1);
+
+				}
+		} catch (ClassNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "El Codigo no existe en el registro");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return fechaMysql;
+		
+		
+	}
+
 }

@@ -45,12 +45,14 @@ import javax.swing.ImageIcon;
 
 
 
+
 import Clases.BaseDeDatos;
 import Clases.ModeloTabla;
 import Modelos.DetalleFactura;
 import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
+
 
 
 
@@ -81,6 +83,8 @@ public class frmFactura extends JInternalFrame {
 	private ModeloTabla modeloTabla;
 	private String validarFilaBlanco;
 	private int total = 0;
+	private JLabel lblFecha;
+	private JLabel lblHora;
 
 	/**
 	 * Launch the application.
@@ -325,13 +329,12 @@ public class frmFactura extends JInternalFrame {
 			Date horaActual = new Date( );
 			SimpleDateFormat fecha = new SimpleDateFormat ("dd.MM.yyyy");
 			SimpleDateFormat hora = new SimpleDateFormat ("hh:mm:ss");
-///////////////////////////////////////////////////////////////////////////////////////////////	
-		final JLabel lblHora = new JLabel(hora.format(horaActual));
+			lblHora = new JLabel(hora.format(horaActual));
 		lblHora.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblHora.setBounds(588, 106, 76, 14);
 		contentPane.add(lblHora);
 		
-		final JLabel lblFecha = new JLabel(fecha.format(fechaActual));
+		lblFecha = new JLabel(fecha.format(fechaActual));
 		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFecha.setBounds(446, 106, 76, 14);
 		
@@ -482,7 +485,7 @@ public class frmFactura extends JInternalFrame {
 				//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 				if(key == KeyEvent.VK_ENTER){
 				
-					String numFactura = txtNumFactura.getText();
+							String numFactura = txtNumFactura.getText();
 							try {
 								modeloTabla = new ModeloTabla("tbldetallefactura2.codigoProducto, tblproducto.Descripcion, tbldetallefactura2.precio, tbldetallefactura2.precio, tbldetallefactura2.subTotal", 
 										"tbldetallefactura2, tblproducto", 
@@ -492,6 +495,14 @@ public class frmFactura extends JInternalFrame {
 								ActualizarTotal();
 								sumarFilasEnBusquedaFactura();
 								ValidarSiFacturaExiste();
+								/*
+								Factura fechaObtenida = new Factura(Integer.parseInt(numFactura));
+								String fechaHoraFormulario =fechaObtenida.fechaFacturaBuscada();
+								
+								 String[] fechaDividida = fechaHoraFormulario.split(" ");
+							    lblFecha.setText(fechaDividida[0]);
+								 lblHora.setText(fechaDividida[1]);*/
+							   
 							} catch (ClassNotFoundException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -723,7 +734,8 @@ public class frmFactura extends JInternalFrame {
 		getBtnFacturar().setEnabled(false);
 		getTable().setEnabled(false);
 		getBtnBuscarProductos().setEnabled(false);
-		
+		lblFecha.setText("");
+		lblHora.setText("");
 	}
 	public void ValidarNoAgregarMasFilas (){
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
