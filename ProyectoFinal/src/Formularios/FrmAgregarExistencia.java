@@ -43,6 +43,7 @@ public class FrmAgregarExistencia extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmAgregarExistencia() {
+		setClosable(true);
 		getContentPane().setBackground(new Color(51, 153, 204));
 		getContentPane().setLayout(null);
 		
@@ -88,6 +89,7 @@ public class FrmAgregarExistencia extends JInternalFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				dispose();
 				
 			}
 		});
