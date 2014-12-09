@@ -121,28 +121,43 @@ public class frmProducto extends JInternalFrame {
 				
 			}
 		});
+		
+		JButton btnAgregarExistencia = new JButton("Agregar Existencia");
+		btnAgregarExistencia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FrmAgregarExistencia frm = new FrmAgregarExistencia();
+				getDesktopPane().add(frm);
+				frm.setVisible(true);
+			}
+		});
+		btnAgregarExistencia.setForeground(new Color(204, 0, 0));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap(222, Short.MAX_VALUE)
-					.addComponent(lblProductos)
-					.addGap(207))
-				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-							.addComponent(lblNombre)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtBuscarProductos, GroupLayout.PREFERRED_SIZE, 265, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnBuscar)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNuevo, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnTipoProducto, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)))
-					.addGap(6))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addComponent(lblProductos)
+								.addGap(207))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+									.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(lblNombre)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(txtBuscarProductos, GroupLayout.PREFERRED_SIZE, 265, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(btnBuscar)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnNuevo, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnTipoProducto, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)))
+								.addGap(6)))
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addComponent(btnAgregarExistencia, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -151,19 +166,19 @@ public class frmProducto extends JInternalFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(lblProductos)
-							.addGap(33)
+							.addGap(4)
+							.addComponent(btnAgregarExistencia)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 								.addComponent(btnTipoProducto)
 								.addComponent(btnBuscar)
-								.addComponent(btnNuevo))
-							.addGap(18))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNombre)
-								.addComponent(txtBuscarProductos, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)))
+								.addComponent(btnNuevo)))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblNombre)
+							.addComponent(txtBuscarProductos, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(18)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(27, Short.MAX_VALUE))
+					.addContainerGap(33, Short.MAX_VALUE))
 		);
 		try {
 			modeloTabla = new ModeloTabla("tblproducto.Codigo, tblproducto.Descripcion, tblproducto.Precio, tbltipoproducto.Descripcion as 'Tipo Producto', tblproducto.Existencia", "tblproducto, "

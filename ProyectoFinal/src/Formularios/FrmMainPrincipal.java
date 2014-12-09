@@ -24,6 +24,8 @@ import Clases.ImagenJDesktopPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Frame;
+import javax.swing.JLabel;
+import java.awt.Color;
 
 public class FrmMainPrincipal {
 
@@ -120,6 +122,13 @@ public class FrmMainPrincipal {
 		mnBusqueda.add(mntmDetalleDeFacturas);
 		
 		JMenuItem mntmFacturasEmitidas = new JMenuItem("Facturas Emitidas");
+		mntmFacturasEmitidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FrmFacturasEmitidas frm = new FrmFacturasEmitidas();
+				desktopPane.add(frm);
+				frm.setVisible(true);
+			}
+		});
 		mnBusqueda.add(mntmFacturasEmitidas);
 		
 		JToolBar toolBar = new JToolBar();
@@ -130,11 +139,6 @@ public class FrmMainPrincipal {
 		desktopPane.setBorder(new ImagenJDesktopPane());
 		
 		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
-		
-		JToolBar toolBar_1 = new JToolBar();
-		toolBar_1.setFloatable(false);
-		toolBar_1.setBounds(0, 599, 1362, 28);
-		desktopPane.add(toolBar_1);
 		
 		JButton btnFactura = new JButton("Factura");
 		btnFactura.addActionListener(new ActionListener() {
@@ -170,6 +174,14 @@ public class FrmMainPrincipal {
 		btnReportes.setIcon(new ImageIcon(FrmMainPrincipal.class.getResource("/Recursos/1415499313_Computer_Analysis-48.png")));
 		btnReportes.setFont(new Font("Tahoma", Font.BOLD, 14));
 		toolBar.add(btnReportes);
+		
+		JToolBar toolBar_1 = new JToolBar();
+		toolBar_1.setForeground(new Color(51, 153, 204));
+		toolBar_1.setFloatable(false);
+		frame.getContentPane().add(toolBar_1, BorderLayout.SOUTH);
+		
+		JLabel lblUsuario = new JLabel("Usuario: ");
+		toolBar_1.add(lblUsuario);
 		
 		
 	}
