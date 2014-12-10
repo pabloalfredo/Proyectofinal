@@ -35,5 +35,29 @@ public class CargarComboBox {
 				}
 		
 		}
+	public void cargarComboBoxComrobante(JComboBox cmbTipoAgregarProducto) {//para llenar el comboBox
+		
+		
+		BaseDeDatos conn = new BaseDeDatos();
+			categorias = new Vector<>();
+			ResultSet rs;
+			try {
+				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select idcomprobante, descripcion from tblcomprobante");
+					while (rs.next()){
+					TipoProducto categoria = new TipoProducto(rs.getInt(1), rs.getString(2));	
+					
+					categorias.add(categoria);
+					cmbTipoAgregarProducto.addItem(categoria.getDescripcion());
+					
+					}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+	}
 
 }

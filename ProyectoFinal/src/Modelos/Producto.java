@@ -138,4 +138,63 @@ public class Producto {
 		JOptionPane.showMessageDialog(null, "El producto No. " + getCodigoProducto() + "ha sido actualizado");
 	}
 	
+	public void restarExistenciaInventario() throws ClassNotFoundException, SQLException{//SE OBTIENE LA CANTIDAD DE LA TABLA PARA RESTARAR DEL INVENTARIO
+		BaseDeDatos conn = new BaseDeDatos();
+		int existenciaActual=0;
+		int existenciaActualizada=0;
+		ResultSet rs;
+		try {
+			rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select Existencia from tblproducto where Codigo ='"+getCodigoProducto() +"'");
+				while (rs.next()){
+					existenciaActual = rs.getInt(1);
+				}
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+		existenciaActualizada= existenciaActual - getExistencia();
+		
+		String sql = "update tblproducto set Existencia =? where Codigo=? ";
+		PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
+		instruccion.setInt(1, existenciaActualizada);
+		instruccion.setInt(2, getCodigoProducto());
+		instruccion.execute();
+		
+		//JOptionPane.showMessageDialog(null, "El producto No. " + getCodigoProducto() + "ha sido actualizado");
+		
+	}
+	
+		public boolean validarExistenciaInventario() throws ClassNotFoundException, SQLException{//SE OBTIENE LA CANTIDAD DE LA TABLA PARA RESTARAR DEL INVENTARIO
+			BaseDeDatos conn = new BaseDeDatos();
+			int existenciaActual=0;
+			int existenciaActualizada=0;
+			ResultSet rs;
+			try {
+				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select Existencia from tblproducto where Codigo ='"+getCodigoProducto() +"'");
+					while (rs.next()){
+						existenciaActual = rs.getInt(1);
+					}
+			} catch (ClassNotFoundException e) {
+				
+				e.printStackTrace();
+			} catch (SQLException e) {
+			
+				e.printStackTrace();
+			}
+			existenciaActualizada= existenciaActual - getExistencia();
+			
+			if (existenciaActualizada >=0){
+			return true;
+			}
+			
+			else {
+				JOptionPane.showMessageDialog(null, "El producto No. " + getCodigoProducto() + " solo tiene " + existenciaActual+ " en el inventario" );
+				return false;
+			}
+			
+		
+	}
 }
