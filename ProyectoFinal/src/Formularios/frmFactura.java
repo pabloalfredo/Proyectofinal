@@ -529,7 +529,7 @@ public class frmFactura extends JInternalFrame {
 		contentPane.add(lblNumeroFactura);
 		
 		txtNumFactura = new JTextField();
-		txtNumFactura.setBounds(544, 78, 200, 20);
+		txtNumFactura.setBounds(544, 78, 213, 20);
 		txtNumFactura.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -584,7 +584,7 @@ public class frmFactura extends JInternalFrame {
 		contentPane.add(lblTipo);
 		
 		JComboBox cmbComprobante = new JComboBox();
-		cmbComprobante.setBounds(544, 55, 200, 20);
+		cmbComprobante.setBounds(544, 55, 213, 20);
 		contentPane.add(cmbComprobante);
 		CargarComboBox cargarComboBoxComprobante = new CargarComboBox();
 		cargarComboBoxComprobante.cargarComboBoxComrobante(cmbComprobante);
