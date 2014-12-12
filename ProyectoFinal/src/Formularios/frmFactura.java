@@ -80,15 +80,18 @@ import javax.swing.ImageIcon;
 
 
 
+
 import Clases.BaseDeDatos;
 import Clases.CargarComboBox;
 import Clases.ModeloTabla;
 import Clases.Utilidades;
+import Clases.Validacion;
 import Modelos.Comprobante;
 import Modelos.DetalleFactura;
 import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
+
 
 
 
@@ -414,7 +417,7 @@ public class frmFactura extends JInternalFrame {
 		JLabel lblTotal = new JLabel("Total");
 		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTotal.setForeground(new Color(153, 0, 0));
-		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		btnFacturar = new JButton("Facturar");
 		btnFacturar.addActionListener(new ActionListener() {
@@ -556,9 +559,16 @@ public class frmFactura extends JInternalFrame {
 				//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 //DETALLE FACTURA
 //PERMITE BUSCAR UNA FACTURA EN EL REGISTRO QUE HA SIDO FACTURA ANTERIORMENTE
+				Validacion validarSoloNumero = new Validacion();
+				validarSoloNumero.validarTxtSoloNumero(txtNumFactura); // VALIDA QUE SOLO SE INGRESEN NUMERO EN EL TEXTBOX
+				
 				if(key == KeyEvent.VK_ENTER){
 				
-							String numFactura = txtNumFactura.getText();
+							//String numFactura = txtNumFactura.getText();
+					
+							
+							int numFactura = Integer.parseInt(txtNumFactura.getText());
+							
 							try {
 								modeloTabla = new ModeloTabla("tbldetallefactura2.codigoProducto, tblproducto.Descripcion, tbldetallefactura2.precio, tbldetallefactura2.precio, tbldetallefactura2.subTotal", 
 										"tbldetallefactura2, tblproducto", 
@@ -570,13 +580,14 @@ public class frmFactura extends JInternalFrame {
 								
 								ValidarSiFacturaExiste();
 								
-								Factura fechaObtenida = new Factura(Integer.parseInt(numFactura));
+								//Factura fechaObtenida = new Factura(Integer.parseInt(numFactura));
+								Factura fechaObtenida = new Factura(numFactura);
 								String fechaHoraFormulario =fechaObtenida.fechaFacturaBuscada();
-								
-								 String[] fechaDividida = fechaHoraFormulario.split(" ");
-							    lblFecha.setText(fechaDividida[0]);
-								 lblHora.setText(fechaDividida[1]);
-							   
+								if(fechaHoraFormulario !=null){
+									 String[] fechaDividida = fechaHoraFormulario.split(" ");
+								    lblFecha.setText(fechaDividida[0]);
+									 lblHora.setText(fechaDividida[1]);
+								}
 							} catch (ClassNotFoundException e) {
 								
 								e.printStackTrace();
@@ -620,12 +631,12 @@ public class frmFactura extends JInternalFrame {
 		JLabel lblitbis = new JLabel("ITBIS");
 		lblitbis.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblitbis.setForeground(new Color(153, 0, 0));
-		lblitbis.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblitbis.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		JLabel lblSubtotal = new JLabel("SubTotal");
 		lblSubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSubtotal.setForeground(new Color(153, 0, 0));
-		lblSubtotal.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblSubtotal.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		JLabel lblNcf = new JLabel("NCF");
 		lblNcf.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -639,68 +650,72 @@ public class frmFactura extends JInternalFrame {
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(5)
-					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-					.addGap(68)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblFactura, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(143)
-							.addComponent(lblTipo, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-							.addGap(7)
-							.addComponent(cmbComprobante, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))
+							.addGap(5)
+							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+							.addGap(68)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblFactura, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(143)
+									.addComponent(lblTipo, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+									.addGap(7)
+									.addComponent(cmbComprobante, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(142)
+									.addComponent(lblNumeroFactura, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
+									.addGap(10)
+									.addComponent(txtNumFactura, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(247)
+									.addComponent(lblNcf, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+									.addGap(15)
+									.addComponent(txtNCF, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(142)
-							.addComponent(lblNumeroFactura, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
+							.addGap(422)
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
-							.addComponent(txtNumFactura, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))
+							.addComponent(lblFecha, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(label1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(lblHora, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(247)
-							.addComponent(lblNcf, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-							.addGap(15)
-							.addComponent(txtNCF, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(422)
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(lblFecha, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(label1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(lblHora, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(5)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 518, GroupLayout.PREFERRED_SIZE)
-					.addGap(6)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnAgregarFila, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEliminarFila, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnBuscarProductos, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(15)
-					.addComponent(lblTotalProductos)
-					.addGap(7)
-					.addComponent(lblTotalFilas, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(349)
-					.addComponent(lblSubtotal, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-					.addGap(2)
-					.addComponent(txtSubTotal, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(544)
-					.addComponent(lblitbis, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
-					.addGap(2)
-					.addComponent(txtITBIS, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(50)
-					.addComponent(btnFacturar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-					.addGap(69)
-					.addComponent(btnLimpiar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-					.addGap(68)
-					.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-					.addGap(21)
-					.addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
-					.addGap(2)
-					.addComponent(txtTotal, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
+							.addGap(5)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 518, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnAgregarFila, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnEliminarFila, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnBuscarProductos, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGap(15)
+								.addComponent(lblTotalProductos)
+								.addGap(7)
+								.addComponent(lblTotalFilas, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+								.addGap(349)
+								.addComponent(lblSubtotal, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+								.addGap(2)
+								.addComponent(txtSubTotal, 0, 0, Short.MAX_VALUE))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGap(544)
+								.addComponent(lblitbis, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+								.addGap(2)
+								.addComponent(txtITBIS, 0, 0, Short.MAX_VALUE))
+							.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+								.addGap(50)
+								.addComponent(btnFacturar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+								.addGap(69)
+								.addComponent(btnLimpiar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+								.addGap(68)
+								.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+								.addGap(21)
+								.addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+								.addGap(2)
+								.addComponent(txtTotal, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE))))
+					.addGap(5))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -756,21 +771,22 @@ public class frmFactura extends JInternalFrame {
 							.addGap(9)
 							.addComponent(lblSubtotal, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
 						.addComponent(txtSubTotal, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addGap(4)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(10)
+							.addGap(14)
 							.addComponent(lblitbis, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
-						.addComponent(txtITBIS, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
-					.addGap(2)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(4)
+							.addComponent(txtITBIS, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtTotal, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnFacturar, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnLimpiar, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(3)
-							.addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
-						.addComponent(txtTotal, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))))
 		);
 		contentPane.setLayout(gl_contentPane);
 		
@@ -1012,7 +1028,8 @@ public class frmFactura extends JInternalFrame {
 		
 	}
 	public void ValidarSiFacturaExiste(){// VALIDA SI LA FACTURA EXISTE EN EL REGISTRO
-		if (total==0){
+		double obtenerTotal = Double.parseDouble(txtTotal.getText());
+		if (obtenerTotal == 0){
         	JOptionPane.showMessageDialog(null, "Esta Factura no existe en el Registro");
         }
 	}
@@ -1024,6 +1041,7 @@ public class frmFactura extends JInternalFrame {
 				new String[] {
 					"Codigo", "Descripcion", "Precio", "Cantidad", "Subtotal"
 				}
+				
 			));
 		
 		txtSubTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
@@ -1033,6 +1051,8 @@ public class frmFactura extends JInternalFrame {
 		txtNumFactura.setText("");
 		lblTotalFilas.setText("0");
 		txtNCF.setText("");
+		table.changeSelection(0, 0, false, false);
+		table.requestFocus();
 		
 	}
 
