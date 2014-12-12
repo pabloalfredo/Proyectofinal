@@ -139,7 +139,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		getContentPane().add(txtNomUsuario);
 		 
 		cmbTipoUsuario = new JComboBox();
-	    comboBox.cargarComboBoxTipoUsuario(cmbTipoUsuario);
+	    //comboBox.cargarComboBoxTipoUsuario(cmbTipoUsuario);
 		 
 	
 		 //comboBox.cargarComboBox(cmbTipoUsuario);
@@ -164,12 +164,12 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 					String apellido = txtApellido.getText();
 					String contrasena1 = txtPass.getText();
 					
-					TipoUsuario ObjetoTipoUsuario = comboBox.categorias1.get(cmbTipoUsuario.getSelectedIndex());
-					NuevoUsuario UsuarioOtenido = new NuevoUsuario(nombreUsuario, contrasena, ObjetoTipoUsuario, nombre, apellido );
+					//TipoUsuario ObjetoTipoUsuario = comboBox.categorias1.get(cmbTipoUsuario.getSelectedIndex());
+					//NuevoUsuario UsuarioOtenido = new NuevoUsuario(nombreUsuario, contrasena, ObjetoTipoUsuario, nombre, apellido );
 					
 					
-					try {
-							UsuarioOtenido.AgregarNuevoUsuario();
+					/*try {
+							//UsuarioOtenido.AgregarNuevoUsuario();
 					} catch (ClassNotFoundException e) {
 						// TODO manejar la exception 
 						e.printStackTrace();
@@ -178,7 +178,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 						e.printStackTrace();
 				//	}
 					
-				}
+				}*/
 					dispose();
 				
 			
@@ -235,8 +235,8 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		JButton btnNewButton = new JButton("New button");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TipoUsuario numero = comboBox.categorias1.get(cmbTipoUsuario.getSelectedIndex());
-				System.out.println(numero.getIdTipoUsuario());
+				//TipoUsuario numero = comboBox.categorias1.get(cmbTipoUsuario.getSelectedIndex());
+				//System.out.println(numero.getIdTipoUsuario());
 			}
 		});
 		btnNewButton.setBounds(319, 174, 89, 23);
