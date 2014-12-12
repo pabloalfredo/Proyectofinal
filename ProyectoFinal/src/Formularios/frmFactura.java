@@ -31,7 +31,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
@@ -44,7 +47,23 @@ import java.util.Date;
 
 
 
+
+
+
+
+
+
+import java.util.Locale;
+
 import javax.swing.ImageIcon;
+
+
+
+
+
+
+
+
 
 
 
@@ -66,10 +85,20 @@ import Clases.BaseDeDatos;
 import Clases.CargarComboBox;
 import Clases.ModeloTabla;
 import Clases.Utilidades;
+import Clases.Validacion;
+import Modelos.Comprobante;
 import Modelos.DetalleFactura;
 import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
+
+
+
+
+
+
+
+
 
 
 
@@ -98,7 +127,7 @@ import javax.swing.JComboBox;
 public class frmFactura extends JInternalFrame {
 
 	private JPanel contentPane;
-	private JTextField txtTotal;
+	private JTextField txtSubTotal;
 	private JTable table;
 	private int ID = 0;
 	private JLabel lblTotalFilas = new JLabel("0");
@@ -117,6 +146,11 @@ public class frmFactura extends JInternalFrame {
 	Utilidades util = new Utilidades();
 	boolean validar;
 	private Producto validarExistencia;
+	private JComboBox cmbComprobante;
+	private CargarComboBox cargarComboBoxComprobante;
+	private JTextField txtITBIS;
+	private JTextField txtTotal;
+	private JTextField txtNCF;
 
 	/**
 	 * Launch the application.
@@ -152,16 +186,13 @@ public class frmFactura extends JInternalFrame {
 		setContentPane(contentPane);
 		
 		lblFactura = new JLabel("Factura");
-		lblFactura.setBounds(236, 22, 374, 30);
 		lblFactura.setForeground(new Color(204, 0, 0));
 		lblFactura.setFont(new Font("Arial", Font.BOLD, 35));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 155, 518, 151);
 		
 		btnBuscarProductos = new JButton("Buscar Productos");
 		btnBuscarProductos.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnBuscarProductos.setBounds(534, 226, 167, 30);
 		btnBuscarProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {//BUSQUEDA DE PRODUCTOS PARA INGRESARLO EN LA TABLA DETALLE DE FACTURA
 				try {
@@ -186,7 +217,6 @@ public class frmFactura extends JInternalFrame {
 		
 		btnEliminarFila = new JButton("Eliminar Fila");
 		btnEliminarFila.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnEliminarFila.setBounds(534, 192, 167, 30);
 		btnEliminarFila.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel(); 
@@ -217,18 +247,16 @@ public class frmFactura extends JInternalFrame {
 		});
 		btnEliminarFila.setForeground(new Color(153, 0, 0));
 		
-		txtTotal = new JTextField();
-		txtTotal.setBounds(427, 330, 89, 30);
-		txtTotal.setEditable(false);
-		txtTotal.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtTotal.setText("0.00");
-		txtTotal.setForeground(Color.GREEN);
-		txtTotal.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		txtTotal.setColumns(10);
+		txtSubTotal = new JTextField();
+		txtSubTotal.setEditable(false);
+		txtSubTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtSubTotal.setText("0.00");
+		txtSubTotal.setForeground(Color.GREEN);
+		txtSubTotal.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtSubTotal.setColumns(10);
 		
 		btnAgregarFila = new JButton("Agregar Fila");
 		btnAgregarFila.setFont(new Font("Tahoma", Font.BOLD, 14));
-		btnAgregarFila.setBounds(534, 158, 167, 30);
 		btnAgregarFila.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				agregarFila();
@@ -374,46 +402,58 @@ public class frmFactura extends JInternalFrame {
 		
 		});
 		scrollPane.setViewportView(table);
-		contentPane.setLayout(null);
-		contentPane.add(lblFactura);
 ////////////////////OBTENER LA FECHA ACTUAL Y ASIGNARLA AL FORMULARIO FACTURA //////////////////
 			Date fechaActual = new Date( );
 			Date horaActual = new Date( );
 			SimpleDateFormat fecha = new SimpleDateFormat ("dd.MM.yyyy");
 			SimpleDateFormat hora = new SimpleDateFormat ("hh:mm:ss");
 			lblHora = new JLabel(hora.format(horaActual));
-			lblHora.setBounds(625, 106, 76, 14);
 		lblHora.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		contentPane.add(lblHora);
 		
 		
 		lblFecha = new JLabel(fecha.format(fechaActual));
-		lblFecha.setBounds(483, 106, 76, 14);
 		lblFecha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		contentPane.add(lblFecha);
-		
-		JLabel label = new JLabel("Total:");
-		label.setBounds(368, 337, 61, 23);
-		label.setForeground(new Color(153, 0, 0));
-		label.setFont(new Font("Tahoma", Font.BOLD, 16));
-		
-		contentPane.add(label);
-		contentPane.add(scrollPane);
-		contentPane.add(btnEliminarFila);
-		contentPane.add(btnAgregarFila);
-		contentPane.add(txtTotal);
-		contentPane.add(btnBuscarProductos);
+		JLabel lblTotal = new JLabel("Total");
+		lblTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTotal.setForeground(new Color(153, 0, 0));
+		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
 		btnFacturar = new JButton("Facturar");
-		btnFacturar.setBounds(55, 379, 112, 60);
 		btnFacturar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {//REALIZAR LA FACTURA.
 					
 			/////////////////////////////////////////////////////////////////DETALLE FACTURA
 					String fechaEnviada = lblFecha + " " + lblHora;
+					double subtotalFacturaEnviada = Double.parseDouble(txtSubTotal.getText());
+					double itbisEnviada = Double.parseDouble(txtITBIS.getText());
 					double totalFacturaEnviada = Double.parseDouble(txtTotal.getText());
-					Factura nuevaFactura = new Factura(fechaEnviada,0,0,totalFacturaEnviada);
+					int numeroSecuencia = 0;
+					
+					//OBTIENE EL ID DEL COMBOBOX
+					int  tipoComprobanteComboBox = cargarComboBoxComprobante.comprobante.get(cmbComprobante.getSelectedIndex()).getIdComprobante();
+					String tipoComprobante = String.format("%02d", tipoComprobanteComboBox);
+					
+					try {
+						Comprobante pruebaComprobante = new Comprobante(tipoComprobanteComboBox,null);//AUMENTA LA SECUENCIA DEL COMPROBANTE
+						 numeroSecuencia = pruebaComprobante.sumarSecuenciaComprobante();
+						
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+					String cadena = null; // AGREGA LOS OTROS 0 QUE FALTAN AL NUMERO DE LA SECUENCIA
+					cadena = String.format("%08d", numeroSecuencia);
+					
+					String comprobante ="A01001001" + tipoComprobante + cadena;
+				
+					
+					Factura nuevaFactura = new Factura(fechaEnviada,0,0,subtotalFacturaEnviada, itbisEnviada, totalFacturaEnviada, comprobante);
 					DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 			        int idfactura=0;// PARA ASIGNARLE EL NUMERO DE LA FACTURA A DETALLE FACTURA
 			        //TODO: VALIDAR QUE NO PERMITA REALIZAR UNA FACTURA SIN QUE TENGA DETALLE
@@ -470,10 +510,8 @@ public class frmFactura extends JInternalFrame {
 		});
 		btnFacturar.setForeground(new Color(0, 0, 204));
 		btnFacturar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		contentPane.add(btnFacturar);
 		
 		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBounds(236, 379, 112, 60);
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				limpiarTabla();
@@ -482,10 +520,8 @@ public class frmFactura extends JInternalFrame {
 		});
 		btnLimpiar.setForeground(new Color(0, 153, 0));
 		btnLimpiar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		contentPane.add(btnLimpiar);
 		
 		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(416, 379, 112, 60);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
@@ -493,43 +529,29 @@ public class frmFactura extends JInternalFrame {
 		});
 		btnCancelar.setForeground(new Color(204, 0, 0));
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 16));
-		contentPane.add(btnCancelar);
 		
 		JLabel lblNewLabel = new JLabel("Fecha:");
-		lblNewLabel.setBounds(427, 106, 46, 14);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(10, 22, 158, 105);
 		lblNewLabel_1.setIcon(new ImageIcon(frmFactura.class.getResource("/Recursos/Icon GrenSoft2.png")));
-		contentPane.add(lblNewLabel_1);
 		
 		JLabel label1 = new JLabel("Hora:");
-		label1.setBounds(569, 106, 46, 14);
 		label1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		contentPane.add(label1);
 		
 		JLabel lblTotalProductos = new JLabel("Total Productos:");
-		lblTotalProductos.setBounds(20, 317, 94, 14);
 		lblTotalProductos.setForeground(new Color(204, 0, 0));
 		lblTotalProductos.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		contentPane.add(lblTotalProductos);
-		lblTotalFilas.setBounds(121, 317, 46, 14);
 		
 		//JLabel lblTotalFilas = new JLabel("0");
 		lblTotalFilas.setForeground(new Color(0, 102, 0));
 		lblTotalFilas.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		contentPane.add(lblTotalFilas);
 		
 		JLabel lblNumeroFactura = new JLabel("Numero Factura");
 		lblNumeroFactura.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNumeroFactura.setBounds(378, 81, 156, 14);
 		lblNumeroFactura.setFont(new Font("Tahoma", Font.BOLD, 14));
-		contentPane.add(lblNumeroFactura);
 		
 		txtNumFactura = new JTextField();
-		txtNumFactura.setBounds(544, 78, 200, 20);
 		txtNumFactura.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -537,9 +559,16 @@ public class frmFactura extends JInternalFrame {
 				//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 //DETALLE FACTURA
 //PERMITE BUSCAR UNA FACTURA EN EL REGISTRO QUE HA SIDO FACTURA ANTERIORMENTE
+				Validacion validarSoloNumero = new Validacion();
+				validarSoloNumero.validarTxtSoloNumero(txtNumFactura); // VALIDA QUE SOLO SE INGRESEN NUMERO EN EL TEXTBOX
+				
 				if(key == KeyEvent.VK_ENTER){
 				
-							String numFactura = txtNumFactura.getText();
+							//String numFactura = txtNumFactura.getText();
+					
+							
+							int numFactura = Integer.parseInt(txtNumFactura.getText());
+							
 							try {
 								modeloTabla = new ModeloTabla("tbldetallefactura2.codigoProducto, tblproducto.Descripcion, tbldetallefactura2.precio, tbldetallefactura2.precio, tbldetallefactura2.subTotal", 
 										"tbldetallefactura2, tblproducto", 
@@ -551,13 +580,14 @@ public class frmFactura extends JInternalFrame {
 								
 								ValidarSiFacturaExiste();
 								
-								Factura fechaObtenida = new Factura(Integer.parseInt(numFactura));
+								//Factura fechaObtenida = new Factura(Integer.parseInt(numFactura));
+								Factura fechaObtenida = new Factura(numFactura);
 								String fechaHoraFormulario =fechaObtenida.fechaFacturaBuscada();
-								
-								 String[] fechaDividida = fechaHoraFormulario.split(" ");
-							    lblFecha.setText(fechaDividida[0]);
-								 lblHora.setText(fechaDividida[1]);
-							   
+								if(fechaHoraFormulario !=null){
+									 String[] fechaDividida = fechaHoraFormulario.split(" ");
+								    lblFecha.setText(fechaDividida[0]);
+									 lblHora.setText(fechaDividida[1]);
+								}
 							} catch (ClassNotFoundException e) {
 								
 								e.printStackTrace();
@@ -570,24 +600,195 @@ public class frmFactura extends JInternalFrame {
 			}
 		});
 		txtNumFactura.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		contentPane.add(txtNumFactura);
 		txtNumFactura.setColumns(10);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(879, 437, -302, -136);
-		contentPane.add(scrollPane_1);
 		
 		JLabel lblTipo = new JLabel("Tipo de Comprobante");
 		lblTipo.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTipo.setBounds(379, 56, 158, 14);
 		lblTipo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		contentPane.add(lblTipo);
 		
-		JComboBox cmbComprobante = new JComboBox();
-		cmbComprobante.setBounds(544, 55, 200, 20);
-		contentPane.add(cmbComprobante);
-		CargarComboBox cargarComboBoxComprobante = new CargarComboBox();
+		cmbComprobante = new JComboBox();
+		cargarComboBoxComprobante = new CargarComboBox();
 		cargarComboBoxComprobante.cargarComboBoxComrobante(cmbComprobante);
+		
+		txtITBIS = new JTextField();
+		txtITBIS.setText("0.00");
+		txtITBIS.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtITBIS.setForeground(Color.GREEN);
+		txtITBIS.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		txtITBIS.setEditable(false);
+		txtITBIS.setColumns(10);
+		
+		txtTotal = new JTextField();
+		txtTotal.setText("0.00");
+		txtTotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtTotal.setForeground(Color.GREEN);
+		txtTotal.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtTotal.setEditable(false);
+		txtTotal.setColumns(10);
+		
+		JLabel lblitbis = new JLabel("ITBIS");
+		lblitbis.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblitbis.setForeground(new Color(153, 0, 0));
+		lblitbis.setFont(new Font("Tahoma", Font.BOLD, 18));
+		
+		JLabel lblSubtotal = new JLabel("SubTotal");
+		lblSubtotal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSubtotal.setForeground(new Color(153, 0, 0));
+		lblSubtotal.setFont(new Font("Tahoma", Font.BOLD, 18));
+		
+		JLabel lblNcf = new JLabel("NCF");
+		lblNcf.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNcf.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		txtNCF = new JTextField();
+		txtNCF.setEnabled(false);
+		txtNCF.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtNCF.setColumns(10);
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+							.addGap(68)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblFactura, GroupLayout.PREFERRED_SIZE, 374, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(143)
+									.addComponent(lblTipo, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
+									.addGap(7)
+									.addComponent(cmbComprobante, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(142)
+									.addComponent(lblNumeroFactura, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
+									.addGap(10)
+									.addComponent(txtNumFactura, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(247)
+									.addComponent(lblNcf, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+									.addGap(15)
+									.addComponent(txtNCF, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(422)
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(lblFecha, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(label1, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(lblHora, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(5)
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 518, GroupLayout.PREFERRED_SIZE)
+							.addGap(6)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnAgregarFila, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnEliminarFila, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnBuscarProductos, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGap(15)
+								.addComponent(lblTotalProductos)
+								.addGap(7)
+								.addComponent(lblTotalFilas, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+								.addGap(349)
+								.addComponent(lblSubtotal, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+								.addGap(2)
+								.addComponent(txtSubTotal, 0, 0, Short.MAX_VALUE))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGap(544)
+								.addComponent(lblitbis, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+								.addGap(2)
+								.addComponent(txtITBIS, 0, 0, Short.MAX_VALUE))
+							.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+								.addGap(50)
+								.addComponent(btnFacturar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+								.addGap(69)
+								.addComponent(btnLimpiar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+								.addGap(68)
+								.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+								.addGap(21)
+								.addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+								.addGap(2)
+								.addComponent(txtTotal, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE))))
+					.addGap(5))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(17)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(lblFactura, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+							.addGap(3)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(1)
+									.addComponent(lblTipo, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+								.addComponent(cmbComprobante, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(3)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(3)
+									.addComponent(lblNumeroFactura, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+								.addComponent(txtNumFactura, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+							.addGap(9)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(3)
+									.addComponent(lblNcf, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+								.addComponent(txtNCF, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))))
+					.addGap(3)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblFecha, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+						.addComponent(label1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblHora, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addGap(11)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(3)
+							.addComponent(btnAgregarFila, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(btnEliminarFila, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(btnBuscarProductos, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+					.addGap(2)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(9)
+							.addComponent(lblTotalProductos, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(9)
+							.addComponent(lblTotalFilas, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(9)
+							.addComponent(lblSubtotal, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtSubTotal, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(14)
+							.addComponent(lblitbis, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(4)
+							.addComponent(txtITBIS, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtTotal, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnFacturar, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnLimpiar, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCancelar, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblTotal, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))))
+		);
+		contentPane.setLayout(gl_contentPane);
 		
 		
 		
@@ -676,6 +877,8 @@ public class frmFactura extends JInternalFrame {
 		//DefaultTableModel tabla = (DefaultTableModel) table.getModel();
         double total = 0;
         double numero =0;
+       double ITBIS = 0;
+        double totalFactura = 0;
         //recorrer todas las filas de la segunda columna y va sumando las cantidades
    
 	        for( int i=0 ; i<table.getRowCount(); i++)
@@ -695,9 +898,15 @@ public class frmFactura extends JInternalFrame {
 				}
 	   
 		}
-     
+	        ITBIS = total * 0.18;
+		    totalFactura = total + ITBIS;
         //muestra en el componente
-        this.txtTotal.setText( String.valueOf(total) );
+		    String subtotalConFormato = String.format(Locale.US, "%.2f", total);//LE DA FORMATO PARA QUE EN EL TEXTBOX APARENZCAN CON LOS DOS DIGITOS.
+		    String ITBISConFormato = String.format(Locale.US, "%.2f", ITBIS);
+		    String totalFacturaConFormato = String.format(Locale.US, "%.2f", totalFactura);
+        this.txtSubTotal.setText( String.valueOf(subtotalConFormato) );
+        this.txtITBIS.setText( String.valueOf(ITBISConFormato) );
+        this.txtTotal.setText( String.valueOf(totalFacturaConFormato) );
     }
 
 //CARGA LOS DATOS DESDE EL FORMULARIO BUSCAR Y LO AGREGA EN LA TABLA DETALLE
@@ -716,10 +925,38 @@ public class frmFactura extends JInternalFrame {
 		table.requestFocus();
 		
 	}
-	
+	public boolean noPermitirAgregarMasFilasEnBlanco(){
+		String numero;
+		for( int i=0 ; i<table.getRowCount(); i++)
+        {
+            
+                //capturamos valor de celda
+             try {
+            	
+            	Object numeroObject=table.getValueAt(i, 1);
+            	//numero= (numeroObject==null)?0:Double.parseDouble(numeroObject.toString());
+            	 numero = numeroObject.toString();
+            	
+            	 if (numero ==null){
+            		 table.changeSelection(table.getSelectedRow(), 0, false, false);//VALIDA SI EL CODIGO EXISTE EN EL REGISTRO
+         			table.requestFocus();
+         			JOptionPane.showMessageDialog(null, "No puede tener mas de una fila en blanco (recorrido)");
+         			return false;
+            	 }
+				
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+          
+   
+        }
+		   return true;
+	}
 	private void agregarFila(){//METODO PARA AGREGAR UNA NUEVA FILA A LA TABLA
 		ValidarNoAgregarMasFilas ();
 			if (validarFilaBlanco!=null){
+		//if (noPermitirAgregarMasFilasEnBlanco()==true){
 			DefaultTableModel tabla= (DefaultTableModel) table.getModel();
 			tabla.addRow(new Object[]{null, null, null, 1, null});
 			table.changeSelection(table.getSelectedRow(), 0, false, false);
@@ -760,20 +997,23 @@ public class frmFactura extends JInternalFrame {
 		lblFecha.setText("");
 		lblHora.setText("");
 		lblFactura.setText("Detalle de Factura");
+		cmbComprobante.setEnabled(false);
 		
 	}
 	public void ValidarNoAgregarMasFilas (){// VALIDA QUE NO SE INGRESEN MAS FILAS SI YA EXISTE UNA FILA EN BLANCO
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 		
 		validarFilaBlanco = (String) tabla.getValueAt(table.getSelectedRow(), 1);
-		
+	
 		if (validarFilaBlanco==null){
 			table.changeSelection(table.getSelectedRow(), 0, false, false);//VALIDA SI EL CODIGO EXISTE EN EL REGISTRO
 			table.requestFocus();
 			JOptionPane.showMessageDialog(null, "No puede tener mas de una fila en blanco");
 			
 		}
+		
 	}
+	
 	public void ValidarSiCodigoExiste(){// VALIDA SI EL CODIGO EXISTE EN EL REGISTRO
 		DefaultTableModel tabla = (DefaultTableModel) table.getModel();
 		
@@ -785,9 +1025,11 @@ public class frmFactura extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, "Este codigo no existe en el registro");
 			
 		}
+		
 	}
 	public void ValidarSiFacturaExiste(){// VALIDA SI LA FACTURA EXISTE EN EL REGISTRO
-		if (total==0){
+		double obtenerTotal = Double.parseDouble(txtTotal.getText());
+		if (obtenerTotal == 0){
         	JOptionPane.showMessageDialog(null, "Esta Factura no existe en el Registro");
         }
 	}
@@ -799,11 +1041,18 @@ public class frmFactura extends JInternalFrame {
 				new String[] {
 					"Codigo", "Descripcion", "Precio", "Cantidad", "Subtotal"
 				}
+				
 			));
 		
-		txtTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
+		txtSubTotal.setText("0.00");//LUEGO DE REALIZAR LA FACTURA SE ASIGNA A 0.00 EL TOTAL.
+		txtTotal.setText("0.00");
+		txtITBIS.setText("0.00");
+	
 		txtNumFactura.setText("");
 		lblTotalFilas.setText("0");
+		txtNCF.setText("");
+		table.changeSelection(0, 0, false, false);
+		table.requestFocus();
 		
 	}
 
@@ -821,7 +1070,7 @@ public class frmFactura extends JInternalFrame {
 			ActualizarTotal();
 			util.sumarFilasTabla(table, lblTotalFilas);
 		
-			ValidarSiFacturaExiste();
+			//ValidarSiFacturaExiste();
 			
 			Factura fechaObtenida = new Factura(facturaEmitida.getIdFactura());
 			String fechaHoraFormulario =fechaObtenida.fechaFacturaBuscada();
@@ -829,6 +1078,7 @@ public class frmFactura extends JInternalFrame {
 			 String[] fechaDividida = fechaHoraFormulario.split(" ");
 		    lblFecha.setText(fechaDividida[0]);
 			 lblHora.setText(fechaDividida[1]);
+			 txtNCF.setText(facturaEmitida.getComprobante());
 		   
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

@@ -78,13 +78,13 @@ public class FrmFacturasEmitidas extends JInternalFrame {
 		getContentPane().add(btnBuscar);
 		
 		JScrollPane scrollPane = new JScrollPane((Component) null);
-		scrollPane.setBounds(58, 154, 497, 236);
+		scrollPane.setBounds(10, 154, 575, 236);
 		getContentPane().add(scrollPane);
 		
 		JLabel lbltotal = new JLabel("0");
 		
 		try {
-			modeloTabla = new ModeloTabla("idFactura, fecha, idUsuario,totalFactura", "tblfactura2", "1");
+			modeloTabla = new ModeloTabla("idFactura, fecha, idUsuario,totalFactura, comprobante", "tblfactura2", "1");
 			modeloTabla.realizarBusqueda();
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -100,8 +100,8 @@ public class FrmFacturasEmitidas extends JInternalFrame {
 				String Fecha =  modeloTabla.getValueAt(table.getSelectedRow(), 1).toString();
 				int idUsuario =   Integer.parseInt( modeloTabla.getValueAt(table.getSelectedRow(), 2).toString() );
 				float total =  Float.parseFloat(modeloTabla.getValueAt(table.getSelectedRow(), 3).toString());
-				
-				Factura facturaEmitida = new Factura(idFactura, Fecha, idUsuario, 0, total);
+				String comprobante = modeloTabla.getValueAt(table.getSelectedRow(), 4).toString();
+				Factura facturaEmitida = new Factura(idFactura, Fecha, idUsuario, 0, total,comprobante);
 				frmFactura frm = new frmFactura();
 				frm.cargarDatosDesdeFacturaEmitida(facturaEmitida); //ANTES DE QUE SE ABRE LA VENTANA SE ACCINA EL METODO CARGADATOS
 				getDesktopPane().add(frm);
