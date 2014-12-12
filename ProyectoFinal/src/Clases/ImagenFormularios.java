@@ -9,12 +9,12 @@ import javax.imageio.ImageIO;
 import javax.swing.border.Border;
  
 
-public class ImagenJDesktopPane implements Border{
+public class ImagenFormularios implements Border{
     public BufferedImage back;
  
-    public ImagenJDesktopPane(){
+    public ImagenFormularios(){
         try {
-            URL imagePath = new URL(getClass().getResource("/Recursos/BackGrenSoft2.jpg").toString());
+            URL imagePath = new URL(getClass().getResource("/Recursos/1312631.jpg").toString());
             back = ImageIO.read(imagePath);
         } catch (Exception ex) {            
         }

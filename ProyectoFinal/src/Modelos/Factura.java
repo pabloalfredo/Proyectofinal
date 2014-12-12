@@ -29,7 +29,12 @@ public class Factura {
 	private String fecha;
 	private int idUsuario;
 	private int idCliente;
+	
+
+	private double subtotal;
+	private double itbis;
 	private double totalFactura;
+	private String comprobante;
 	
 	public Factura(int idFactura, String fecha, int idUsuario, int idCliente, double totalFactura) {
 		
@@ -39,16 +44,29 @@ public class Factura {
 		this.idCliente = idCliente;
 		this.totalFactura = totalFactura;
 	}
-	public Factura(String fecha, int idUsuario, int idCliente, double totalFactura) {
+public Factura(int idFactura, String fecha, int idUsuario, int idCliente, double totalFactura,String comprobante) {
 		
+		this.idFactura = idFactura;
 		this.fecha = fecha;
 		this.idUsuario = idUsuario;
 		this.idCliente = idCliente;
 		this.totalFactura = totalFactura;
+		this.comprobante = comprobante;
+	}
+	public Factura(String fecha, int idUsuario, int idCliente, double subtotal, double itbis, double totalFactura, String comprobante) {
+		
+		this.fecha = fecha;
+		this.idUsuario = idUsuario;
+		this.idCliente = idCliente;
+		this.subtotal = subtotal;
+		this.itbis = itbis;
+		this.totalFactura = totalFactura;
+		this.comprobante = comprobante;
 	}
 		public Factura(int idFactura) {
 		
 		this.idFactura = idFactura;
+		
 		
 	}
 	public int getIdFactura() {
@@ -75,16 +93,34 @@ public class Factura {
 	public void setIdCliente(int idCliente) {
 		this.idCliente = idCliente;
 	}
+	public double getSubtotal() {
+		return subtotal;
+	}
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
+	}
+	public double getItbis() {
+		return itbis;
+	}
+	public void setItbis(double itbis) {
+		this.itbis = itbis;
+	}
 	public double getTotalFactura() {
 		return totalFactura;
 	}
 	public void setTotalFactura(double totalFactura) {
 		this.totalFactura = totalFactura;
 	}
+	public String getComprobante() {
+		return comprobante;
+	}
+	public void setComprobante(String comprobante) {
+		this.comprobante = comprobante;
+	}
 	public int agregarFactura() throws ClassNotFoundException, SQLException{
 		BaseDeDatos conn = new BaseDeDatos();
 		String sql = "insert into tblfactura2  "
-				+ "values (?,?,?,?,?)";
+				+ "values (?,?,?,?,?,?,?,?)";
 		
 		
 			Calendar fecha = Calendar.getInstance();
@@ -93,12 +129,13 @@ public class Factura {
 		
 		PreparedStatement instruccion = conn.getConexion().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		instruccion.setInt(1, getIdFactura());
-		//instruccion.setDate(2, new java.sql.Date(cal.getTimeInMillis()));
 		instruccion.setString(2, fechaMysql);
 		instruccion.setInt(3, getIdUsuario());
 		instruccion.setInt(4, getIdCliente());
-		instruccion.setDouble(5, getTotalFactura());
-		
+		instruccion.setDouble(5, getSubtotal());
+		instruccion.setDouble(6, getItbis());
+		instruccion.setDouble(7, getTotalFactura());
+		instruccion.setString(8, getComprobante());
 		
 		instruccion.execute();
 		ResultSet clavesGeneradas = instruccion.getGeneratedKeys();
