@@ -8,10 +8,12 @@ import javax.swing.JComboBox;
 
 import Modelos.Comprobante;
 import Modelos.TipoProducto;
+import Modelos.TipoUsuario;
 
 public class CargarComboBox {
 	public Vector <TipoProducto> categorias;
 	public Vector <Comprobante> comprobante;
+	public Vector<TipoUsuario> categorias1;
 	
 	public void cargarComboBox(JComboBox cmbTipoAgregarProducto) {//para llenar el comboBox
 		
@@ -37,6 +39,31 @@ public class CargarComboBox {
 				}
 		
 		}
+	
+	public void cargarComboBoxTipoUsuario(JComboBox cmbTipoAgregarProducto) {//para llenar el comboBox
+		
+		
+		BaseDeDatos conn = new BaseDeDatos();
+			categorias1 = new Vector<>();
+			ResultSet rs;
+			try {
+				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select id, tipo_usuario from tbltipo_usuario");
+					while (rs.next()){
+					TipoUsuario categoria = new TipoUsuario(rs.getInt(1), rs.getString(2));	
+					
+					categorias1.add(categoria);
+					cmbTipoAgregarProducto.addItem(categoria.getDescripcion());
+					
+					}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+	}
 	
 public void cargarComboBoxComrobante(JComboBox cmbComprobante) {//para llenar el comboBox
 		

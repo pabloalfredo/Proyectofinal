@@ -30,6 +30,15 @@ import java.awt.Color;
 public class FrmMainPrincipal {
 
 	private JFrame frame;
+	private JButton btnInventarios;
+	private JButton btnFactura;
+	private JButton btnDevoluciones;
+	private JButton btnReportes;
+	private JMenuItem mntmCategorias;
+	private JMenuItem mntmInventariosDeProductos;
+	private JMenuItem mntmAgregarUsuario;
+	private JMenu mnMantenimientos;
+	private JMenu mnBusqueda;
 
 	/**
 	 * Launch the application.
@@ -74,10 +83,18 @@ public class FrmMainPrincipal {
 		JMenu mnSistema = new JMenu("Sistema");
 		menuBar.add(mnSistema);
 		
-		JMenuItem mntmLogin = new JMenuItem("Login");
+		JMenuItem mntmLogin = new JMenuItem("Cambiar  de  Usuario");
+		mntmLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ocultarFrame();
+				Login frm = new Login();
+				frm.setVisible(true);
+				
+			}
+		});
 		mnSistema.add(mntmLogin);
 		
-		JMenuItem mntmAgregarUsuario = new JMenuItem("Agregar Usuario");
+		mntmAgregarUsuario = new JMenuItem("Agregar Usuario");
 		mntmAgregarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FrmAgregarNuevoUsuario agregar = new FrmAgregarNuevoUsuario();
@@ -91,13 +108,13 @@ public class FrmMainPrincipal {
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mnSistema.add(mntmSalir);
 		
-		JMenu mnMantenimientos = new JMenu("Mantenimientos");
+		mnMantenimientos = new JMenu("Mantenimientos");
 		menuBar.add(mnMantenimientos);
 		
-		JMenuItem mntmCategorias = new JMenuItem("Categorias de Productos");
+		mntmCategorias = new JMenuItem("Categorias de Productos");
 		mnMantenimientos.add(mntmCategorias);
 		
-		JMenuItem mntmInventariosDeProductos = new JMenuItem("Inventarios de Productos");
+		mntmInventariosDeProductos = new JMenuItem("Inventarios de Productos");
 		mnMantenimientos.add(mntmInventariosDeProductos);
 		
 		
@@ -105,7 +122,7 @@ public class FrmMainPrincipal {
 		JMenu mnReportes = new JMenu("Reportes");
 		menuBar.add(mnReportes);
 		
-		JMenu mnBusqueda = new JMenu("Busqueda");
+		mnBusqueda = new JMenu("Busqueda");
 		menuBar.add(mnBusqueda);
 		
 		JMenuItem mntmDetalleDeFacturas = new JMenuItem("Detalle de Facturas");
@@ -140,7 +157,7 @@ public class FrmMainPrincipal {
 		
 		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
 		
-		JButton btnFactura = new JButton("Factura");
+		btnFactura = new JButton("Factura");
 		btnFactura.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmFactura frm = new frmFactura();
@@ -153,7 +170,7 @@ public class FrmMainPrincipal {
 		btnFactura.setFont(new Font("Tahoma", Font.BOLD, 14));
 		toolBar.add(btnFactura);
 		
-		JButton btnInventarios = new JButton("Inventarios");
+		btnInventarios = new JButton("Inventarios");
 		btnInventarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frmProducto frm = new frmProducto();
@@ -165,12 +182,12 @@ public class FrmMainPrincipal {
 		btnInventarios.setIcon(new ImageIcon(FrmMainPrincipal.class.getResource("/Recursos/inventario.png")));
 		toolBar.add(btnInventarios);
 		
-		JButton btnDevoluciones = new JButton("Devoluciones");
+		btnDevoluciones = new JButton("Devoluciones");
 		btnDevoluciones.setIcon(new ImageIcon(FrmMainPrincipal.class.getResource("/Recursos/1415499004_Rotation.png")));
 		btnDevoluciones.setFont(new Font("Tahoma", Font.BOLD, 14));
 		toolBar.add(btnDevoluciones);
 		
-		JButton btnReportes = new JButton("Reportes");
+		btnReportes = new JButton("Reportes");
 		btnReportes.setIcon(new ImageIcon(FrmMainPrincipal.class.getResource("/Recursos/1415499313_Computer_Analysis-48.png")));
 		btnReportes.setFont(new Font("Tahoma", Font.BOLD, 14));
 		toolBar.add(btnReportes);
@@ -191,4 +208,34 @@ public class FrmMainPrincipal {
 		frame.setVisible(true); // llamada al menu et
 		
 	}
+	
+	public void permisos (int permiso){
+		
+		if (permiso==2){
+			btnInventarios.setEnabled(false);
+			btnDevoluciones.setEnabled(false);
+			btnInventarios.setEnabled(false);
+			mnMantenimientos.setEnabled(false);
+			mntmAgregarUsuario.setEnabled(false);
+			btnReportes.setEnabled(false);
+			
+			
+		}
+		if (permiso==3){
+			
+			btnDevoluciones.setEnabled(false);
+			mnMantenimientos.setEnabled(false);
+			mntmAgregarUsuario.setEnabled(false);
+			btnFactura.setEnabled(false);
+			btnReportes.setEnabled(false);
+			mnBusqueda.setEnabled(false);
+		}
+		
+	}
+	public void ocultarFrame() {
+		// TODO Auto-generated method stub
+		frame.setVisible(false); // llamada al menu et
+		
+	}
+	
 }

@@ -7,8 +7,8 @@ public class TipoUsuario {
 	
 	public TipoUsuario(int idTipoProudcto, String Descripcion){
 	
-		setIdTipoProducto(idTipoUsuario);
-		setDescripcion(Descripcion);
+		this.idTipoUsuario = idTipoProudcto;
+		this.Descripcion = Descripcion;
 	}
 	public TipoUsuario( String Descripcion){
 		

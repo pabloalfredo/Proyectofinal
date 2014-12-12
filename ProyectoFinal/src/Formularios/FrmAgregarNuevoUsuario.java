@@ -73,6 +73,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmAgregarNuevoUsuario() {
+		setClosable(true);
 		setTitle("Agregar Nuevo Usuario");
 		setFrameIcon(new ImageIcon(FrmAgregarNuevoUsuario.class.getResource("/com/birosoft/liquid/icons/computericon.png")));
 		//setIcon(true);
@@ -139,10 +140,8 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		getContentPane().add(txtNomUsuario);
 		 
 		cmbTipoUsuario = new JComboBox();
-	    //comboBox.cargarComboBoxTipoUsuario(cmbTipoUsuario);
-		 
-	
-		 //comboBox.cargarComboBox(cmbTipoUsuario);
+	    comboBox.cargarComboBoxTipoUsuario(cmbTipoUsuario);
+		
 		cmbTipoUsuario.setBounds(144, 229, 162, 22);
 		getContentPane().add(cmbTipoUsuario);
 		
@@ -164,21 +163,21 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 					String apellido = txtApellido.getText();
 					String contrasena1 = txtPass.getText();
 					
-					//TipoUsuario ObjetoTipoUsuario = comboBox.categorias1.get(cmbTipoUsuario.getSelectedIndex());
-					//NuevoUsuario UsuarioOtenido = new NuevoUsuario(nombreUsuario, contrasena, ObjetoTipoUsuario, nombre, apellido );
+					TipoUsuario ObjetoTipoUsuario = comboBox.categorias1.get(cmbTipoUsuario.getSelectedIndex());
+					NuevoUsuario UsuarioOtenido = new NuevoUsuario(nombreUsuario, contrasena, ObjetoTipoUsuario, nombre, apellido );
 					
 					
-					/*try {
-							//UsuarioOtenido.AgregarNuevoUsuario();
+					try {
+							UsuarioOtenido.AgregarNuevoUsuario();
 					} catch (ClassNotFoundException e) {
 						// TODO manejar la exception 
 						e.printStackTrace();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-				//	}
+					//}
 					
-				}*/
+				}
 					dispose();
 				
 			
@@ -192,7 +191,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		JButton button_1 = new JButton("Cancelar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 System.exit(0);  
+				 dispose(); 
 			}
 		});
 		button_1.setIcon(new ImageIcon(FrmAgregarNuevoUsuario.class.getResource("/com/sun/java/swing/plaf/windows/icons/Error.gif")));
@@ -231,16 +230,6 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		button.setIcon(new ImageIcon(FrmAgregarNuevoUsuario.class.getResource("/Recursos/search_icon.png")));
 		button.setBounds(319, 53, 89, 45);
 		getContentPane().add(button);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//TipoUsuario numero = comboBox.categorias1.get(cmbTipoUsuario.getSelectedIndex());
-				//System.out.println(numero.getIdTipoUsuario());
-			}
-		});
-		btnNewButton.setBounds(319, 174, 89, 23);
-		getContentPane().add(btnNewButton);
 		
 		
 

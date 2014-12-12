@@ -2,10 +2,13 @@ package Formularios;
 import javax.swing.*;
 
 import Clases.AplicarTemaVentana;
+import Clases.BaseDeDatos;
 import Clases.ValidarUsuarios;
+import Modelos.TipoUsuario;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Vector;
 import java.awt.Panel.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -86,6 +89,7 @@ public class Login extends JFrame{
 	        {
 	            public void actionPerformed(ActionEvent evt)
 	            {
+	            	int permiso=0;
 	                try
 	                {     
 	                    ValidarUsuarios validar = new ValidarUsuarios();
@@ -98,7 +102,32 @@ public class Login extends JFrame{
 	                        {
 	                            // Codigo para mostrar la ventana principal
 	                            setVisible(false);
+	                            
+	                            
+	                            ///////////////////////
+	                            BaseDeDatos conn = new BaseDeDatos();
+	                			
+	                			ResultSet rs;
+	                			try {
+	                				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select idtipo_usuario from tblusuario where usuario = '"+txtUser.getText()+"' and clave ='"+txtPass.getText()+"'");
+	                					while (rs.next()){
+	                					permiso = rs.getInt(1);
+	                					}
+	                			} catch (ClassNotFoundException e) {
+	                				// TODO Auto-generated catch block
+	                				e.printStackTrace();
+	                			} catch (SQLException e) {
+	                				// TODO Auto-generated catch block
+	                				e.printStackTrace();
+	                			}
+	                	
+	                            
+	                            //////////////////////////
+	                            
+	                            
 	                            FrmMainPrincipal ventana1 = new FrmMainPrincipal();
+	                           ventana1.permisos(permiso);
+	                          
 	                            ventana1.mostrar();
 	 
 	 
