@@ -117,6 +117,19 @@ public class FrmMainPrincipal {
 		mntmInventariosDeProductos = new JMenuItem("Inventarios de Productos");
 		mnMantenimientos.add(mntmInventariosDeProductos);
 		
+		JMenuItem mntmUnidades = new JMenuItem("Unidades");
+		mnMantenimientos.add(mntmUnidades);
+		
+		JMenuItem mntmComprobantes = new JMenuItem("Comprobantes");
+		mntmComprobantes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FrmComprobante frm = new FrmComprobante();
+				desktopPane.add(frm);
+				frm.setVisible(true);
+			}
+		});
+		mnMantenimientos.add(mntmComprobantes);
+		
 		
 		
 		JMenu mnReportes = new JMenu("Reportes");
@@ -237,5 +250,4 @@ public class FrmMainPrincipal {
 		frame.setVisible(false); // llamada al menu et
 		
 	}
-	
 }

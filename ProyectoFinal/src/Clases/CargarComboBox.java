@@ -15,6 +15,7 @@ public class CargarComboBox {
 	public Vector <Comprobante> comprobante;
 	public Vector<TipoUsuario> categorias1;
 	
+	
 	public void cargarComboBox(JComboBox cmbTipoAgregarProducto) {//para llenar el comboBox
 		
 		

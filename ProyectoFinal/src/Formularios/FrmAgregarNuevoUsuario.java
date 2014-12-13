@@ -40,6 +40,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Color;
 
 public class FrmAgregarNuevoUsuario extends JInternalFrame {
 	
@@ -73,6 +74,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public FrmAgregarNuevoUsuario() {
+		getContentPane().setBackground(new Color(51, 153, 204));
 		setClosable(true);
 		setTitle("Agregar Nuevo Usuario");
 		setFrameIcon(new ImageIcon(FrmAgregarNuevoUsuario.class.getResource("/com/birosoft/liquid/icons/computericon.png")));
@@ -85,6 +87,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
         setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);  //para posicionar
 		
 		JLabel lblAgregarUsuario = new JLabel("Agregar/Modificar Usuario");
+		lblAgregarUsuario.setForeground(new Color(204, 0, 0));
 		lblAgregarUsuario.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		lblAgregarUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAgregarUsuario.setBounds(10, 11, 410, 22);
