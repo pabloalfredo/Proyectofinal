@@ -96,16 +96,18 @@ public class NuevoUsuario {
 		instruccion.setString(5, getApellido());
 		instruccion.execute();
 	}
-/*	public void ModificarUsuario () throws ClassNotFoundException, SQLException{
+    public void ModificarUsuario () throws ClassNotFoundException, SQLException{
 		BaseDeDatos conn = new BaseDeDatos();
-		String sql = "update tblproducto set Descripcion =?, Precio=?,Idtipoproducto=? where Codigo=? ";
+		String sql = "update tblusuario set Descripcion =?, Precio=?,Idtipoproducto=? where Codigo=? ";
 		PreparedStatement instruccion = conn.getConexion().prepareStatement(sql);
-		instruccion.setString(1, getDescripcionProducto());
-		instruccion.setFloat(2, getPrecioProducto());
-		instruccion.setInt(3, getTipoProducto().getIdTipoProducto());
-		instruccion.setInt(4, getCodigoProducto());
+		instruccion.setString(1, getNonUsuario());
+		instruccion.setString(2, getContrasena());
+		instruccion.setInt(3,getTipoUsuario().getIdTipoUsuario());
+		instruccion.setString(4, getNombre());
+		instruccion.setString(5, getApellido());
 		instruccion.execute();
 		//TODO:ARREGLAR MODIFICAR PRODUCTO YA QUE Codigo no es la llave principal
-	}*/
+	}
+	
 
 }

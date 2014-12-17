@@ -24,7 +24,9 @@ import Clases.ImagenJDesktopPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Frame;
+
 import javax.swing.JLabel;
+
 import java.awt.Color;
 
 public class FrmMainPrincipal {
@@ -39,7 +41,8 @@ public class FrmMainPrincipal {
 	private JMenuItem mntmAgregarUsuario;
 	private JMenu mnMantenimientos;
 	private JMenu mnBusqueda;
-
+    private JLabel lbtipousuario;
+    private String usuario;
 	/**
 	 * Launch the application.
 	 */
@@ -211,7 +214,13 @@ public class FrmMainPrincipal {
 		frame.getContentPane().add(toolBar_1, BorderLayout.SOUTH);
 		
 		JLabel lblUsuario = new JLabel("Usuario: ");
+		lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
 		toolBar_1.add(lblUsuario);
+		
+		usuario = null;
+		lbtipousuario = new JLabel(usuario);
+		lbtipousuario.setFont(new Font("Tahoma", Font.BOLD, 16));
+		toolBar_1.add(lbtipousuario);
 		
 		
 	}
@@ -232,7 +241,7 @@ public class FrmMainPrincipal {
 			mntmAgregarUsuario.setEnabled(false);
 			btnReportes.setEnabled(false);
 			
-			
+			                                                         /// permisos para desactivar menu y controles
 		}
 		if (permiso==3){
 			
@@ -249,5 +258,12 @@ public class FrmMainPrincipal {
 		// TODO Auto-generated method stub
 		frame.setVisible(false); // llamada al menu et
 		
+	}
+
+	public void tipoUsuario(String tipoUsuario) {      // obtener el nombre del usuario para mostrar en la toolbar
+		// TODO Auto-generated method stub
+		
+	    usuario = tipoUsuario;
+	    lbtipousuario.setText(usuario);
 	}
 }

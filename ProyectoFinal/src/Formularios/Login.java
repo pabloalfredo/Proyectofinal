@@ -12,6 +12,7 @@ import java.util.Vector;
 import java.awt.Panel.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.MatteBorder;
 
 public class Login extends JFrame{
 	        private JButton btnAceptar, btnCancelar;
@@ -48,10 +49,10 @@ public class Login extends JFrame{
 	        contenedor.add(btnAceptar);
 	        contenedor.add(btnCancelar);
 	        
-	        JLabel lblLogin = new JLabel("Login");
+	        JLabel lblLogin = new JLabel("Login GREENSOFT");
 	        lblLogin.setForeground(SystemColor.menu);
 	        lblLogin.setFont(new Font("Arial Black", Font.BOLD, 20));
-	        lblLogin.setBounds(6, 6, 75, 25);
+	        lblLogin.setBounds(6, 6, 235, 25);
 	        getContentPane().add(lblLogin);
 	        
 	        JLabel lblUsuario = new JLabel("Usuario:");
@@ -81,6 +82,12 @@ public class Login extends JFrame{
 	        lblNewLabel.setIcon(new ImageIcon(Login.class.getResource("/Recursos/loguin.png")));
 	        lblNewLabel.setBounds(-5, 43, 126, 120);
 	        getContentPane().add(lblNewLabel);
+	        
+	        JPanel panel = new JPanel();
+	        panel.setBorder(new MatteBorder(3, 3, 3, 3, (Color) new Color(0, 0, 102)));
+	        panel.setBackground(new Color(51, 153, 204));
+	        panel.setBounds(0, 0, 371, 238);
+	        getContentPane().add(panel);
 	 
 	 
 	 
@@ -90,6 +97,7 @@ public class Login extends JFrame{
 	            public void actionPerformed(ActionEvent evt)
 	            {
 	            	int permiso=0;
+	            	String tipoUsuario="";
 	                try
 	                {     
 	                    ValidarUsuarios validar = new ValidarUsuarios();
@@ -109,9 +117,10 @@ public class Login extends JFrame{
 	                			
 	                			ResultSet rs;
 	                			try {
-	                				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select idtipo_usuario from tblusuario where usuario = '"+txtUser.getText()+"' and clave ='"+txtPass.getText()+"'");
+	                				rs = (ResultSet) conn.getConexion().createStatement().executeQuery("select idtipo_usuario, usuario  from tblusuario where usuario = '"+txtUser.getText()+"' and clave ='"+txtPass.getText()+"'");
 	                					while (rs.next()){
 	                					permiso = rs.getInt(1);
+	                					tipoUsuario = rs.getString(2);
 	                					}
 	                			} catch (ClassNotFoundException e) {
 	                				// TODO Auto-generated catch block
@@ -126,8 +135,8 @@ public class Login extends JFrame{
 	                            
 	                            
 	                            FrmMainPrincipal ventana1 = new FrmMainPrincipal();
-	                           ventana1.permisos(permiso);
-	                          
+	                            ventana1.permisos(permiso);
+	                            ventana1.tipoUsuario(tipoUsuario);
 	                            ventana1.mostrar();
 	 
 	 
