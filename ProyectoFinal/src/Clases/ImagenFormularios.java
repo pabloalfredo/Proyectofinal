@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+
 import javax.imageio.ImageIO;
 import javax.swing.border.Border;
  
@@ -12,9 +13,9 @@ import javax.swing.border.Border;
 public class ImagenFormularios implements Border{
     public BufferedImage back;
  
-    public ImagenFormularios(){
+    public ImagenFormularios(String string){
         try {
-            URL imagePath = new URL(getClass().getResource("/Recursos/1312631.jpg").toString());
+            URL imagePath = new URL(getClass().getResource(string).toString());
             back = ImageIO.read(imagePath);
         } catch (Exception ex) {            
         }

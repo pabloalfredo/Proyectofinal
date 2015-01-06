@@ -2,6 +2,7 @@ package Formularios;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Shape;
 import java.awt.Toolkit;
 
 import javax.swing.JInternalFrame;
@@ -30,6 +31,7 @@ import Modelos.Producto;
 import Modelos.TipoProducto;
 import Formularios.FrmMainPrincipal;
 import Modelos.TipoUsuario;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -40,6 +42,8 @@ import javax.swing.border.MatteBorder;
 import org.omg.CORBA.INITIALIZE;
 
 import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class FrmAgregarNuevoUsuario extends JInternalFrame {
 	
@@ -85,6 +89,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		});
 	}
 	public FrmAgregarNuevoUsuario(){
+		getContentPane().setForeground(new Color(0, 0, 102));
 		initialize();
 		bloquearControles(); // llamada a la funcion bloquear controles para que el formulario se inicie con todo los controles apagados 
 	}
@@ -94,36 +99,39 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		
 		setClosable(true);
 		
-		setTitle("Agregar Nuevo Usuario");
+		setTitle("Mantenimiento de Usuarios");
 		setFrameIcon(new ImageIcon(FrmAgregarNuevoUsuario.class.getResource("/com/birosoft/liquid/icons/computericon.png")));
-		//setIcon(true);
 		setBounds(100, 100, 716, 439);
 		getContentPane().setLayout(null);
 	
-		((JComponent) getContentPane()).setBorder(new FondoFormulario("/Recursos/fondousuario.jpg"));
+		((JComponent) getContentPane()).setBorder(new FondoFormulario("/Recursos/fondo.jpg"));
 		Dimension tamFrame=this.getSize();//para obtener las dimensiones del frame
         Dimension tamPantalla=Toolkit.getDefaultToolkit().getScreenSize();      //para obtener el tamanio de la pantalla
         setLocation((tamPantalla.width-tamFrame.width)/2, (tamPantalla.height-tamFrame.height)/2);  //para posicionar
 		
 		JLabel lblAgregarUsuario = new JLabel("Mantenimiento de Usuarios");
-		lblAgregarUsuario.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		lblAgregarUsuario.setForeground(new Color(0, 0, 102));
+		lblAgregarUsuario.setFont(new Font("Segoe UI", Font.BOLD, 22));
 		lblAgregarUsuario.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAgregarUsuario.setBounds(0, 6, 702, 22);
 		getContentPane().add(lblAgregarUsuario);
 		
 		JLabel lblNombreDeUsuario = new JLabel("Nombre de Usuario:");
+		lblNombreDeUsuario.setForeground(new Color(0, 0, 102));
 		lblNombreDeUsuario.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblNombreDeUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNombreDeUsuario.setBounds(20, 203, 123, 16);
 		getContentPane().add(lblNombreDeUsuario);
 		
 		JLabel lblTipoDeUsuario = new JLabel("Tipo de Usuario");
+		lblTipoDeUsuario.setForeground(new Color(0, 0, 102));
 		lblTipoDeUsuario.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblTipoDeUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTipoDeUsuario.setBounds(20, 232, 103, 16);
 		getContentPane().add(lblTipoDeUsuario);
 		
 		JLabel lblContrasena = new JLabel("Contrasena");
+		lblContrasena.setForeground(new Color(0, 0, 102));
 		lblContrasena.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblContrasena.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblContrasena.setBounds(20, 261, 103, 16);
@@ -157,12 +165,14 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		getContentPane().add(txtVPass);*/
 		
 		JLabel lblNewLabel = new JLabel("Buscar Usuario:");
+		lblNewLabel.setForeground(new Color(0, 0, 102));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel.setBounds(10, 48, 168, 23);
+		lblNewLabel.setBounds(10, 39, 168, 16);
 		getContentPane().add(lblNewLabel);
 		
 		txtBuscarUsuario = new JTextField();
+		txtBuscarUsuario.setFont(new Font("Tahoma", Font.BOLD, 14));
 		txtBuscarUsuario.setColumns(10);
 		txtBuscarUsuario.setBounds(178, 41, 276, 30);
 		getContentPane().add(txtBuscarUsuario);
@@ -209,8 +219,9 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		getContentPane().add(btnBuscar);
 		
 		JPanel panel = new JPanel();
+		panel.setForeground(new Color(0, 0, 102));
 		panel.setName("alfredo");
-		panel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 102)));
 		panel.setBounds(10, 346, 679, 57);
 		getContentPane().add(panel);
 		panel.setLayout(null);
@@ -388,7 +399,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		panel.add(btnSalir);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel_1.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 102)));
 		panel_1.setBounds(10, 190, 324, 102);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
@@ -412,16 +423,24 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		label_2.setBounds(300, 101, 18, 36);
 		panel_1.add(label_2);
 		
+		JLabel label_5 = new JLabel("*");
+		label_5.setForeground(new Color(153, 0, 0));
+		label_5.setFont(new Font("Dialog", Font.PLAIN, 44));
+		label_5.setBounds(300, 40, 18, 36);
+		panel_1.add(label_5);
+		
 		JLabel lblUsuario = new JLabel("   Usuario");
+		lblUsuario.setForeground(new Color(0, 0, 102));
 		lblUsuario.setBounds(0, 179, 66, 14);
 		getContentPane().add(lblUsuario);
 		
 		JLabel lblMantenimiento = new JLabel("  Mantenimiento");
+		lblMantenimiento.setForeground(new Color(0, 0, 102));
 		lblMantenimiento.setBounds(6, 334, 103, 14);
 		getContentPane().add(lblMantenimiento);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel_2.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 102)));
 		panel_2.setBounds(6, 87, 545, 80);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
@@ -433,16 +452,25 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		txtNombre.setColumns(10);
 		
 		txtApellido = new JTextField();
+		txtApellido.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				Validacion validar = new Validacion();
+				validar.validarTxtLetras(txtApellido);
+			}
+		});
 		txtApellido.setBounds(58, 52, 193, 22);
 		panel_2.add(txtApellido);
 		txtApellido.setColumns(10);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
+		lblTelefono.setForeground(new Color(0, 0, 102));
 		lblTelefono.setBounds(292, 19, 52, 16);
 		panel_2.add(lblTelefono);
 		lblTelefono.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		
 		JLabel lblDireccion = new JLabel("Direccion");
+		lblDireccion.setForeground(new Color(0, 0, 102));
 		lblDireccion.setBounds(276, 55, 68, 16);
 		panel_2.add(lblDireccion);
 		lblDireccion.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -450,21 +478,39 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		lblDireccion.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		
 		txtTelefono = new JTextField();
+		txtTelefono.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				Validacion validar = new Validacion();
+				validar.validarTxtSoloNumero(txtTelefono);
+			}
+		});
+		
 		txtTelefono.setBounds(346, 16, 193, 22);
 		panel_2.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
 		txtDireccion = new JTextField();
+		txtDireccion.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Validacion validar = new Validacion();
+				validar.validarTxtSoloLetras(e);
+			}
+		});
+		
 		txtDireccion.setBounds(346, 52, 193, 22);
 		panel_2.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
 		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setForeground(new Color(0, 0, 102));
 		lblNombre.setBounds(6, 19, 52, 16);
 		panel_2.add(lblNombre);
 		lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		
 		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setForeground(new Color(0, 0, 102));
 		lblApellido.setBounds(6, 55, 52, 16);
 		panel_2.add(lblApellido);
 		lblApellido.setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -482,13 +528,21 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		panel_2.add(label_4);
 		
 		JLabel lblDatosPersonales = new JLabel("Datos Personales");
+		lblDatosPersonales.setForeground(new Color(0, 0, 102));
 		lblDatosPersonales.setBounds(6, 74, 107, 16);
 		getContentPane().add(lblDatosPersonales);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(FrmAgregarNuevoUsuario.class.getResource("/Recursos/loguin.png")));
-		lblNewLabel_1.setBounds(563, 0, 142, 144);
-		getContentPane().add(lblNewLabel_1);
+		JLabel lblNombrenombreusuario = new JLabel("Nombre/NombreUsuario:");
+		lblNombrenombreusuario.setForeground(new Color(0, 0, 102));
+		lblNombrenombreusuario.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNombrenombreusuario.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNombrenombreusuario.setBounds(20, 55, 154, 16);
+		getContentPane().add(lblNombrenombreusuario);
+		
+		JLabel lblNewLabel_2 = new JLabel("New label");
+		lblNewLabel_2.setIcon(new ImageIcon(FrmAgregarNuevoUsuario.class.getResource("/Recursos/nuevousuario.png")));
+		lblNewLabel_2.setBounds(482, 83, 226, 256);
+		getContentPane().add(lblNewLabel_2);
 		
 		
 
@@ -553,7 +607,7 @@ public class FrmAgregarNuevoUsuario extends JInternalFrame {
 		txtDireccion.setText("");
 		txtNomUsuario.setText("");
 		txtPass.setText("");
-		cmbTipoUsuario.setEnabled(true);
+		cmbTipoUsuario.setEnabled(false);
 	    btnRegistrar.setEnabled(false);
 	    btnGuardar.setEnabled(true);
 	    btnNuevo.setEnabled(false);

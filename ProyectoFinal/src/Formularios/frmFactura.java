@@ -81,8 +81,10 @@ import javax.swing.ImageIcon;
 
 
 
+
 import Clases.BaseDeDatos;
 import Clases.CargarComboBox;
+import Clases.FondoFormulario;
 import Clases.ModeloTabla;
 import Clases.Utilidades;
 import Clases.Validacion;
@@ -91,6 +93,7 @@ import Modelos.DetalleFactura;
 import Modelos.Factura;
 import Modelos.Producto;
 import Modelos.TipoProducto;
+
 
 
 
@@ -184,6 +187,7 @@ public class frmFactura extends JInternalFrame {
 		contentPane.setBackground(new Color(51, 153, 204));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		contentPane.setBorder(new FondoFormulario("/Recursos/fondo.jpg"));
 		
 		lblFactura = new JLabel("Factura");
 		lblFactura.setForeground(new Color(204, 0, 0));
